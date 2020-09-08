@@ -42,10 +42,60 @@
     
 }
 
-// Getting historical data for needed period and needed coin
-- (void)getHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
+// Getting daily historical data for needed period and needed coin
+- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histoday"];
+    NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
+    
+    [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
+        if ([data isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = (NSDictionary *)data;
+            NSDictionary *dataField = [response valueForKey:@"Data"];
+            NSArray *historicalInfo = [dataField valueForKey:@"Data"];
+            
+            NSMutableArray *historicalInfoForCoin = [NSMutableArray new];
+            for (NSObject *historicalInfoItem in historicalInfo) {
+                NSNumber *price = (NSNumber *)[(NSDictionary *)historicalInfoItem valueForKey:@"high"];
+                [historicalInfoForCoin addObject:price];
+            }
+            
+            completion(historicalInfoForCoin);
+        } else {
+            completion(nil);
+        }
+    }];
+}
+
+// Getting hourly historical data for needed period and needed coin
+- (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
+    
+    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histohour"];
+    NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
+    
+    [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
+        if ([data isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = (NSDictionary *)data;
+            NSDictionary *dataField = [response valueForKey:@"Data"];
+            NSArray *historicalInfo = [dataField valueForKey:@"Data"];
+            
+            NSMutableArray *historicalInfoForCoin = [NSMutableArray new];
+            for (NSObject *historicalInfoItem in historicalInfo) {
+                NSNumber *price = (NSNumber *)[(NSDictionary *)historicalInfoItem valueForKey:@"high"];
+                [historicalInfoForCoin addObject:price];
+            }
+            
+            completion(historicalInfoForCoin);
+        } else {
+            completion(nil);
+        }
+    }];
+}
+
+// Getting minutely historical data for needed period and needed coin
+- (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
+    
+    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histominute"];
     NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
     
     [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {

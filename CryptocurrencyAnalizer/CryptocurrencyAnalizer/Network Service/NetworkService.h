@@ -24,7 +24,13 @@
           headers:(nullable NSDictionary<NSString *,NSString *> *)headers
           completion:(void (^_Nonnull)(NSObject * _Nullable data))completion;
 - (void)getAvailableCoins:(void (^_Nullable)(NSArray * _Nonnull availableCoins))completion;
-- (void)getHistoricalDataForCoin:(NSString *_Nonnull)coin
+- (void)getDailyHistoricalDataForCoin:(NSString *_Nonnull)coin
+                       withLimit:(NSNumber *_Nullable)limit
+                       completion:(void (^_Nullable)(NSArray * _Nullable coinData))completion;
+- (void)getHourlyHistoricalDataForCoin:(NSString *_Nonnull)coin
+                       withLimit:(NSNumber *_Nullable)limit
+                       completion:(void (^_Nullable)(NSArray * _Nullable coinData))completion;
+- (void)getMinutelyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
                        completion:(void (^_Nullable)(NSArray * _Nullable coinData))completion;
 
