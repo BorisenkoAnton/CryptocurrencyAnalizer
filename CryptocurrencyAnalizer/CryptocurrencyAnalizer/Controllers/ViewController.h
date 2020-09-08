@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NetworkService.h"
 
 @interface ViewController : UIViewController
 
+@property NetworkService * networkService;
 
 @end
 
