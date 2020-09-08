@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +10,72 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IDL-8C-Mdg">
+                                <rect key="frame" x="20" y="508" width="110" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="110" id="zTS-XN-W65"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Jkk-Ik-2SS"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="66W-jC-mqj"/>
+                                </connections>
+                            </textField>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QSS-p6-Qcq">
+                                <rect key="frame" x="138" y="508" width="256" height="170"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="256" id="ocq-BL-e0D"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="fRU-Kh-jG1"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="HFh-ob-31M"/>
+                                </connections>
+                            </pickerView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pDV-aU-BZ9">
+                                <rect key="frame" x="20" y="465" width="374" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="h1i-Yb-5Qu"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="1 day"/>
+                                    <segment title="week"/>
+                                    <segment title="month"/>
+                                    <segment title="year"/>
+                                </segments>
+                                <connections>
+                                    <action selector="neededPeriodSelected:" destination="BYZ-38-t0r" eventType="valueChanged" id="1cH-vw-fZO"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="QSS-p6-Qcq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="464" id="3bn-pR-NzK"/>
+                            <constraint firstItem="IDL-8C-Mdg" firstAttribute="top" secondItem="pDV-aU-BZ9" secondAttribute="bottom" constant="8" id="8pf-1h-jIu"/>
+                            <constraint firstItem="IDL-8C-Mdg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="DSr-an-ea4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="IDL-8C-Mdg" secondAttribute="bottom" constant="320" id="Jw5-Gn-AKT"/>
+                            <constraint firstItem="IDL-8C-Mdg" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="464" id="U1b-CM-clU"/>
+                            <constraint firstItem="pDV-aU-BZ9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Yvo-Kd-Y6o"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QSS-p6-Qcq" secondAttribute="bottom" constant="184" id="fh2-2h-4sQ"/>
+                            <constraint firstItem="QSS-p6-Qcq" firstAttribute="leading" secondItem="IDL-8C-Mdg" secondAttribute="trailing" constant="8" id="iGE-eZ-4Zy"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pDV-aU-BZ9" secondAttribute="trailing" constant="20" id="q0z-Qc-4aI"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="coinNamePickerView" destination="QSS-p6-Qcq" id="90H-Nc-4SK"/>
+                        <outlet property="coinNameTextField" destination="IDL-8C-Mdg" id="CGo-dK-Kkz"/>
+                        <outlet property="periodChoosingSegmentedControl" destination="pDV-aU-BZ9" id="wye-DU-xKw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="131.8840579710145" y="138.61607142857142"/>
         </scene>
     </scenes>
 </document>
