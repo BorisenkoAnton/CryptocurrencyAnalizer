@@ -14,17 +14,21 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
+  - CorePlot (2.3)
 
 DEPENDENCIES:
   - AFNetworking (~> 4.0)
+  - CorePlot (~> 2.3)
 
 SPEC REPOS:
   trunk:
     - AFNetworking
+    - CorePlot
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  CorePlot: 6bfe6d30d215beec3cfd18ee43e434620119bc1e
 
-PODFILE CHECKSUM: 2a3cdf5b65c883e291b9c25a729165e52c6459d5
+PODFILE CHECKSUM: b7f2d3eecc0b843f3fd7281c78c87e6f66432cbc
 
 COCOAPODS: 1.9.3
