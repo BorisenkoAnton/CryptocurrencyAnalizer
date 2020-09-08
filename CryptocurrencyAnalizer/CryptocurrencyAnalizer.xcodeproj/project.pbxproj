@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6639EA8328F9119A7196DF03 /* Pods_CryptocurrencyAnalizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */; };
+		B420C09A25060BB3008873FF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C09925060BB3008873FF /* AppDelegate.m */; };
+		B420C09D25060BB3008873FF /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C09C25060BB3008873FF /* SceneDelegate.m */; };
+		B420C0A025060BB3008873FF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C09F25060BB3008873FF /* ViewController.m */; };
+		B420C0A325060BB3008873FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B420C0A125060BB3008873FF /* Main.storyboard */; };
+		B420C0A525060BB4008873FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B420C0A425060BB4008873FF /* Assets.xcassets */; };
+		B420C0A825060BB4008873FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B420C0A625060BB4008873FF /* LaunchScreen.storyboard */; };
+		B420C0AB25060BB4008873FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C0AA25060BB4008873FF /* main.m */; };
+		B4EA758E25061DF5005234CC /* NetworkService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EA758D25061DF5005234CC /* NetworkService.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptocurrencyAnalizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptocurrencyAnalizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B420C09825060BB3008873FF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B420C09925060BB3008873FF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B420C09B25060BB3008873FF /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		B420C09C25060BB3008873FF /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		B420C09E25060BB3008873FF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		B420C09F25060BB3008873FF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B420C0A225060BB3008873FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B420C0A425060BB4008873FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B420C0A725060BB4008873FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B420C0A925060BB4008873FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B420C0AA25060BB4008873FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B4EA758D25061DF5005234CC /* NetworkService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkService.m; sourceTree = "<group>"; };
+		B4EA758F25061E18005234CC /* NetworkService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkService.h; sourceTree = "<group>"; };
+		D0BBB541F86399562B9D8350 /* Pods-CryptocurrencyAnalizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptocurrencyAnalizer.release.xcconfig"; path = "Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer.release.xcconfig"; sourceTree = "<group>"; };
+		DC585F6AFED799139CB57C2D /* Pods-CryptocurrencyAnalizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptocurrencyAnalizer.debug.xcconfig"; path = "Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B420C09225060BB3008873FF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6639EA8328F9119A7196DF03 /* Pods_CryptocurrencyAnalizer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		90A729933C5099204756F0B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B420C08C25060BB3008873FF = {
+			isa = PBXGroup;
+			children = (
+				B420C09725060BB3008873FF /* CryptocurrencyAnalizer */,
+				B420C09625060BB3008873FF /* Products */,
+				F154F273DAF4C64421339D8B /* Pods */,
+				90A729933C5099204756F0B2 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B420C09625060BB3008873FF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B420C09725060BB3008873FF /* CryptocurrencyAnalizer */ = {
+			isa = PBXGroup;
+			children = (
+				B4EA758C25061DC9005234CC /* Network Service */,
+				B4D2056F2506140000372A66 /* Models */,
+				B4D2056E250613FA00372A66 /* Views */,
+				B4D2056D250613F100372A66 /* Controllers */,
+				B420C09825060BB3008873FF /* AppDelegate.h */,
+				B420C09925060BB3008873FF /* AppDelegate.m */,
+				B420C09B25060BB3008873FF /* SceneDelegate.h */,
+				B420C09C25060BB3008873FF /* SceneDelegate.m */,
+				B420C0A425060BB4008873FF /* Assets.xcassets */,
+				B420C0A625060BB4008873FF /* LaunchScreen.storyboard */,
+				B420C0A925060BB4008873FF /* Info.plist */,
+				B420C0AA25060BB4008873FF /* main.m */,
+			);
+			path = CryptocurrencyAnalizer;
+			sourceTree = "<group>";
+		};
+		B4D2056D250613F100372A66 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B420C09E25060BB3008873FF /* ViewController.h */,
+				B420C09F25060BB3008873FF /* ViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B4D2056E250613FA00372A66 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B420C0A125060BB3008873FF /* Main.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B4D2056F2506140000372A66 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B4EA758C25061DC9005234CC /* Network Service */ = {
+			isa = PBXGroup;
+			children = (
+				B4EA758F25061E18005234CC /* NetworkService.h */,
+				B4EA758D25061DF5005234CC /* NetworkService.m */,
+			);
+			path = "Network Service";
+			sourceTree = "<group>";
+		};
+		F154F273DAF4C64421339D8B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DC585F6AFED799139CB57C2D /* Pods-CryptocurrencyAnalizer.debug.xcconfig */,
+				D0BBB541F86399562B9D8350 /* Pods-CryptocurrencyAnalizer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B420C09425060BB3008873FF /* CryptocurrencyAnalizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B420C0AE25060BB4008873FF /* Build configuration list for PBXNativeTarget "CryptocurrencyAnalizer" */;
+			buildPhases = (
+				6B8C19282BF5379F3B1354B3 /* [CP] Check Pods Manifest.lock */,
+				B420C09125060BB3008873FF /* Sources */,
+				B420C09225060BB3008873FF /* Frameworks */,
+				B420C09325060BB3008873FF /* Resources */,
+				581F17503A6A178F584F7CB7 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CryptocurrencyAnalizer;
+			productName = CryptocurrencyAnalizer;
+			productReference = B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B420C08D25060BB3008873FF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1140;
+				ORGANIZATIONNAME = "Anton Borisenko";
+				TargetAttributes = {
+					B420C09425060BB3008873FF = {
+						CreatedOnToolsVersion = 11.4;
+					};
+				};
+			};
+			buildConfigurationList = B420C09025060BB3008873FF /* Build configuration list for PBXProject "CryptocurrencyAnalizer" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B420C08C25060BB3008873FF;
+			productRefGroup = B420C09625060BB3008873FF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B420C09425060BB3008873FF /* CryptocurrencyAnalizer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B420C09325060BB3008873FF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B420C0A825060BB4008873FF /* LaunchScreen.storyboard in Resources */,
+				B420C0A525060BB4008873FF /* Assets.xcassets in Resources */,
+				B420C0A325060BB3008873FF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		581F17503A6A178F584F7CB7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B8C19282BF5379F3B1354B3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CryptocurrencyAnalizer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B420C09125060BB3008873FF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B420C0A025060BB3008873FF /* ViewController.m in Sources */,
+				B420C09A25060BB3008873FF /* AppDelegate.m in Sources */,
+				B420C0AB25060BB4008873FF /* main.m in Sources */,
+				B420C09D25060BB3008873FF /* SceneDelegate.m in Sources */,
+				B4EA758E25061DF5005234CC /* NetworkService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B420C0A125060BB3008873FF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B420C0A225060BB3008873FF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B420C0A625060BB4008873FF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B420C0A725060BB4008873FF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B420C0AC25060BB4008873FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B420C0AD25060BB4008873FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B420C0AF25060BB4008873FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC585F6AFED799139CB57C2D /* Pods-CryptocurrencyAnalizer.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CryptocurrencyAnalizer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scand.CryptocurrencyAnalizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B420C0B025060BB4008873FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0BBB541F86399562B9D8350 /* Pods-CryptocurrencyAnalizer.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CryptocurrencyAnalizer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scand.CryptocurrencyAnalizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B420C09025060BB3008873FF /* Build configuration list for PBXProject "CryptocurrencyAnalizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B420C0AC25060BB4008873FF /* Debug */,
+				B420C0AD25060BB4008873FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B420C0AE25060BB4008873FF /* Build configuration list for PBXNativeTarget "CryptocurrencyAnalizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B420C0AF25060BB4008873FF /* Debug */,
+				B420C0B025060BB4008873FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B420C08D25060BB3008873FF /* Project object */;
+}
