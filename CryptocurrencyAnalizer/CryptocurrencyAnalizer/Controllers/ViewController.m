@@ -20,7 +20,7 @@
 
 @end
 
-@interface ViewController () <CPTPlotDataSource>
+@interface ViewController () <CPTPlotDataSource, CPTPlotDataSource, CALayerDelegate>
 
 @property CPTGraphHostingView *hostView;
 @property NSMutableArray<NSNumber *> *plotDots;
@@ -73,8 +73,6 @@
    return YES;
 }
 
-
-
 - (IBAction)neededPeriodSelected:(id)sender {
     
     switch (self.periodChoosingSegmentedControl.selectedSegmentIndex) {
@@ -117,33 +115,133 @@
     }
 }
 
+- (void)configureAxisSet:(CPTXYAxisSet **)axisSet withMaxXvalue:(NSNumber *)maxXValue maxYvalue:(NSNumber *)maxYValue numberOfXMajorIntervals:(int)numOfXMajorIntervals andNumberOfXMinorTicksPerInterval:(int)numOfXTicksPerInterval {
+    
+    CPTXYAxisSet *configuredAxisSet = *axisSet;
+    
+    configuredAxisSet.xAxis.majorIntervalLength = @([maxXValue intValue] / numOfXMajorIntervals);
+    configuredAxisSet.xAxis.minorTicksPerInterval = numOfXTicksPerInterval;
+    
+    if ([maxYValue doubleValue] > 1.0) {
+        configuredAxisSet.yAxis.majorIntervalLength = @([maxYValue doubleValue] / 10);
+    } else {
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        formatter.usesSignificantDigits = YES;
+        configuredAxisSet.yAxis.labelFormatter = formatter;
+        configuredAxisSet.yAxis.majorIntervalLength = @([maxYValue doubleValue]);
+    }
+    
+    configuredAxisSet.yAxis.minorTicksPerInterval = 5;
+}
+
 - (void)buildPlot {
+    
     if (self.hostView) {
         [self.hostView.hostedGraph removePlot:self.hostView.hostedGraph.allPlots[0]];
         self.hostView = nil;
     }
     // We need a hostview, you can create one in IB (and create an outlet) or just do this:
-    CPTGraphHostingView* hostView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(20, 20, self.view.frame.size.width - 40, 300)];
+    CPTGraphHostingView* hostView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width - 40, 350)];
     [self.view addSubview: hostView];
     self.hostView = hostView;
+    self.hostView.allowPinchScaling = NO;
     
     // Create a CPTGraph object and add to hostView
     CPTGraph* graph = [[CPTXYGraph alloc] initWithFrame:self.hostView.bounds];
+    graph.plotAreaFrame.masksToBorder = NO;
     self.hostView.hostedGraph = graph;
+    graph.backgroundColor = [UIColor blackColor].CGColor;
+    graph.paddingBottom = 40.0;
+    graph.paddingLeft = 65.0;
+    graph.paddingTop = 30.0;
+    graph.paddingRight = 15.0;
     
     // Get the (default) plotspace from the graph so we can set its x/y ranges
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     
-    NSLog(@"%@", [[NSNumber numberWithUnsignedInteger:self.plotDots.count] stringValue]);
-    // Note that these CPTPlotRange are defined by START and LENGTH (not START and END) !!]
-    [plotSpace setXRange: [CPTPlotRange plotRangeWithLocation:@0 length:[NSNumber numberWithUnsignedInteger:self.plotDots.count]]];
-    [plotSpace setYRange: [CPTPlotRange plotRangeWithLocation:@0 length:[self.plotDots valueForKeyPath:@"@max.self"]]];
+    NSNumber *maxYValue = [NSNumber numberWithDouble:[(NSNumber *)[self.plotDots valueForKeyPath:@"@max.self"] doubleValue] * 1.3];
+    NSNumber *maxXValue = [NSNumber numberWithUnsignedInteger:self.plotDots.count];
+    
+    [plotSpace setXRange: [CPTPlotRange plotRangeWithLocation:@0 length:@([maxXValue intValue])]];
+    if ([maxYValue doubleValue] > 1.0) {
+        [plotSpace setYRange: [CPTPlotRange plotRangeWithLocation:@0 length:@([maxYValue intValue])]];
+    } else {
+        [plotSpace setYRange: [CPTPlotRange plotRangeWithLocation:@0 length:@([maxYValue doubleValue] * 2)]];
+    }
+    
+    
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
+    
+    CPTMutableTextStyle *axisTextStyle = [CPTMutableTextStyle new];
+    axisTextStyle.color = [CPTColor whiteColor];
+    axisTextStyle.fontName = @"HelveticaNeue-Bold";
+    axisTextStyle.fontSize = 10.0;
+    axisTextStyle.textAlignment = CPTTextAlignmentCenter;
+    
+    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle new];
+    lineStyle.lineColor = [CPTColor whiteColor];
+    lineStyle.lineWidth = 5.0;
+    
+    CPTMutableLineStyle *gridLineStyle = [CPTMutableLineStyle new];
+    gridLineStyle.lineColor = [CPTColor grayColor];
+    gridLineStyle.lineWidth = 0.5;
+    
+    axisSet.xAxis.labelTextStyle = axisTextStyle;
+    axisSet.xAxis.minorGridLineStyle = gridLineStyle;
+    axisSet.xAxis.axisLineStyle = lineStyle;
+    axisSet.xAxis.axisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
+    axisSet.xAxis.delegate = self;
+    
+    switch (self.plotDots.count) {
+        case 144: {
+            [self configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:6 andNumberOfXMinorTicksPerInterval:3];
+            break;
+        }
+        case 168: {
+            [self configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:7 andNumberOfXMinorTicksPerInterval:1];
+            break;
+        }
+        case 30: {
+            [self configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:30 andNumberOfXMinorTicksPerInterval:1];
+            axisSet.xAxis.labelRotation = 1.5708;
+            break;
+        }
+        case 365: {
+            [self configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:12 andNumberOfXMinorTicksPerInterval:3];
+            axisSet.xAxis.labelRotation = 1.5708;
+            
+            break;
+        }
+        default:
+            break;
+    }
+    
+    axisSet.yAxis.labelTextStyle = axisTextStyle;
+    axisSet.yAxis.minorGridLineStyle = gridLineStyle;
+    CPTFillArray *alternatingBF = [CPTFillArray arrayWithObjects:
+                                   [CPTFill fillWithColor:[CPTColor colorWithComponentRed:255.0 green:255.0 blue:255.0 alpha:0.03]],
+                                   [CPTFill fillWithColor:[CPTColor blackColor]],
+                                   nil];
+    axisSet.yAxis.alternatingBandFills = alternatingBF;
+    axisSet.yAxis.axisLineStyle = lineStyle;
+    axisSet.yAxis.axisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
+    axisSet.yAxis.delegate = self;
     
     // Create the plot (we do not define actual x/y values yet, these will be supplied by the datasource...)
-    CPTScatterPlot* plot = [[CPTScatterPlot alloc] initWithFrame:CGRectZero];
+    CPTScatterPlot* plot = [CPTScatterPlot new];
     
-    // Let's keep it simple and let this class act as datasource (therefore we implemtn <CPTPlotDataSource>)
+    CPTMutableLineStyle *plotLineStyle = [CPTMutableLineStyle new];
+    [plotLineStyle setLineJoin:kCGLineJoinRound];
+    [plotLineStyle setLineCap:kCGLineCapRound];
+    plotLineStyle.lineWidth = 2.0;
+    plotLineStyle.lineColor = [CPTColor whiteColor];
+    
+    plot.dataLineStyle = plotLineStyle;
+    plot.curvedInterpolationOption = CPTScatterPlotCurvedInterpolationCatmullCustomAlpha;
+    plot.interpolation = CPTScatterPlotInterpolationCurved;
+
     plot.dataSource = self;
+    plot.delegate = self;
     
     // Finally, add the created plot to the default plot space of the CPTGraph object we created before
     [graph addPlot:plot toPlotSpace:graph.defaultPlotSpace];
