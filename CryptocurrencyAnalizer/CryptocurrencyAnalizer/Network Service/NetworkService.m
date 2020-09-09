@@ -42,10 +42,9 @@
     
 }
 
-// Getting daily historical data for needed period and needed coin
-- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
+// Getting any type of historical data for needed coin and parse it
+- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byURL:(NSString *)url completion:(void (^)(NSArray *coinData))completion {
     
-    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histoday"];
     NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
     
     [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
@@ -64,6 +63,15 @@
         } else {
             completion(nil);
         }
+    }];
+}
+
+// Getting daily historical data for needed period and needed coin
+- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
+    
+    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histoday"];
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSArray *coinData) {
+        completion(coinData);
     }];
 }
 
@@ -71,24 +79,8 @@
 - (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histohour"];
-    NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
-    
-    [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
-        if ([data isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = (NSDictionary *)data;
-            NSDictionary *dataField = [response valueForKey:@"Data"];
-            NSArray *historicalInfo = [dataField valueForKey:@"Data"];
-            
-            NSMutableArray *historicalInfoForCoin = [NSMutableArray new];
-            for (NSObject *historicalInfoItem in historicalInfo) {
-                NSNumber *price = (NSNumber *)[(NSDictionary *)historicalInfoItem valueForKey:@"high"];
-                [historicalInfoForCoin addObject:price];
-            }
-            
-            completion(historicalInfoForCoin);
-        } else {
-            completion(nil);
-        }
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSArray *coinData) {
+        completion(coinData);
     }];
 }
 
@@ -96,24 +88,13 @@
 - (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSArray *coinData))completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histominute"];
-    NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
-    
-    [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
-        if ([data isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = (NSDictionary *)data;
-            NSDictionary *dataField = [response valueForKey:@"Data"];
-            NSArray *historicalInfo = [dataField valueForKey:@"Data"];
-            
-            NSMutableArray *historicalInfoForCoin = [NSMutableArray new];
-            for (NSObject *historicalInfoItem in historicalInfo) {
-                NSNumber *price = (NSNumber *)[(NSDictionary *)historicalInfoItem valueForKey:@"high"];
-                [historicalInfoForCoin addObject:price];
-            }
-            
-            completion(historicalInfoForCoin);
-        } else {
-            completion(nil);
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSArray *coinData) {
+        NSMutableArray *tenMinutesChanges = [NSMutableArray new];
+        for (int i = 0; i < coinData.count; i += 10) {
+            [tenMinutesChanges addObject:coinData[i]];
         }
+        NSLog(@"%@", [[NSNumber numberWithUnsignedInteger:tenMinutesChanges.count] stringValue]);
+        completion(tenMinutesChanges);
     }];
 }
 
