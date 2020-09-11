@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController" customModule="CryptocurrencyAnalizer" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="RvS-ks-Pge"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ViewWithGraph">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8E-6a-XBh" customClass="CPTGraphHostingView">
+                    <rect key="frame" x="20" y="44" width="374" height="438"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="zeK-Cf-DtT">
+                    <rect key="frame" x="20" y="490" width="374" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="FVr-AY-csv"/>
+                        <constraint firstAttribute="height" constant="35" id="maX-nJ-iEd"/>
+                    </constraints>
+                    <segments>
+                        <segment title="1 day"/>
+                        <segment title="week"/>
+                        <segment title="month"/>
+                        <segment title="year"/>
+                    </segments>
+                </segmentedControl>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BLL-yE-DYs">
+                    <rect key="frame" x="20" y="533" width="110" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="LUq-SS-bMr"/>
+                        <constraint firstAttribute="width" constant="110" id="Wzs-Il-5uV"/>
+                        <constraint firstAttribute="height" constant="34" id="msi-aO-G5B"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6B-bD-ZZb">
+                    <rect key="frame" x="138" y="533" width="256" height="170"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="256" id="6om-fI-QUf"/>
+                        <constraint firstAttribute="height" constant="170" id="9id-A0-KCB"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="256" id="k20-kw-qT1"/>
+                    </constraints>
+                </pickerView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="v8E-6a-XBh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="4tK-w5-dfC"/>
+                <constraint firstItem="v8E-6a-XBh" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="9Yh-26-rQf"/>
+                <constraint firstItem="J6B-bD-ZZb" firstAttribute="top" secondItem="zeK-Cf-DtT" secondAttribute="bottom" constant="8" id="DA2-7y-LXc"/>
+                <constraint firstItem="BLL-yE-DYs" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="DeE-on-7to"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="v8E-6a-XBh" secondAttribute="trailing" constant="20" id="ILc-LY-azo"/>
+                <constraint firstItem="J6B-bD-ZZb" firstAttribute="leading" secondItem="BLL-yE-DYs" secondAttribute="trailing" constant="8" id="JH2-87-9No"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="zeK-Cf-DtT" secondAttribute="trailing" constant="20" id="MRj-7U-uGf"/>
+                <constraint firstItem="zeK-Cf-DtT" firstAttribute="top" secondItem="v8E-6a-XBh" secondAttribute="bottom" constant="8" id="OgQ-wI-78G"/>
+                <constraint firstItem="zeK-Cf-DtT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="agA-Fa-BVu"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="v8E-6a-XBh" secondAttribute="bottom" constant="380" id="eZq-CB-mLF"/>
+                <constraint firstItem="BLL-yE-DYs" firstAttribute="top" secondItem="zeK-Cf-DtT" secondAttribute="bottom" constant="8" id="ecP-Jg-Eyf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="131.8840579710145" y="153.34821428571428"/>
+        </view>
+    </objects>
+</document>
