@@ -8,18 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		6639EA8328F9119A7196DF03 /* Pods_CryptocurrencyAnalizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */; };
+		B41AF5B3250A4C3C00E71454 /* GraphModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B41AF5B2250A4C3C00E71454 /* GraphModel.m */; };
 		B420C09A25060BB3008873FF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C09925060BB3008873FF /* AppDelegate.m */; };
 		B420C09D25060BB3008873FF /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C09C25060BB3008873FF /* SceneDelegate.m */; };
 		B420C0A025060BB3008873FF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C09F25060BB3008873FF /* ViewController.m */; };
-		B420C0A325060BB3008873FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B420C0A125060BB3008873FF /* Main.storyboard */; };
 		B420C0A525060BB4008873FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B420C0A425060BB4008873FF /* Assets.xcassets */; };
 		B420C0A825060BB4008873FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B420C0A625060BB4008873FF /* LaunchScreen.storyboard */; };
 		B420C0AB25060BB4008873FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B420C0AA25060BB4008873FF /* main.m */; };
+		B47C0A65250A0DF500967680 /* ViewWithGraph.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47C0A64250A0DF500967680 /* ViewWithGraph.xib */; };
+		B47C0A68250A10EE00967680 /* ViewWithGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = B47C0A67250A10EE00967680 /* ViewWithGraph.m */; };
+		B48467F1250B9A94009338C5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B48467F0250B9A94009338C5 /* Default-568h@2x.png */; };
+		B48EB02E250A23F300B80EE4 /* GraphService.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EB02D250A23F300B80EE4 /* GraphService.m */; };
 		B4EA758E25061DF5005234CC /* NetworkService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EA758D25061DF5005234CC /* NetworkService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptocurrencyAnalizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B41AF5B1250A4C3C00E71454 /* GraphModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphModel.h; sourceTree = "<group>"; };
+		B41AF5B2250A4C3C00E71454 /* GraphModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphModel.m; sourceTree = "<group>"; };
 		B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptocurrencyAnalizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B420C09825060BB3008873FF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B420C09925060BB3008873FF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -27,11 +33,16 @@
 		B420C09C25060BB3008873FF /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		B420C09E25060BB3008873FF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		B420C09F25060BB3008873FF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		B420C0A225060BB3008873FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B420C0A425060BB4008873FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B420C0A725060BB4008873FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B420C0A925060BB4008873FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B420C0AA25060BB4008873FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B47C0A64250A0DF500967680 /* ViewWithGraph.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewWithGraph.xib; sourceTree = "<group>"; };
+		B47C0A66250A10EE00967680 /* ViewWithGraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewWithGraph.h; sourceTree = "<group>"; };
+		B47C0A67250A10EE00967680 /* ViewWithGraph.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewWithGraph.m; sourceTree = "<group>"; };
+		B48467F0250B9A94009338C5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		B48EB02D250A23F300B80EE4 /* GraphService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphService.m; sourceTree = "<group>"; };
+		B48EB02F250A23FF00B80EE4 /* GraphService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphService.h; sourceTree = "<group>"; };
 		B4EA758D25061DF5005234CC /* NetworkService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkService.m; sourceTree = "<group>"; };
 		B4EA758F25061E18005234CC /* NetworkService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkService.h; sourceTree = "<group>"; };
 		D0BBB541F86399562B9D8350 /* Pods-CryptocurrencyAnalizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptocurrencyAnalizer.release.xcconfig"; path = "Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer.release.xcconfig"; sourceTree = "<group>"; };
@@ -61,6 +72,7 @@
 		B420C08C25060BB3008873FF = {
 			isa = PBXGroup;
 			children = (
+				B48467F0250B9A94009338C5 /* Default-568h@2x.png */,
 				B420C09725060BB3008873FF /* CryptocurrencyAnalizer */,
 				B420C09625060BB3008873FF /* Products */,
 				F154F273DAF4C64421339D8B /* Pods */,
@@ -79,27 +91,79 @@
 		B420C09725060BB3008873FF /* CryptocurrencyAnalizer */ = {
 			isa = PBXGroup;
 			children = (
-				B4EA758C25061DC9005234CC /* Network Service */,
+				B48EB02B250A23CE00B80EE4 /* Services */,
 				B4D2056F2506140000372A66 /* Models */,
 				B4D2056E250613FA00372A66 /* Views */,
 				B4D2056D250613F100372A66 /* Controllers */,
-				B420C09825060BB3008873FF /* AppDelegate.h */,
-				B420C09925060BB3008873FF /* AppDelegate.m */,
-				B420C09B25060BB3008873FF /* SceneDelegate.h */,
-				B420C09C25060BB3008873FF /* SceneDelegate.m */,
-				B420C0A425060BB4008873FF /* Assets.xcassets */,
-				B420C0A625060BB4008873FF /* LaunchScreen.storyboard */,
-				B420C0A925060BB4008873FF /* Info.plist */,
+				B48467EF250B9A3B009338C5 /* Support Files */,
 				B420C0AA25060BB4008873FF /* main.m */,
 			);
 			path = CryptocurrencyAnalizer;
 			sourceTree = "<group>";
 		};
-		B4D2056D250613F100372A66 /* Controllers */ = {
+		B47C0A69250A19F700967680 /* ViewWithGraph */ = {
+			isa = PBXGroup;
+			children = (
+				B47C0A64250A0DF500967680 /* ViewWithGraph.xib */,
+				B47C0A66250A10EE00967680 /* ViewWithGraph.h */,
+				B47C0A67250A10EE00967680 /* ViewWithGraph.m */,
+			);
+			path = ViewWithGraph;
+			sourceTree = "<group>";
+		};
+		B48467ED250B99B0009338C5 /* Graph Model */ = {
+			isa = PBXGroup;
+			children = (
+				B41AF5B1250A4C3C00E71454 /* GraphModel.h */,
+				B41AF5B2250A4C3C00E71454 /* GraphModel.m */,
+			);
+			path = "Graph Model";
+			sourceTree = "<group>";
+		};
+		B48467EE250B99D9009338C5 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
 				B420C09E25060BB3008873FF /* ViewController.h */,
 				B420C09F25060BB3008873FF /* ViewController.m */,
+			);
+			path = "View Controller";
+			sourceTree = "<group>";
+		};
+		B48467EF250B9A3B009338C5 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B420C0A425060BB4008873FF /* Assets.xcassets */,
+				B420C09B25060BB3008873FF /* SceneDelegate.h */,
+				B420C09C25060BB3008873FF /* SceneDelegate.m */,
+				B420C09825060BB3008873FF /* AppDelegate.h */,
+				B420C09925060BB3008873FF /* AppDelegate.m */,
+				B420C0A925060BB4008873FF /* Info.plist */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		B48EB02B250A23CE00B80EE4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B48EB02C250A23DA00B80EE4 /* Graph Service */,
+				B4EA758C25061DC9005234CC /* Network Service */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B48EB02C250A23DA00B80EE4 /* Graph Service */ = {
+			isa = PBXGroup;
+			children = (
+				B48EB02F250A23FF00B80EE4 /* GraphService.h */,
+				B48EB02D250A23F300B80EE4 /* GraphService.m */,
+			);
+			path = "Graph Service";
+			sourceTree = "<group>";
+		};
+		B4D2056D250613F100372A66 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B48467EE250B99D9009338C5 /* View Controller */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -107,7 +171,8 @@
 		B4D2056E250613FA00372A66 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B420C0A125060BB3008873FF /* Main.storyboard */,
+				B420C0A625060BB4008873FF /* LaunchScreen.storyboard */,
+				B47C0A69250A19F700967680 /* ViewWithGraph */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,6 +180,7 @@
 		B4D2056F2506140000372A66 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B48467ED250B99B0009338C5 /* Graph Model */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -197,8 +263,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B420C0A825060BB4008873FF /* LaunchScreen.storyboard in Resources */,
+				B48467F1250B9A94009338C5 /* Default-568h@2x.png in Resources */,
 				B420C0A525060BB4008873FF /* Assets.xcassets in Resources */,
-				B420C0A325060BB3008873FF /* Main.storyboard in Resources */,
+				B47C0A65250A0DF500967680 /* ViewWithGraph.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,23 +320,18 @@
 			files = (
 				B420C0A025060BB3008873FF /* ViewController.m in Sources */,
 				B420C09A25060BB3008873FF /* AppDelegate.m in Sources */,
+				B41AF5B3250A4C3C00E71454 /* GraphModel.m in Sources */,
 				B420C0AB25060BB4008873FF /* main.m in Sources */,
+				B48EB02E250A23F300B80EE4 /* GraphService.m in Sources */,
 				B420C09D25060BB3008873FF /* SceneDelegate.m in Sources */,
 				B4EA758E25061DF5005234CC /* NetworkService.m in Sources */,
+				B47C0A68250A10EE00967680 /* ViewWithGraph.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B420C0A125060BB3008873FF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B420C0A225060BB3008873FF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B420C0A625060BB4008873FF /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -397,7 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = CryptocurrencyAnalizer/Info.plist;
+				INFOPLIST_FILE = "CryptocurrencyAnalizer/Support Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -414,7 +476,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = CryptocurrencyAnalizer/Info.plist;
+				INFOPLIST_FILE = "CryptocurrencyAnalizer/Support Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
