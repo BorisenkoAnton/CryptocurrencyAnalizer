@@ -7,7 +7,7 @@
 //
 
 #import "SceneDelegate.h"
-#import "ViewController.h"
+#import "ViewWithGraphController.h"
 
 @interface SceneDelegate ()
 
@@ -18,9 +18,12 @@
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     
+    ViewWithGraphController *viewController = [[ViewWithGraphController alloc] initWithNibName:@"ViewWithGraphController" bundle:nil];
+    
     UIWindowScene *windowScene = (UIWindowScene *)scene;
-    self.window.windowScene = windowScene;
-    self.window.rootViewController = [ViewController new];
+    UIWindow *wind = [[UIWindow alloc] initWithWindowScene:windowScene];
+    self.window = wind;
+    self.window.rootViewController = viewController;
     [self.window makeKeyAndVisible];
 }
 

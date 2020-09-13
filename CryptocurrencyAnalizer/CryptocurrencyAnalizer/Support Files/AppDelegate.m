@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "UIKit/UIKit.h"
-#import "ViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -16,10 +16,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewWithGraph" bundle:nil];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
+
     return YES;
 }
 
