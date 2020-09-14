@@ -8,4 +8,5 @@ target 'CryptocurrencyAnalizer' do
   # Pods for CryptocurrencyAnalizer
   pod 'AFNetworking', '~> 4.0'
   pod 'CorePlot', '~> 2.3'
+  pod 'FMDB'
 end

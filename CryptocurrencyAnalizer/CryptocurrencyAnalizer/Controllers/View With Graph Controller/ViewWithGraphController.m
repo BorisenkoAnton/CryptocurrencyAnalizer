@@ -11,6 +11,8 @@
 #import "GraphModel.h"
 #import "NetworkService.h"
 #import "GraphService.h"
+#import "DBService.h"
+#import "TableColumn.h"
 
 @interface ViewWithGraphController ()
 
