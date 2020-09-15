@@ -13,6 +13,8 @@
 #import "GraphService.h"
 #import "DBService.h"
 #import "TableColumn.h"
+#import "DBModel.h"
+#import "CacheService.h"
 
 @interface ViewWithGraphController ()
 
@@ -47,6 +49,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //“CREATE TABLE IF NOT EXISTS Tutorials (ID Integer Primary key AutoIncrement, Title Text, Author Text, PublicationDate Date);”
+    
+    NSMutableArray<TableColumn *> *columnsForTablesWithPrices = [NSMutableArray<TableColumn *> arrayWithObjects:
+                                              [[TableColumn alloc] initWithName:@"pairName" andType:@"TEXT"],
+                                              [[TableColumn alloc] initWithName:@"price" andType:@"REAL"],
+                                              [[TableColumn alloc] initWithName:@"timestamp" andType:@"INTEGER"],
+                                              nil];
+    [DBService createTable:@"minutelyHistoricalData" withColumns:columnsForTablesWithPrices completion:nil];
+    [DBService createTable:@"hourlyHistoricalData" withColumns:columnsForTablesWithPrices completion:nil];
+    [DBService createTable:@"dailyHistoricalData" withColumns:columnsForTablesWithPrices completion:nil];
     
     // Adding action to perform needed manipulations with data according to selected time period
     [self.periodChoosingSegmentedControl addTarget:self action:@selector(neededPeriodSelected:) forControlEvents:UIControlEventValueChanged];
@@ -135,32 +148,73 @@
         // There are four segments, based on the selected we need to get data with different limit (different number of data units)
         switch (self.periodChoosingSegmentedControl.selectedSegmentIndex) {
             case 0: {
-                [self.networkService getMinutelyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@1439 completion:^(NSMutableArray<NSNumber *> * _Nullable coinData) {
-                    self.graphModel.plotDots = coinData;
-                    [self configureAndAddPlot];
+                // TODO: - remove this part to separate func and call in every case  to avoid code duplication
+                WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", self.coinNameTextField.text]];
+                [DBService countQueryOnTable:@"minutelyHistoricalData" whereConditions:condition completion:^(BOOL success, NSError * _Nullable error) {
+
+                    if (success) {
+                        [DBService queryOnTable:@"minutelyHistoricalData" whereConditions:[NSArray<WhereCondition *> arrayWithObject:condition] completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+                                           if (success) {
+                                               NSLog(@"Was cached, congrats");
+                                               [self.graphModel.plotDots removeAllObjects];
+                                               while ([result next]) {
+                                                   [self.graphModel.plotDots addObject:[NSNumber numberWithDouble:[result doubleForColumn:@"price"]]];
+                                               }
+                                               [self configureAndAddPlot];
+                                           }
+                        }];
+                    } else {
+                        [self.networkService getMinutelyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@1439 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                            [self.graphModel.plotDots removeAllObjects];
+                            NSLog(@"Was not cached");
+                            for (DBModel *model in coinData) {
+                                [self.graphModel.plotDots addObject:model.price];
+                            }
+                            [self configureAndAddPlot];
+                            NSMutableArray<NSObject *> *cachedObjects = [NSMutableArray<NSObject *> new];
+                            for (DBModel *coinDataItem in coinData) {
+                                [cachedObjects removeAllObjects];
+                                [cachedObjects addObject:coinDataItem.pairName];
+                                [cachedObjects addObject:coinDataItem.price];
+                                [cachedObjects addObject:coinDataItem.timestamp];
+                                [CacheService cacheObjects:cachedObjects toTable:@"minutelyHistoricalData"];
+                            }
+
+                        }];
+                    }
                 }];
+                
                 break;
             }
                 
             case 1: {
-                [self.networkService getHourlyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@167 completion:^(NSMutableArray<NSNumber *> * _Nullable coinData) {
-                    self.graphModel.plotDots = coinData;
+                [self.networkService getHourlyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@167 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                    [self.graphModel.plotDots removeAllObjects];
+                    for (DBModel *model in coinData) {
+                        [self.graphModel.plotDots addObject:model.price];
+                    }
                     [self configureAndAddPlot];
                 }];
                 break;
             }
                 
             case 2: {
-                [self.networkService getDailyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@29 completion:^(NSMutableArray<NSNumber *> * _Nullable coinData) {
-                    self.graphModel.plotDots = coinData;
+                [self.networkService getDailyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@29 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                    [self.graphModel.plotDots removeAllObjects];
+                    for (DBModel *model in coinData) {
+                        [self.graphModel.plotDots addObject:model.price];
+                    }
                     [self configureAndAddPlot];
                 }];
                 break;
             }
                 
             case 3: {
-                [self.networkService getDailyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@364 completion:^(NSMutableArray<NSNumber *> * _Nullable coinData) {
-                    self.graphModel.plotDots = coinData;
+                [self.networkService getDailyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@364 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                    [self.graphModel.plotDots removeAllObjects];
+                    for (DBModel *model in coinData) {
+                        [self.graphModel.plotDots addObject:model.price];
+                    }
                     [self configureAndAddPlot];
                 }];
                 break;

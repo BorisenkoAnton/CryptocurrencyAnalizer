@@ -21,6 +21,8 @@
 		B4CC6027250F5511007DE213 /* DBService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC6026250F5511007DE213 /* DBService.m */; };
 		B4CC602C250F681D007DE213 /* TableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC602B250F681D007DE213 /* TableColumn.m */; };
 		B4CC6030250F8FA2007DE213 /* WhereCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC602F250F8FA2007DE213 /* WhereCondition.m */; };
+		B4D9025A2510C96F00CD7554 /* CacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D902592510C96F00CD7554 /* CacheService.m */; };
+		B4DB904B2510B24600060564 /* DBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B4DB904A2510B24600060564 /* DBModel.m */; };
 		B4EA758E25061DF5005234CC /* NetworkService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EA758D25061DF5005234CC /* NetworkService.m */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +51,10 @@
 		B4CC602B250F681D007DE213 /* TableColumn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableColumn.m; sourceTree = "<group>"; };
 		B4CC602E250F8FA2007DE213 /* WhereCondition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhereCondition.h; sourceTree = "<group>"; };
 		B4CC602F250F8FA2007DE213 /* WhereCondition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhereCondition.m; sourceTree = "<group>"; };
+		B4D902582510C96F00CD7554 /* CacheService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheService.h; sourceTree = "<group>"; };
+		B4D902592510C96F00CD7554 /* CacheService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheService.m; sourceTree = "<group>"; };
+		B4DB90492510B24600060564 /* DBModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBModel.h; sourceTree = "<group>"; };
+		B4DB904A2510B24600060564 /* DBModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBModel.m; sourceTree = "<group>"; };
 		B4EA758D25061DF5005234CC /* NetworkService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkService.m; sourceTree = "<group>"; };
 		B4EA758F25061E18005234CC /* NetworkService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkService.h; sourceTree = "<group>"; };
 		D0BBB541F86399562B9D8350 /* Pods-CryptocurrencyAnalizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptocurrencyAnalizer.release.xcconfig"; path = "Target Support Files/Pods-CryptocurrencyAnalizer/Pods-CryptocurrencyAnalizer.release.xcconfig"; sourceTree = "<group>"; };
@@ -141,6 +147,7 @@
 		B48EB02B250A23CE00B80EE4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B4D902572510C95900CD7554 /* Cache Service */,
 				B4CC6024250F54CD007DE213 /* DB Service */,
 				B48EB02C250A23DA00B80EE4 /* Graph Service */,
 				B4EA758C25061DC9005234CC /* Network Service */,
@@ -204,11 +211,30 @@
 		B4D2056F2506140000372A66 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B4DB90482510B23100060564 /* DB Model */,
 				B4CC602D250F8F7B007DE213 /* WHERE condition */,
 				B4CC6028250F5742007DE213 /* Table Column Model */,
 				B48467ED250B99B0009338C5 /* Graph Model */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B4D902572510C95900CD7554 /* Cache Service */ = {
+			isa = PBXGroup;
+			children = (
+				B4D902582510C96F00CD7554 /* CacheService.h */,
+				B4D902592510C96F00CD7554 /* CacheService.m */,
+			);
+			path = "Cache Service";
+			sourceTree = "<group>";
+		};
+		B4DB90482510B23100060564 /* DB Model */ = {
+			isa = PBXGroup;
+			children = (
+				B4DB90492510B24600060564 /* DBModel.h */,
+				B4DB904A2510B24600060564 /* DBModel.m */,
+			);
+			path = "DB Model";
 			sourceTree = "<group>";
 		};
 		B4EA758C25061DC9005234CC /* Network Service */ = {
@@ -346,12 +372,14 @@
 			files = (
 				535C7EAA250EA7EA004274C0 /* ViewWithGraphController.m in Sources */,
 				B4CC6030250F8FA2007DE213 /* WhereCondition.m in Sources */,
+				B4D9025A2510C96F00CD7554 /* CacheService.m in Sources */,
 				B420C09A25060BB3008873FF /* AppDelegate.m in Sources */,
 				B41AF5B3250A4C3C00E71454 /* GraphModel.m in Sources */,
 				B420C0AB25060BB4008873FF /* main.m in Sources */,
 				B4CC602C250F681D007DE213 /* TableColumn.m in Sources */,
 				B48EB02E250A23F300B80EE4 /* GraphService.m in Sources */,
 				B4CC6027250F5511007DE213 /* DBService.m in Sources */,
+				B4DB904B2510B24600060564 /* DBModel.m in Sources */,
 				B420C09D25060BB3008873FF /* SceneDelegate.m in Sources */,
 				B4EA758E25061DF5005234CC /* NetworkService.m in Sources */,
 			);
