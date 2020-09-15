@@ -18,7 +18,7 @@ static FMDatabaseQueue *sharedQueue;
 + (FMDatabase *) sharedDatabase {
     
     @try {
-        NSURL *fileURL = [[NSFileManager.defaultManager URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil] URLByAppendingPathComponent:@"test.sqlite"];
+        NSURL *fileURL = [[NSFileManager.defaultManager URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil] URLByAppendingPathComponent:@"CryptocurrencyAnalizer.sqlite"];
         sharedDatabase = [FMDatabase databaseWithURL:fileURL];
     } @catch (NSException *exception) {
         NSLog(@"DB error: %@", exception.name);
@@ -40,13 +40,12 @@ static FMDatabaseQueue *sharedQueue;
 // Creating a table with the specified list of columns and value types
 + (void)createTable:(NSString *)table withColumns:(NSArray<TableColumn *> *)columns completion:(Completion)completion {
 
-    NSString *sqlStatement = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID Integer Primary key AutoIncrement,", table];
+    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID Integer Primary key AutoIncrement,", table];
     
     for (TableColumn *tableColumn in columns) {
-        [sqlStatement stringByAppendingFormat:@"%@ %@",tableColumn.name, tableColumn.type ];
-        ([columns indexOfObjectIdenticalTo:tableColumn] == columns.count - 1) ? [sqlStatement stringByAppendingString:@");"] : [sqlStatement stringByAppendingString:@","];
+        [sqlStatement appendFormat:@"%@ %@ ",tableColumn.name, tableColumn.type];
+        ([columns indexOfObjectIdenticalTo:tableColumn] == columns.count - 1) ? [sqlStatement appendString:@");"] : [sqlStatement appendString:@","];
     }
-    
     [DBService update:sqlStatement values:nil completion:completion];
 }
 
@@ -66,11 +65,15 @@ static FMDatabaseQueue *sharedQueue;
                 [sharedDatabase open];
             }
             [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
-            completion(YES, nil);
+            if(completion) {
+                completion(YES, nil);
+            }
             [sharedDatabase close];
         } @catch (NSException *exception) {
             NSLog(@"Updating failed: %@", exception.name);
-            completion(NO, (NSError *)exception);
+            if(completion) {
+                completion(NO, (NSError *)exception);
+            }
             [sharedDatabase close];
 
         }
@@ -80,27 +83,55 @@ static FMDatabaseQueue *sharedQueue;
 // Inserting an array of values in the given table
 + (void)insert:(NSArray<NSObject *> *)values intoTable:(NSString *)table completion:(Completion)completion {
     
-    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT OR REPLACE INTO %@ VALUES (NULL", table];
+    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"INSERT OR REPLACE INTO %@ VALUES (NULL", table];
     
     for (NSObject *value in values) {
-        ([values indexOfObjectIdenticalTo:value] == values.count - 1) ? [sqlStatement stringByAppendingString:@", ?)"] : [sqlStatement stringByAppendingString:@", ?"];
+        ([values indexOfObjectIdenticalTo:value] == values.count - 1) ? [sqlStatement appendString:@", ?)"] : [sqlStatement appendString:@", ?"];
     }
     
     [DBService update:sqlStatement values:values completion:completion];
 }
 
++ (void)countQueryOnTable:(NSString *)table whereConditions:(WhereCondition *)condition completion:(Completion)completion {
+    
+    NSMutableString *sqlCountStatement = [NSMutableString stringWithFormat:@"SELECT COUNT(*) FROM %@", table];
+
+    if (condition) {
+        [sqlCountStatement appendFormat:@" WHERE %@ = '%@'", condition.column, condition.value];
+    }
+    
+    //[sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        @try {
+            if (!sharedDatabase.isOpen) {
+                [sharedDatabase open];
+            }
+            int count = [sharedDatabase intForQuery:sqlCountStatement];
+            if (count != 0) {
+                completion(YES, nil);
+            } else {
+                completion(NO, nil);
+            }
+            [sharedDatabase close];
+        } @catch (NSException *exception) {
+           // rollback = YES;
+            completion(NO, (NSError *)exception);
+            [sharedDatabase close];
+        }
+   // }];
+}
+
 // Query the given table based on conditions provided
 + (void)queryOnTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
     
-    NSString *sqlStatement = [NSString stringWithFormat:@"SELECT * FROM %@", table];
+    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
     
     NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
     if (conditions) {
-        [sqlStatement stringByAppendingString:@" WHERE"];
+        [sqlStatement appendString:@" WHERE"];
         for (WhereCondition *condition in conditions) {
             [values addObject:condition.value];
-            [sqlStatement stringByAppendingFormat:@" %@ = ?", condition.column];
-            ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement stringByAppendingString:@""] : [sqlStatement stringByAppendingString:@","];
+            [sqlStatement appendFormat:@" %@ = ?", condition.column];
+            ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
         }
     }
     
