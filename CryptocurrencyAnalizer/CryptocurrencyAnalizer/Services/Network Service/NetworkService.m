@@ -46,7 +46,7 @@
 }
 
 // Getting any type of historical data for needed coin and parse it
-- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byURL:(NSString *)url completion:(void (^)(NSMutableArray<NSNumber *> *coinData))completion {
+- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byURL:(NSString *)url completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
     
     NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
     
@@ -57,10 +57,14 @@
             NSDictionary *dataField = [response valueForKey:@"Data"];
             NSArray *historicalInfo = [dataField valueForKey:@"Data"];
             
-            NSMutableArray *historicalInfoForCoin = [NSMutableArray new];
+            NSString *pairName = [NSString stringWithFormat:@"%@/USD", coin];
+            NSMutableArray<DBModel *> *historicalInfoForCoin = [NSMutableArray<DBModel *> new];
             for (NSObject *historicalInfoItem in historicalInfo) {
                 NSNumber *price = (NSNumber *)[(NSDictionary *)historicalInfoItem valueForKey:@"high"];
-                [historicalInfoForCoin addObject:price];
+                NSDate *timestamp = (NSDate *)[(NSDictionary *)historicalInfoItem valueForKey:@"time"];
+                
+                DBModel *model = [[DBModel alloc] initWithPairName:pairName timeStamp:timestamp andPrice:price];
+                [historicalInfoForCoin addObject:model];
                 
             }
             
@@ -72,28 +76,28 @@
 }
 
 // Getting daily historical data for needed period and needed coin
-- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<NSNumber *> *coinData))completion {
+- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histoday"];
-    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<NSNumber *> *coinData) {
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
         completion(coinData);
     }];
 }
 
 // Getting hourly historical data for needed period and needed coin
-- (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<NSNumber *> *coinData))completion {
+- (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histohour"];
-    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<NSNumber *> *coinData) {
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
         completion(coinData);
     }];
 }
 
 // Getting minutely historical data for needed period and needed coin
-- (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<NSNumber *> *coinData))completion {
+- (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histominute"];
-    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<NSNumber *> *coinData) {
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
         NSMutableArray *tenMinutesChanges = [NSMutableArray new];
         for (int i = 0; i < coinData.count; i += 10) {
             [tenMinutesChanges addObject:coinData[i]];

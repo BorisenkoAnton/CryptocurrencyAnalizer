@@ -6,6 +6,7 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
+#import "DBModel.h"
 @import AFNetworking;
 
 #ifndef NetworkService_h
@@ -28,15 +29,15 @@
 
 - (void)getDailyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
-                       completion:(void (^_Nullable)(NSMutableArray<NSNumber *> * _Nullable coinData))completion;
+                       completion:(void (^_Nullable)(NSMutableArray<DBModel *> * _Nullable coinData))completion;
 
 - (void)getHourlyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
-                       completion:(void (^_Nullable)(NSMutableArray<NSNumber *> * _Nullable coinData))completion;
+                       completion:(void (^_Nullable)(NSMutableArray<DBModel *> * _Nullable coinData))completion;
 
 - (void)getMinutelyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
-                       completion:(void (^_Nullable)(NSMutableArray<NSNumber *> * _Nullable coinData))completion;
+                       completion:(void (^_Nullable)(NSMutableArray<DBModel *> * _Nullable coinData))completion;
 
 
 @end
