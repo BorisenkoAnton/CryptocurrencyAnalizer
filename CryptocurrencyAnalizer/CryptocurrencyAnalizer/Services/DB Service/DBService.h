@@ -27,11 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)countQueryOnTable:(NSString *)table whereConditions:(WhereCondition *)condition limit:(NSString *)limit completion:(Completion)completion;
 
-+ (void)queryOnTable:(NSString *)table whereConditions:(nullable NSArray<WhereCondition *> *)conditions limit:(NSString *)limit completion:(ResultCompletion)completion;
++ (void)queryOnTable:(NSString *)table whereConditions:(nullable NSArray<WhereCondition *> *)conditions limit:(nullable NSString *)limit completion:(ResultCompletion)completion;
 
 + (void)deleteFromTable:(NSString *)table whereConditions:(nullable NSArray<WhereCondition *> *)conditions completion:(nullable Completion)completion;
 
 + (void)dropTable:(NSString *)table completion:(nullable Completion)completion;
+
++ (void)getMaxValue:(NSString *)value fromTable:(NSString *)table whereConditions:(nullable NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion;
 
 @end
 

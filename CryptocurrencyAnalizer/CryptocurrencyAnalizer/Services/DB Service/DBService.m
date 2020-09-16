@@ -106,33 +106,32 @@ static FMDatabaseQueue *sharedQueue;
         [sqlCountStatement appendFormat:@" LIMIT %@", limit];
     }
 
-    //[sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-        @try {
-            if (!sharedDatabase.isOpen) {
-                [sharedDatabase open];
-            }
-            int count = [sharedDatabase intForQuery:sqlCountStatement];
-            
-            if (count >= [limit intValue]) {
-                completion(YES, nil);
-            } else {
-                completion(NO, nil);
-            }
-            [sharedDatabase close];
-        } @catch (NSException *exception) {
-           // rollback = YES;
-            completion(NO, (NSError *)exception);
-            [sharedDatabase close];
+    @try {
+        if (!sharedDatabase.isOpen) {
+            [sharedDatabase open];
         }
-   // }];
+        int count = [sharedDatabase intForQuery:sqlCountStatement];
+        
+        if (count >= [limit intValue]) {
+            completion(YES, nil);
+        } else {
+            completion(NO, nil);
+        }
+        [sharedDatabase close];
+    } @catch (NSException *exception) {
+        //rollback = YES;
+        completion(NO, (NSError *)exception);
+        [sharedDatabase close];
+    }
+    
 }
 
 // Query the given table based on conditions provided
 + (void)queryOnTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions limit:(NSString *)limit completion:(ResultCompletion)completion {
     
     NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
-    
     NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
+    
     if (conditions) {
         [sqlStatement appendString:@" WHERE"];
         for (WhereCondition *condition in conditions) {
@@ -146,6 +145,37 @@ static FMDatabaseQueue *sharedQueue;
         
         [sqlStatement appendFormat:@" LIMIT %@", limit];
     }
+    
+    @try {
+        if (!sharedDatabase.isOpen) {
+            [sharedDatabase open];
+        }
+        FMResultSet *fmresult = [sharedDatabase executeQuery:sqlStatement values:values error:nil];
+        completion(YES, fmresult, nil);
+        [sharedDatabase close];
+    } @catch (NSException *exception) {
+        //rollback = YES;
+        completion(YES, nil, (NSError *)exception);
+        [sharedDatabase close];
+    }
+    
+}
+
++ (void) getMaxValue:(NSString *)value fromTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
+    
+    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
+    NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
+    
+    if (conditions) {
+        [sqlStatement appendString:@" WHERE"];
+        for (WhereCondition *condition in conditions) {
+            [values addObject:condition.value];
+            [sqlStatement appendFormat:@" %@ = ?", condition.column];
+            ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
+        }
+    }
+    
+    [sqlStatement appendFormat:@" ORDER BY %@ desc LIMIT 1", value];
     
     [sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
         @try {
@@ -161,7 +191,6 @@ static FMDatabaseQueue *sharedQueue;
             [sharedDatabase close];
         }
     }];
-    
 }
 
 // Deleting a row of data from a given table based on conditions
