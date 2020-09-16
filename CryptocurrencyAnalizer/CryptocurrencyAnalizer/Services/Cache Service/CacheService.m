@@ -16,12 +16,25 @@
     [DBService insert:objects intoTable:table completion:nil];
 }
 
-//+ (void)getCachedObjects:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
-//
-//    [DBService queryOnTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
-//        completion(success, result, error);
-//    }];
-//}
++ (void)checkCacheForNeedToBeUpdating:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions maxSeparation:(NSDateComponents *)components completion:(void (^)(BOOL needsToBeUpdated))completion{
+    
+    [DBService getMaxValue:@"timestamp" fromTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+        if (success) {
+            [result next];
+            
+            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+            
+            NSDate *latestDate = [calendar dateByAddingComponents:components toDate:[result dateForColumn:@"timestamp"] options:0];
+            
+            if ([NSDate now] > latestDate) {
+                completion(YES);
+            } else {
+                completion(NO);
+            }
+            
+        }
+    }];
+}
 
 + (void)cacheArrayOfObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table {
     
