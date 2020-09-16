@@ -7,6 +7,7 @@
 //
 
 #import "CacheService.h"
+#import "DBModel.h"
 
 @implementation CacheService
 
@@ -15,11 +16,25 @@
     [DBService insert:objects intoTable:table completion:nil];
 }
 
-+ (void)getCachedObjects:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
+//+ (void)getCachedObjects:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
+//
+//    [DBService queryOnTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+//        completion(success, result, error);
+//    }];
+//}
+
++ (void)cacheArrayOfObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table {
     
-    [DBService queryOnTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
-        completion(success, result, error);
-    }];
+
+    NSMutableArray<NSObject *> *cachingObjects = [NSMutableArray<NSObject *> new];
+    for (DBModel *model in objects) {
+        [cachingObjects removeAllObjects];
+        [cachingObjects addObject:model.pairName];
+        [cachingObjects addObject:model.price];
+        [cachingObjects addObject:model.timestamp];
+        [CacheService cacheObjects:cachingObjects toTable:table];
+    }
 }
 
 @end
+
