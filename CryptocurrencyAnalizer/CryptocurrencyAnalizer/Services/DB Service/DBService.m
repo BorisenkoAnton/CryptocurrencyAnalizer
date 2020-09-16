@@ -92,21 +92,28 @@ static FMDatabaseQueue *sharedQueue;
     [DBService update:sqlStatement values:values completion:completion];
 }
 
-+ (void)countQueryOnTable:(NSString *)table whereConditions:(WhereCondition *)condition completion:(Completion)completion {
++ (void)countQueryOnTable:(NSString *)table whereConditions:(WhereCondition *)condition limit:(NSString *)limit completion:(Completion)completion {
     
     NSMutableString *sqlCountStatement = [NSMutableString stringWithFormat:@"SELECT COUNT(*) FROM %@", table];
 
     if (condition) {
+        
         [sqlCountStatement appendFormat:@" WHERE %@ = '%@'", condition.column, condition.value];
     }
     
+    if (limit) {
+        
+        [sqlCountStatement appendFormat:@" LIMIT %@", limit];
+    }
+
     //[sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
         @try {
             if (!sharedDatabase.isOpen) {
                 [sharedDatabase open];
             }
             int count = [sharedDatabase intForQuery:sqlCountStatement];
-            if (count != 0) {
+            
+            if (count >= [limit intValue]) {
                 completion(YES, nil);
             } else {
                 completion(NO, nil);
@@ -121,7 +128,7 @@ static FMDatabaseQueue *sharedQueue;
 }
 
 // Query the given table based on conditions provided
-+ (void)queryOnTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
++ (void)queryOnTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions limit:(NSString *)limit completion:(ResultCompletion)completion {
     
     NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
     
@@ -133,6 +140,11 @@ static FMDatabaseQueue *sharedQueue;
             [sqlStatement appendFormat:@" %@ = ?", condition.column];
             ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
         }
+    }
+    
+    if (limit) {
+        
+        [sqlStatement appendFormat:@" LIMIT %@", limit];
     }
     
     [sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
