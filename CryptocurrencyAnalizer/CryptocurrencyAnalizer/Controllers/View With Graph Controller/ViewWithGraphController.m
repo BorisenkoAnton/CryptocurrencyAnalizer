@@ -20,6 +20,7 @@
 
 @property NetworkService * networkService;
 @property NSMutableArray<NSString *> *availableCoins;
+@property NSMutableArray<NSString *> *filteredAvailableCoins;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *periodChoosingSegmentedControl;
 
 @end
@@ -50,8 +51,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //“CREATE TABLE IF NOT EXISTS Tutorials (ID Integer Primary key AutoIncrement, Title Text, Author Text, PublicationDate Date);”
-    
     NSMutableArray<TableColumn *> *columnsForTablesWithPrices = [NSMutableArray<TableColumn *> arrayWithObjects:
                                               [[TableColumn alloc] initWithName:@"pairName" andType:@"TEXT"],
                                               [[TableColumn alloc] initWithName:@"price" andType:@"REAL"],
@@ -63,6 +62,10 @@
     
     // Adding action to perform needed manipulations with data according to selected time period
     [self.periodChoosingSegmentedControl addTarget:self action:@selector(neededPeriodSelected:) forControlEvents:UIControlEventValueChanged];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     self.coinNamePickerView.delegate = self;
     self.coinNamePickerView.dataSource = self;
     self.coinNameTextField.delegate = self;
@@ -88,6 +91,10 @@
             [self.availableCoins addObject:coin];
         }
         [self.availableCoins sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        
+        self.filteredAvailableCoins = [self.availableCoins mutableCopy];
+        [self.coinNameTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+        
         [self.coinNamePickerView reloadAllComponents];
     }];
 }
@@ -99,15 +106,15 @@
 }
 // The number of rows of data
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return self.availableCoins.count;
+    return self.filteredAvailableCoins.count;
 }
 // The data to return for the row and component (column) that's being passed in
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-     return self.availableCoins[row];
+     return self.filteredAvailableCoins[row];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.coinNameTextField.text = self.availableCoins[row];
+    self.coinNameTextField.text = self.filteredAvailableCoins[row];
 }
 
 #pragma mark - Text Field Delegate
@@ -338,6 +345,63 @@
     CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
 
     [self.graphModel addPlot:plot toPlotSpace:self.graphModel.defaultPlotSpace];
+}
+
+#pragma mark - Configuring view size when keyboard appears
+
+- (void) keyboardWillShow:(NSNotification *)notification {
+    
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    CGSize keyboardSize = keyboardFrameBeginRect.size;
+    
+    if (self.view.frame.origin.y == 0) {
+        CGRect frame = self.view.frame;
+        frame.origin.y -= keyboardSize.height;
+        self.view.frame = frame;
+    }
+    
+}
+
+- (void) keyboardWillHide:(NSNotification *)notification {
+    
+    if (self.view.frame.origin.y != 0) {
+        CGRect frame = self.view.frame;
+        frame.origin.y = 0;
+        self.view.frame = frame;
+    }
+}
+
+#pragma mark - Searching in Picker View when Text Field change value
+
+-(void)textFieldValueChanged:(UITextField *)TextField {
+
+    if((TextField.text.length)>0) {
+        self.filteredAvailableCoins = [self  searchInArray:self.availableCoins withKey:@"key value" andCharacters:TextField.text];
+    }
+    else {
+
+        self.filteredAvailableCoins = [self.filteredAvailableCoins mutableCopy];
+    }
+
+    [self.coinNamePickerView reloadAllComponents];
+
+}
+
+-(NSMutableArray *)searchInArray:(NSMutableArray<NSString *> *)srchArray withKey:(NSString *)key andCharacters:(NSString *)charecters {
+
+    NSMutableArray *resultArray= [NSMutableArray new];
+    for (int index = 0 ; index < srchArray.count; index++) {
+        NSString *coinName  = srchArray[index];
+        if ([coinName containsString:charecters]) {
+            [resultArray addObject:coinName];
+        }
+
+    }
+
+    return resultArray;
+
 }
 
 @end
