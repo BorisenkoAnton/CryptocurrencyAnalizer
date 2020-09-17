@@ -90,6 +90,7 @@ static FMDatabaseQueue *sharedQueue;
     [DBService update:sqlStatement values:values completion:completion];
 }
 
+// Query with COUNT. It is useful to know are there any needed items in DB
 + (void)countQueryOnTable:(NSString *)table whereConditions:(WhereCondition *)condition limit:(NSString *)limit completion:(Completion)completion {
     
     NSMutableString *sqlCountStatement = [NSMutableString stringWithFormat:@"SELECT COUNT(*) FROM %@", table];
@@ -117,7 +118,6 @@ static FMDatabaseQueue *sharedQueue;
         }
         [sharedDatabase close];
     } @catch (NSException *exception) {
-        //rollback = YES;
         completion(NO, (NSError *)exception);
         [sharedDatabase close];
     }
@@ -152,13 +152,13 @@ static FMDatabaseQueue *sharedQueue;
         completion(YES, fmresult, nil);
         [sharedDatabase close];
     } @catch (NSException *exception) {
-        //rollback = YES;
         completion(YES, nil, (NSError *)exception);
         [sharedDatabase close];
     }
     
 }
 
+// Getting max value from table. In checkCacheForNeedToBeUpdating it is used to get the latest date
 + (void) getMaxValue:(NSString *)value fromTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
     
     NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];

@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// WHERE condition using in SQL queries
 @interface WhereCondition : NSObject
 
 @property NSString *column;

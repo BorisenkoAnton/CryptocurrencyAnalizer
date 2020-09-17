@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Data model that stored in DB
 @interface DBModel : NSObject
 
 @property  NSNumber * _Nullable ID;

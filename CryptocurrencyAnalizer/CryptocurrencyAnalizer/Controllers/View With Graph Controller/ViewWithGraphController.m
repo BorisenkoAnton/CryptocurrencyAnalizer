@@ -19,8 +19,8 @@
 @interface ViewWithGraphController ()
 
 @property NetworkService * networkService;
-@property NSMutableArray<NSString *> *availableCoins;
-@property NSMutableArray<NSString *> *filteredAvailableCoins;
+@property NSMutableArray<NSString *> *availableCoins;           // Full list of available coins
+@property NSMutableArray<NSString *> *filteredAvailableCoins;   // List of available coins after searching with the help of text Field
 @property (weak, nonatomic) IBOutlet UISegmentedControl *periodChoosingSegmentedControl;
 
 @end
@@ -50,6 +50,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Creating all needed for caching tables if they are not exist
     NSMutableArray<TableColumn *> *columnsForTablesWithPrices = [NSMutableArray<TableColumn *> arrayWithObjects:
                                               [[TableColumn alloc] initWithName:@"pairName" andType:@"TEXT"],
                                               [[TableColumn alloc] initWithName:@"price" andType:@"REAL"],
@@ -62,6 +63,7 @@
     // Adding action to perform needed manipulations with data according to selected time period
     [self.periodChoosingSegmentedControl addTarget:self action:@selector(neededPeriodSelected:) forControlEvents:UIControlEventValueChanged];
 
+    // Adding controller as observer to notifications, to know when keyboard appears and dissapears (to manage UI elements size)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -76,12 +78,11 @@
                                                   topPadding:30.0
                                              andRightPadding:15.0];
     
-    self.availableCoins = [NSMutableArray<NSString *> new];
-    
     self.graphModel.textStyles[0] = [GraphService createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
     self.graphModel.lineStyles[0] = [GraphService createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
     self.graphModel.gridLineStyles[0] = [GraphService createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
     
+    self.availableCoins = [NSMutableArray<NSString *> new];
     self.networkService = [NetworkService shared];
     // Getting list of all available coins, unreasonable to cache it because of the max-age=120
     [self.networkService getAvailableCoins:^(NSArray * _Nonnull availableCoins) {
@@ -93,7 +94,6 @@
         
         self.filteredAvailableCoins = [self.availableCoins mutableCopy];
         [self.coinNameTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
-        //[self.coinNameTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventTouchCancel];
         
         [self.coinNamePickerView reloadAllComponents];
         [self.coinNamePickerView selectRow:0 inComponent:0 animated:NO];
@@ -143,6 +143,7 @@
     }
 }
 
+#pragma - Cache handling
 - (void)getCachedDataIfExists:(NSString *)table limit:(NSString *)limit maxSeparation:(nonnull NSDateComponents *)components coinName:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
     WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
@@ -178,7 +179,7 @@
 
 
 
-#pragma mark - actions to manipulate data
+#pragma mark - actions to manipulate data and building plots
 
 // All the graph classes desriptions are available at https://core-plot.github.io/iOS/annotated.html
 - (void)neededPeriodSelected:(id)sender {
@@ -198,6 +199,7 @@
     // There are four segments, based on the selected we need to get data with different limit (different number of data units)
     switch (self.periodChoosingSegmentedControl.selectedSegmentIndex) {
         case 0: {
+            // This components play role of the maximum separatiion between current time and the latest time of the cache
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setMinute:10];
             
@@ -381,7 +383,7 @@
 
 -(void)textFieldValueChanged:(UITextField *)textField {
     
-    if((textField.text.length)>0) {
+    if((textField.text.length) > 0) {
         self.filteredAvailableCoins = [self searchInArray:self.availableCoins withKey:@"key value" andCharacters:textField.text];
     }
     else {
@@ -392,11 +394,11 @@
 
 }
 
--(NSMutableArray *)searchInArray:(NSMutableArray<NSString *> *)srchArray withKey:(NSString *)key andCharacters:(NSString *)charecters {
+-(NSMutableArray *)searchInArray:(NSMutableArray<NSString *> *)arrayToSearchInto withKey:(NSString *)key andCharacters:(NSString *)charecters {
 
     NSMutableArray *resultArray= [NSMutableArray new];
-    for (int index = 0 ; index < srchArray.count; index++) {
-        NSString *coinName  = srchArray[index];
+    for (int index = 0 ; index < arrayToSearchInto.count; index++) {
+        NSString *coinName  = arrayToSearchInto[index];
         if ([coinName localizedCaseInsensitiveContainsString:charecters]) {
             [resultArray addObject:coinName];
         }

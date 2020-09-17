@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Model of DB table column
 @interface TableColumn : NSObject
 
 @property NSString *name;
