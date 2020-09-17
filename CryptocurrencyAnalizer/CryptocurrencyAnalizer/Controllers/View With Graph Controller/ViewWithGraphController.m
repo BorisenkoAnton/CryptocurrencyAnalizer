@@ -178,13 +178,17 @@
         [self.graphModel removePlot:plot];
     }
     
+    NSUInteger selectedRow = [self.coinNamePickerView selectedRowInComponent:0];
+    NSString *coinName = [[self.coinNamePickerView delegate] pickerView:self.coinNamePickerView titleForRow:selectedRow forComponent:0];
+    
     // Checking if the needed coin is in the list of available coins
     if ([self.availableCoins containsObject:self.coinNameTextField.text]) {
         // There are four segments, based on the selected we need to get data with different limit (different number of data units)
         switch (self.periodChoosingSegmentedControl.selectedSegmentIndex) {
             case 0: {
                 NSDateComponents *components = [[NSDateComponents alloc] init];
-                components.minute = 10;
+                [components setMinute:10];
+                
                 [self getCachedDataIfExists:@"minutelyHistoricalData" limit:@"144" maxSeparation:components completion:^(BOOL success) {
                     if (!success) {
                             [self.networkService getMinutelyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@1439 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
@@ -194,7 +198,11 @@
                             }
                             [self configureAndAddPlot];
                             
-                            [CacheService cacheArrayOfObjects:coinData toTable:@"minutelyHistoricalData"];
+                            [CacheService clearCacheInTable:@"minutelyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                                if (success) {
+                                    [CacheService cacheArrayOfObjects:coinData toTable:@"minutelyHistoricalData"];
+                                }
+                            }];
 
                         }];
                     }
@@ -204,7 +212,7 @@
                 
             case 1: {
                 NSDateComponents *components = [[NSDateComponents alloc] init];
-                components.hour = 1;
+                [components setHour:1];
                 [self getCachedDataIfExists:@"hourlyHistoricalData" limit:@"168" maxSeparation:components completion:^(BOOL success) {
                     if (!success) {
                             [self.networkService getHourlyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@167 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
@@ -214,7 +222,11 @@
                             }
                             [self configureAndAddPlot];
                             
-                            [CacheService cacheArrayOfObjects:coinData toTable:@"hourlyHistoricalData"];
+                            [CacheService clearCacheInTable:@"hourlyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                                if (success) {
+                                    [CacheService cacheArrayOfObjects:coinData toTable:@"hourlyHistoricalData"];
+                                }
+                            }];
 
                         }];
                     }
@@ -224,7 +236,7 @@
                 
             case 2: {
                 NSDateComponents *components = [[NSDateComponents alloc] init];
-                components.day = 1;
+                [components setDay:1];
                 [self getCachedDataIfExists:@"dailyHistoricalData" limit:@"30" maxSeparation:components completion:^(BOOL success) {
                     if (!success) {
                             [self.networkService getDailyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@29 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
@@ -234,17 +246,21 @@
                             }
                             [self configureAndAddPlot];
                             
-                            [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
+                            [CacheService clearCacheInTable:@"dailyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                                if (success) {
+                                    [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
+                                }
+                            }];
 
                         }];
                     }
                 }];
                 break;
             }
-                
+            
             case 3: {
                 NSDateComponents *components = [[NSDateComponents alloc] init];
-                components.day = 1;
+                [components setDay:1];
                 [self getCachedDataIfExists:@"dailyHistoricalData" limit:@"365" maxSeparation:components completion:^(BOOL success) {
                     if (!success) {
                         [self.networkService getDailyHistoricalDataForCoin:self.coinNameTextField.text withLimit:@364 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
@@ -254,7 +270,11 @@
                             }
                             [self configureAndAddPlot];
                             
-                            [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
+                            [CacheService clearCacheInTable:@"dailyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                                if (success) {
+                                    [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
+                                }
+                            }];
 
                         }];
                     }
