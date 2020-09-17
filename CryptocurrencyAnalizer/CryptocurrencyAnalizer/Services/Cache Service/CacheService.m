@@ -26,12 +26,24 @@
             
             NSDate *latestDate = [calendar dateByAddingComponents:components toDate:[result dateForColumn:@"timestamp"] options:0];
             
-            if ([NSDate now] > latestDate) {
+            if ([[NSDate now] timeIntervalSince1970] > [latestDate timeIntervalSince1970]) {
                 completion(YES);
             } else {
                 completion(NO);
             }
             
+        }
+    }];
+}
+
++ (void)clearCacheInTable:(NSString *)table forCoin:(NSString *)coinName completion:(void (^)(BOOL success))completion{
+    
+    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+    [DBService deleteFromTable:table whereConditions:[NSArray arrayWithObject:condition] completion:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            completion(YES);
+        } else {
+            completion(NO);
         }
     }];
 }

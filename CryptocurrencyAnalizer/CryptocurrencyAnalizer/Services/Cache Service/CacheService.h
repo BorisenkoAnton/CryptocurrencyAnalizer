@@ -17,10 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CacheService : NSObject
 
 + (void)cacheObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table;
+
 + (void)checkCacheForNeedToBeUpdating:(NSString *)table
                       whereConditions:(NSArray<WhereCondition *> *)conditions
                       maxSeparation:(NSDateComponents *)components
                       completion:(void (^)(BOOL needsToBeUpdated))completion;
+
++ (void)clearCacheInTable:(NSString *)table forCoin:(NSString *)coinName completion:(void (^)(BOOL success))completion;
+
 + (void)cacheArrayOfObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table;
 
 @end
