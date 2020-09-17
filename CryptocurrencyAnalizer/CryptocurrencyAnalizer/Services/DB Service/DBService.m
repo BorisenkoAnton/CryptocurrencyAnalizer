@@ -63,6 +63,7 @@ static FMDatabaseQueue *sharedQueue;
         if (!sharedDatabase.isOpen) {
             [sharedDatabase open];
         }
+        
         [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
         if(completion) {
             completion(YES, nil);
@@ -194,17 +195,17 @@ static FMDatabaseQueue *sharedQueue;
 // Deleting a row of data from a given table based on conditions
 + (void)deleteFromTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(Completion)completion {
     
-    NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM %@", table];
+    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"DELETE FROM %@", table];
     
     NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
     
-    [sqlStatement stringByAppendingString:@" WHERE"];
+    [sqlStatement appendString:@" WHERE"];
     for (WhereCondition *condition in conditions) {
         [values addObject:condition.value];
-        [sqlStatement stringByAppendingFormat:@" %@ = ?", condition.column];
-        ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement stringByAppendingString:@""] : [sqlStatement stringByAppendingString:@","];
+        [sqlStatement appendFormat:@" %@ = ?", condition.column];
+        ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
     }
-    
+
     [DBService update:sqlStatement values:values completion:completion];
 }
 

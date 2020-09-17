@@ -143,7 +143,7 @@
     }
 }
 
-#pragma - Cache handling
+#pragma mark - Cache handling
 - (void)getCachedDataIfExists:(NSString *)table limit:(NSString *)limit maxSeparation:(nonnull NSDateComponents *)components coinName:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
     WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
@@ -211,7 +211,7 @@
                             [self.graphModel.plotDots addObject:model.price];
                         }
                         [self configureAndAddPlot];
-                        
+
                         [CacheService clearCacheInTable:@"minutelyHistoricalData" forCoin:coinName completion:^(BOOL success) {
                             if (success) {
                                 [CacheService cacheArrayOfObjects:coinData toTable:@"minutelyHistoricalData"];
