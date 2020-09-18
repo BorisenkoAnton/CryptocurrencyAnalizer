@@ -22,11 +22,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItQ-Oy-vPM" customClass="CPTGraphHostingView">
-                    <rect key="frame" x="27" y="64.000000000000028" width="360" height="462.66666666666674"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <rect key="frame" x="27" y="64" width="360" height="448"/>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MsZ-8b-6B0">
-                    <rect key="frame" x="27" y="477.66666666666669" width="360" height="43.666666666666686"/>
+                    <rect key="frame" x="27" y="534.66666666666663" width="360" height="43.666666666666629"/>
                     <segments>
                         <segment title="Day"/>
                         <segment title="Week"/>
@@ -34,13 +33,13 @@
                         <segment title="Year"/>
                     </segments>
                 </segmentedControl>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BG3-MQ-U3c">
-                    <rect key="frame" x="27" y="528.33333333333337" width="360" height="42.666666666666629"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Coin Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BG3-MQ-U3c">
+                    <rect key="frame" x="27" y="585.33333333333337" width="360" height="42.666666666666629"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
                 </textField>
                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4JE-IQ-8qg">
-                    <rect key="frame" x="27" y="579" width="360" height="263"/>
+                    <rect key="frame" x="27" y="636" width="360" height="206"/>
                 </pickerView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -52,14 +51,14 @@
                 <constraint firstItem="ItQ-Oy-vPM" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Lsg-hf-Fe8"/>
                 <constraint firstItem="BG3-MQ-U3c" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="UCp-Ad-e1M"/>
                 <constraint firstItem="ItQ-Oy-vPM" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="f0W-hh-OFo"/>
-                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.516304" id="fIJ-La-7WQ"/>
+                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.5" id="fIJ-La-7WQ"/>
                 <constraint firstItem="BG3-MQ-U3c" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="g22-nk-Fp8"/>
                 <constraint firstItem="MsZ-8b-6B0" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="hBY-P4-fxf"/>
                 <constraint firstItem="MsZ-8b-6B0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="lAZ-mM-347"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="4JE-IQ-8qg" secondAttribute="bottom" constant="20" id="lgl-sl-b66"/>
                 <constraint firstItem="BG3-MQ-U3c" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.0475543" id="ltl-Y8-KKN"/>
                 <constraint firstItem="MsZ-8b-6B0" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.0475543" id="nbN-nn-Gua"/>
-                <constraint firstItem="4JE-IQ-8qg" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.293478" id="sJH-RU-Mlr"/>
+                <constraint firstItem="4JE-IQ-8qg" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.23" id="sJH-RU-Mlr"/>
                 <constraint firstItem="ItQ-Oy-vPM" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="wkA-aP-UBR"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
