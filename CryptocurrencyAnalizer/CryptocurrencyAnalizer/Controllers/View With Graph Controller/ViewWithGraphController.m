@@ -22,6 +22,8 @@
 @property NSMutableArray<NSString *> *availableCoins;           // Full list of available coins
 @property NSMutableArray<NSString *> *filteredAvailableCoins;   // List of available coins after searching with the help of text Field
 @property (weak, nonatomic) IBOutlet UISegmentedControl *periodChoosingSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 
 @end
 
