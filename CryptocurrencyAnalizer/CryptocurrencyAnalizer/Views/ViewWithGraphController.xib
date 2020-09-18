@@ -22,14 +22,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItQ-Oy-vPM" customClass="CPTGraphHostingView">
-                    <rect key="frame" x="20" y="64" width="320" height="380"/>
+                    <rect key="frame" x="20" y="64" width="374" height="380"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="380" id="VO2-yX-OmN"/>
                     </constraints>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MsZ-8b-6B0">
-                    <rect key="frame" x="20" y="452" width="320" height="36"/>
+                    <rect key="frame" x="20" y="452" width="374" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="GLN-XC-C0Z"/>
                     </constraints>
@@ -41,7 +41,7 @@
                     </segments>
                 </segmentedControl>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BG3-MQ-U3c">
-                    <rect key="frame" x="20" y="495" width="320" height="35"/>
+                    <rect key="frame" x="20" y="495" width="374" height="35"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="WTL-Mu-gPj"/>
                     </constraints>
@@ -49,9 +49,9 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4JE-IQ-8qg">
-                    <rect key="frame" x="20" y="538" width="320" height="216"/>
+                    <rect key="frame" x="20" y="538" width="374" height="260"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="370" id="BGh-Uj-ina"/>
+                        <constraint firstAttribute="height" constant="260" id="K1x-9l-aTg"/>
                     </constraints>
                 </pickerView>
             </subviews>
