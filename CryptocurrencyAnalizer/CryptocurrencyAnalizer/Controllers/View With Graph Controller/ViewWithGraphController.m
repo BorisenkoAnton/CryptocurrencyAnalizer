@@ -63,6 +63,10 @@
     // Adding action to perform needed manipulations with data according to selected time period
     [self.periodChoosingSegmentedControl addTarget:self action:@selector(neededPeriodSelected:) forControlEvents:UIControlEventValueChanged];
 
+    // To hide keyboard when user tapped on the screen (outside keyboard)
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    [self.view addGestureRecognizer:tap];
+    
     // Adding controller as observer to notifications, to know when keyboard appears and dissapears (to manage UI elements size)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -377,6 +381,12 @@
         frame.origin.y = 0;
         self.view.frame = frame;
     }
+}
+
+#pragma mark - Gesture Recognizers
+
+- (void)dismissKeyboard {
+    [self.coinNameTextField resignFirstResponder];
 }
 
 #pragma mark - Searching in Picker View when Text Field change value
