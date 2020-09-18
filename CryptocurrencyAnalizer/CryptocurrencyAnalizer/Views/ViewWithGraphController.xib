@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -22,17 +22,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItQ-Oy-vPM" customClass="CPTGraphHostingView">
-                    <rect key="frame" x="20" y="64" width="374" height="380"/>
+                    <rect key="frame" x="27" y="64.000000000000028" width="360" height="462.66666666666674"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="380" id="VO2-yX-OmN"/>
-                    </constraints>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MsZ-8b-6B0">
-                    <rect key="frame" x="20" y="452" width="374" height="36"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="35" id="GLN-XC-C0Z"/>
-                    </constraints>
+                    <rect key="frame" x="27" y="477.66666666666669" width="360" height="43.666666666666686"/>
                     <segments>
                         <segment title="Day"/>
                         <segment title="Week"/>
@@ -41,34 +35,32 @@
                     </segments>
                 </segmentedControl>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BG3-MQ-U3c">
-                    <rect key="frame" x="20" y="495" width="374" height="35"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="35" id="WTL-Mu-gPj"/>
-                    </constraints>
+                    <rect key="frame" x="27" y="528.33333333333337" width="360" height="42.666666666666629"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4JE-IQ-8qg">
-                    <rect key="frame" x="20" y="538" width="374" height="260"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="260" id="K1x-9l-aTg"/>
-                    </constraints>
+                    <rect key="frame" x="27" y="579" width="360" height="263"/>
                 </pickerView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
-                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="3pV-gr-CHq"/>
-                <constraint firstItem="MsZ-8b-6B0" firstAttribute="top" secondItem="ItQ-Oy-vPM" secondAttribute="bottom" constant="8" id="47O-LS-ixT"/>
-                <constraint firstItem="4JE-IQ-8qg" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="514-UK-u7b"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="BG3-MQ-U3c" secondAttribute="trailing" constant="20" id="AAN-tt-jxZ"/>
-                <constraint firstItem="BG3-MQ-U3c" firstAttribute="top" secondItem="MsZ-8b-6B0" secondAttribute="bottom" constant="8" id="E5G-Kt-Iah"/>
-                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="ECn-dt-KSE"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="MsZ-8b-6B0" secondAttribute="trailing" constant="20" id="KU1-jM-lQz"/>
-                <constraint firstItem="MsZ-8b-6B0" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="Qbi-9P-Hh8"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="4JE-IQ-8qg" secondAttribute="trailing" constant="20" id="Wb6-Bm-KPe"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="ItQ-Oy-vPM" secondAttribute="trailing" constant="20" id="fPT-LQ-NMm"/>
-                <constraint firstItem="BG3-MQ-U3c" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="r4L-0u-uOP"/>
-                <constraint firstItem="4JE-IQ-8qg" firstAttribute="top" secondItem="BG3-MQ-U3c" secondAttribute="bottom" constant="8" id="uqs-4l-UBg"/>
+                <constraint firstItem="4JE-IQ-8qg" firstAttribute="top" secondItem="BG3-MQ-U3c" secondAttribute="bottom" constant="8" id="1Hm-0L-Jka"/>
+                <constraint firstItem="4JE-IQ-8qg" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="ABb-yE-B9f"/>
+                <constraint firstItem="BG3-MQ-U3c" firstAttribute="top" secondItem="MsZ-8b-6B0" secondAttribute="bottom" constant="8" id="GAo-gJ-XfQ"/>
+                <constraint firstItem="4JE-IQ-8qg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="JFf-i5-shl"/>
+                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Lsg-hf-Fe8"/>
+                <constraint firstItem="BG3-MQ-U3c" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="UCp-Ad-e1M"/>
+                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="f0W-hh-OFo"/>
+                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.516304" id="fIJ-La-7WQ"/>
+                <constraint firstItem="BG3-MQ-U3c" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="g22-nk-Fp8"/>
+                <constraint firstItem="MsZ-8b-6B0" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.869565" id="hBY-P4-fxf"/>
+                <constraint firstItem="MsZ-8b-6B0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="lAZ-mM-347"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="4JE-IQ-8qg" secondAttribute="bottom" constant="20" id="lgl-sl-b66"/>
+                <constraint firstItem="BG3-MQ-U3c" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.0475543" id="ltl-Y8-KKN"/>
+                <constraint firstItem="MsZ-8b-6B0" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.0475543" id="nbN-nn-Gua"/>
+                <constraint firstItem="4JE-IQ-8qg" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.293478" id="sJH-RU-Mlr"/>
+                <constraint firstItem="ItQ-Oy-vPM" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="wkA-aP-UBR"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="137.68115942028987" y="144.64285714285714"/>
