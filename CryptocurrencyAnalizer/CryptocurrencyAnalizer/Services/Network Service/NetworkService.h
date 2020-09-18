@@ -12,33 +12,34 @@
 #ifndef NetworkService_h
 #define NetworkService_h
 
+typedef void (^NetworkServiceCompletion)(NSMutableArray<DBModel *> * _Nullable coinData);
+
 @interface NetworkService : AFHTTPSessionManager
 
-@property NSURLSessionConfiguration *configuration;
-@property NSString *baseUrl;
-@property NSString *apiKey;
+@property NSURLSessionConfiguration * _Nonnull configuration;
+@property NSString * _Nonnull baseUrl;
+@property NSString * _Nullable apiKey;
 
-+ (id)shared;
++ (id _Nonnull)shared;
 
-- (void)downloadData:(NSString *)url
-          parameters:(nullable id)parameters
-          headers:(nullable NSDictionary<NSString *,NSString *> *)headers
+- (void)downloadData:(NSString *_Nonnull)url
+          parameters:(id _Nonnull )parameters
+          headers:(nullable NSDictionary<NSString *, NSString *> *)headers
           completion:(void (^_Nonnull)(NSObject * _Nullable data))completion;
 
 - (void)getAvailableCoins:(void (^_Nullable)(NSArray * _Nonnull availableCoins))completion;
 
 - (void)getDailyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
-                       completion:(void (^_Nullable)(NSMutableArray<DBModel *> * _Nullable coinData))completion;
+                           completion:(NetworkServiceCompletion _Nullable )completion;
 
 - (void)getHourlyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
-                       completion:(void (^_Nullable)(NSMutableArray<DBModel *> * _Nullable coinData))completion;
+                       completion:(NetworkServiceCompletion _Nullable )completion;
 
 - (void)getMinutelyHistoricalDataForCoin:(NSString *_Nonnull)coin
                        withLimit:(NSNumber *_Nullable)limit
-                       completion:(void (^_Nullable)(NSMutableArray<DBModel *> * _Nullable coinData))completion;
-
+                       completion:(NetworkServiceCompletion _Nullable )completion;
 
 @end
 

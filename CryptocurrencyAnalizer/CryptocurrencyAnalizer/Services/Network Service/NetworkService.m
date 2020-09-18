@@ -46,7 +46,7 @@
 }
 
 // Getting any type of historical data for needed coin and parse it
-- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byURL:(NSString *)url completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
+- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byURL:(NSString *)url completion:(NetworkServiceCompletion _Nullable )completion {
     
     NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
     
@@ -76,7 +76,7 @@
 }
 
 // Getting daily historical data for needed period and needed coin
-- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
+- (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histoday"];
     [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
@@ -85,7 +85,7 @@
 }
 
 // Getting hourly historical data for needed period and needed coin
-- (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
+- (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histohour"];
     [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
@@ -94,7 +94,7 @@
 }
 
 // Getting minutely historical data for needed period and needed coin
-- (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(void (^)(NSMutableArray<DBModel *> *coinData))completion {
+- (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
     NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histominute"];
     [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
