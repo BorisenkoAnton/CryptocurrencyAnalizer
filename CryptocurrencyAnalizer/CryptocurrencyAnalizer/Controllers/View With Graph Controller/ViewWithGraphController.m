@@ -183,6 +183,7 @@
 
 
 
+
 #pragma mark - actions to manipulate data and building plots
 
 // All the graph classes desriptions are available at https://core-plot.github.io/iOS/annotated.html
@@ -209,6 +210,7 @@
             
             [self getCachedDataIfExists:@"minutelyHistoricalData" limit:@"144" maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
+                        
                         [self.networkService getMinutelyHistoricalDataForCoin:coinName withLimit:@1439 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
                         for (DBModel *model in coinData) {

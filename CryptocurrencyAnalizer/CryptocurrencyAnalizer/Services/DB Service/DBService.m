@@ -185,7 +185,7 @@ static FMDatabaseQueue *sharedQueue;
             completion(YES, fmresult, nil);
             [sharedDatabase close];
         } @catch (NSException *exception) {
-            rollback = YES;
+            rollback = (BOOL *)YES;
             completion(YES, nil, (NSError *)exception);
             [sharedDatabase close];
         }
