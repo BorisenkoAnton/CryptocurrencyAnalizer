@@ -23,7 +23,7 @@ typedef void (^NetworkServiceCompletion)(NSMutableArray<DBModel *> * _Nullable c
 + (id _Nonnull)shared;
 
 - (void)downloadData:(NSString *_Nonnull)url
-          parameters:(id _Nonnull )parameters
+          parameters:(id _Nullable )parameters
           headers:(nullable NSDictionary<NSString *, NSString *> *)headers
           completion:(void (^_Nonnull)(NSObject * _Nullable data))completion;
 

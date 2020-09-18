@@ -22,6 +22,8 @@
 @property NSMutableArray<NSString *> *availableCoins;           // Full list of available coins
 @property NSMutableArray<NSString *> *filteredAvailableCoins;   // List of available coins after searching with the help of text Field
 @property (weak, nonatomic) IBOutlet UISegmentedControl *periodChoosingSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 
 @end
 
@@ -101,7 +103,10 @@
         
         [self.coinNamePickerView reloadAllComponents];
         [self.coinNamePickerView selectRow:0 inComponent:0 animated:NO];
+        
+        [self.activityIndicator stopAnimating];
     }];
+    
 }
 
 #pragma mark - Picker View Delegate and Picker View Data Source
@@ -182,13 +187,20 @@
 }
 
 
-
-
 #pragma mark - actions to manipulate data and building plots
 
 // All the graph classes desriptions are available at https://core-plot.github.io/iOS/annotated.html
 - (void)neededPeriodSelected:(id)sender {
     
+    [self.graphView addSubview:self.activityIndicator];
+    
+    [self.activityIndicator startAnimating];
+    if (self.activityIndicator.isHidden) {
+        NSLog(@"bomteu950tb");
+    }
+    if (self.activityIndicator.isAnimating) {
+        NSLog(@"bo45783479834u950tb");
+    }
     for (CPTScatterPlot *plot in self.graphModel.allPlots) {
         [self.graphModel removePlot:plot];
     }
@@ -217,14 +229,17 @@
                             [self.graphModel.plotDots addObject:model.price];
                         }
                         [self configureAndAddPlot];
-
+                        [self.activityIndicator stopAnimating];
+                            
                         [CacheService clearCacheInTable:@"minutelyHistoricalData" forCoin:coinName completion:^(BOOL success) {
                             if (success) {
                                 [CacheService cacheArrayOfObjects:coinData toTable:@"minutelyHistoricalData"];
                             }
                         }];
-
+                            
                     }];
+                } else {
+                    [self.activityIndicator stopAnimating];
                 }
             }];
             break;
@@ -241,7 +256,8 @@
                             [self.graphModel.plotDots addObject:model.price];
                         }
                         [self configureAndAddPlot];
-                        
+                        [self.activityIndicator stopAnimating];
+                            
                         [CacheService clearCacheInTable:@"hourlyHistoricalData" forCoin:coinName completion:^(BOOL success) {
                             if (success) {
                                 [CacheService cacheArrayOfObjects:coinData toTable:@"hourlyHistoricalData"];
@@ -249,6 +265,8 @@
                         }];
 
                     }];
+                } else {
+                    [self.activityIndicator stopAnimating];
                 }
             }];
             break;
@@ -265,7 +283,8 @@
                             [self.graphModel.plotDots addObject:model.price];
                         }
                         [self configureAndAddPlot];
-                        
+                        [self.activityIndicator stopAnimating];
+                            
                         [CacheService clearCacheInTable:@"dailyHistoricalData" forCoin:coinName completion:^(BOOL success) {
                             if (success) {
                                 [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
@@ -273,6 +292,8 @@
                         }];
 
                     }];
+                } else {
+                    [self.activityIndicator stopAnimating];
                 }
             }];
             break;
@@ -289,6 +310,7 @@
                             [self.graphModel.plotDots addObject:model.price];
                         }
                         [self configureAndAddPlot];
+                        [self.activityIndicator stopAnimating];
                         
                         [CacheService clearCacheInTable:@"dailyHistoricalData" forCoin:coinName completion:^(BOOL success) {
                             if (success) {
@@ -297,6 +319,8 @@
                         }];
 
                     }];
+                } else {
+                    [self.activityIndicator stopAnimating];
                 }
             }];
             break;

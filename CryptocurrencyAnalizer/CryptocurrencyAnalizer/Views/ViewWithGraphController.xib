@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewWithGraphController">
             <connections>
+                <outlet property="activityIndicator" destination="D9J-sj-m1b" id="O11-pQ-4CR"/>
                 <outlet property="coinNamePickerView" destination="4JE-IQ-8qg" id="Spa-Cf-ZKo"/>
                 <outlet property="coinNameTextField" destination="BG3-MQ-U3c" id="GNS-vE-ntN"/>
                 <outlet property="graphView" destination="ItQ-Oy-vPM" id="yQG-Aa-UkF"/>
@@ -23,6 +24,13 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItQ-Oy-vPM" customClass="CPTGraphHostingView">
                     <rect key="frame" x="27" y="64" width="360" height="448"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="D9J-sj-m1b">
+                            <rect key="frame" x="157" y="204" width="46" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="color" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </activityIndicatorView>
+                    </subviews>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MsZ-8b-6B0">
                     <rect key="frame" x="27" y="534.66666666666663" width="360" height="43.666666666666629"/>
