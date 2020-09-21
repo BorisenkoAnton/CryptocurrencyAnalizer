@@ -15,6 +15,7 @@
 #import "TableColumn.h"
 #import "DBModel.h"
 #import "CacheService.h"
+#import "FixedValues.h"
 
 @interface ViewWithGraphController ()
 
@@ -54,13 +55,13 @@
     
     // Creating all needed for caching tables if they are not exist
     NSMutableArray<TableColumn *> *columnsForTablesWithPrices = [NSMutableArray<TableColumn *> arrayWithObjects:
-                                              [[TableColumn alloc] initWithName:@"pairName" andType:@"TEXT"],
-                                              [[TableColumn alloc] initWithName:@"price" andType:@"REAL"],
-                                              [[TableColumn alloc] initWithName:@"timestamp" andType:@"INTEGER"],
+                                              [[TableColumn alloc] initWithName:DB_PAIR_NAME_COLUMN andType:DB_TEXT_TYPE],
+                                              [[TableColumn alloc] initWithName:DB_PRICE_COLUMN andType:DB_REAL_TYPE],
+                                              [[TableColumn alloc] initWithName:DB_TIMESTAMP_COLUMN andType:DB_INTEGER_TYPE],
                                               nil];
-    [DBService createTable:@"minutelyHistoricalData" withColumns:columnsForTablesWithPrices completion:nil];
-    [DBService createTable:@"hourlyHistoricalData" withColumns:columnsForTablesWithPrices completion:nil];
-    [DBService createTable:@"dailyHistoricalData" withColumns:columnsForTablesWithPrices completion:nil];
+    [DBService createTable:DB_MINUTELY_TABLE withColumns:columnsForTablesWithPrices completion:nil];
+    [DBService createTable:DB_HOURLY_TABLE withColumns:columnsForTablesWithPrices completion:nil];
+    [DBService createTable:DB_DAILY_TABLE withColumns:columnsForTablesWithPrices completion:nil];
     
     // Adding action to perform needed manipulations with data according to selected time period
     [self.periodChoosingSegmentedControl addTarget:self action:@selector(neededPeriodSelected:) forControlEvents:UIControlEventValueChanged];
@@ -155,12 +156,12 @@
 #pragma mark - Cache handling
 - (void)getCachedDataIfExists:(NSString *)table limit:(NSString *)limit maxSeparation:(nonnull NSDateComponents *)components coinName:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
-    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
     [DBService countQueryOnTable:table whereConditions:condition limit:limit completion:^(BOOL success, NSError * _Nullable error) {
 
         if (success) {
             
-            WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+            WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
             [CacheService checkCacheForNeedToBeUpdating:table whereConditions:[NSArray<WhereCondition *> arrayWithObject:condition] maxSeparation:components completion:^(BOOL needsToBeUpdated) {
                 if (needsToBeUpdated) {
                     completion(NO);
@@ -169,7 +170,7 @@
                                        if (success) {
                                            [self.graphModel.plotDots removeAllObjects];
                                            while ([result next]) {
-                                               [self.graphModel.plotDots addObject:[NSNumber numberWithDouble:[result doubleForColumn:@"price"]]];
+                                               [self.graphModel.plotDots addObject:[NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]]];
                                            }
                                            [self configureAndAddPlot];
                                            completion(YES);
@@ -195,12 +196,7 @@
     [self.graphView addSubview:self.activityIndicator];
     
     [self.activityIndicator startAnimating];
-    if (self.activityIndicator.isHidden) {
-        NSLog(@"bomteu950tb");
-    }
-    if (self.activityIndicator.isAnimating) {
-        NSLog(@"bo45783479834u950tb");
-    }
+
     for (CPTScatterPlot *plot in self.graphModel.allPlots) {
         [self.graphModel removePlot:plot];
     }
@@ -220,7 +216,7 @@
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setMinute:10];
             
-            [self getCachedDataIfExists:@"minutelyHistoricalData" limit:@"144" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_MINUTELY_TABLE limit:@"144" maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
                         
                         [self.networkService getMinutelyHistoricalDataForCoin:coinName withLimit:@1439 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
@@ -231,9 +227,9 @@
                         [self configureAndAddPlot];
                         [self.activityIndicator stopAnimating];
                             
-                        [CacheService clearCacheInTable:@"minutelyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                        [CacheService clearCacheInTable:DB_MINUTELY_TABLE forCoin:coinName completion:^(BOOL success) {
                             if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:@"minutelyHistoricalData"];
+                                [CacheService cacheArrayOfObjects:coinData toTable:DB_MINUTELY_TABLE];
                             }
                         }];
                             
@@ -248,7 +244,7 @@
         case 1: {
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setHour:1];
-            [self getCachedDataIfExists:@"hourlyHistoricalData" limit:@"168" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_HOURLY_TABLE limit:@"168" maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
                         [self.networkService getHourlyHistoricalDataForCoin:coinName withLimit:@167 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
@@ -258,9 +254,9 @@
                         [self configureAndAddPlot];
                         [self.activityIndicator stopAnimating];
                             
-                        [CacheService clearCacheInTable:@"hourlyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                        [CacheService clearCacheInTable:DB_HOURLY_TABLE forCoin:coinName completion:^(BOOL success) {
                             if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:@"hourlyHistoricalData"];
+                                [CacheService cacheArrayOfObjects:coinData toTable:DB_HOURLY_TABLE];
                             }
                         }];
 
@@ -275,7 +271,7 @@
         case 2: {
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setDay:1];
-            [self getCachedDataIfExists:@"dailyHistoricalData" limit:@"30" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_DAILY_TABLE limit:@"30" maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
                         [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:@29 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
@@ -285,9 +281,9 @@
                         [self configureAndAddPlot];
                         [self.activityIndicator stopAnimating];
                             
-                        [CacheService clearCacheInTable:@"dailyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                        [CacheService clearCacheInTable:DB_DAILY_TABLE forCoin:coinName completion:^(BOOL success) {
                             if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
+                                [CacheService cacheArrayOfObjects:coinData toTable:DB_DAILY_TABLE];
                             }
                         }];
 
@@ -302,7 +298,7 @@
         case 3: {
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setDay:1];
-            [self getCachedDataIfExists:@"dailyHistoricalData" limit:@"365" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_DAILY_TABLE limit:@"365" maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
                     [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:@364 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
@@ -312,9 +308,9 @@
                         [self configureAndAddPlot];
                         [self.activityIndicator stopAnimating];
                         
-                        [CacheService clearCacheInTable:@"dailyHistoricalData" forCoin:coinName completion:^(BOOL success) {
+                        [CacheService clearCacheInTable:DB_DAILY_TABLE forCoin:coinName completion:^(BOOL success) {
                             if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:@"dailyHistoricalData"];
+                                [CacheService cacheArrayOfObjects:coinData toTable:DB_DAILY_TABLE];
                             }
                         }];
 

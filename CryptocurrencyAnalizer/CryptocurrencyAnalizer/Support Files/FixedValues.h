@@ -15,13 +15,11 @@
 #define DB_INTEGER_TYPE @"INTEGER"
 
 // Tables names
-
 #define DB_MINUTELY_TABLE @"minutelyHistoricalData"
 #define DB_HOURLY_TABLE @"hourlyHistoricalData"
 #define DB_DAILY_TABLE @"dailyHistoricalData"
 
 // Tables columns names
-
 #define DB_PAIR_NAME_COLUMN @"pairName"
 #define DB_PRICE_COLUMN @"price"
 #define DB_TIMESTAMP_COLUMN @"timestamp"
