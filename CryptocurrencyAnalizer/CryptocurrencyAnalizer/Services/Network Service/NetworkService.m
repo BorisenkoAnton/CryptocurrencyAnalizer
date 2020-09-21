@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NetworkService.h"
+#import "RelativeURLs.h"
 
 // Service to manage networking via AFNetworking
 @implementation NetworkService
@@ -17,23 +18,26 @@
     
     static NetworkService *networkService = nil;
     static dispatch_once_t onceToken;
-    
+    [URLService getBaseURL];
     dispatch_once(&onceToken, ^{
         networkService = [[self alloc] init];
         networkService.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        networkService.baseUrl = @"https://min-api.cryptocompare.com";
-        networkService.apiKey = @"f2796ad1a4b0f52d336872f658e1d1fd76b0ca2789ee28e89f9b5858fde95461";
+        networkService.baseUrl = [URLService getBaseURL];
+        networkService.apiKey = [URLService getAPIKey];
         networkService.requestSerializer = [AFJSONRequestSerializer serializer];
     });
     return networkService;
 }
 
 // Downloading data with GET request by given url, parameters and headers
-- (void)downloadData:(NSString *)url
+- (void)downloadData:(RelativeURL)relativeURL
           parameters:(nullable id)parameters
           headers:(nullable NSDictionary<NSString *,NSString *> *)headers
           completion:(void (^)(NSObject *data))completion {
 
+    NSMutableString *url = [NSMutableString stringWithString:self.baseUrl];
+    [url appendString:[URLService getRelativeStringFrom:relativeURL]];
+    
     [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     [self GET:url parameters:parameters headers:headers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -46,11 +50,11 @@
 }
 
 // Getting any type of historical data for needed coin and parse it
-- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byURL:(NSString *)url completion:(NetworkServiceCompletion _Nullable )completion {
+- (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byRelativeURL:(RelativeURL)relativeURL completion:(NetworkServiceCompletion _Nullable )completion {
     
     NSDictionary *body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
     
-    [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
+    [self downloadData:relativeURL parameters:body headers:nil completion:^(NSObject * _Nullable data) {
         // Parsing response
         if ([data isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = (NSDictionary *)data;
@@ -78,8 +82,7 @@
 // Getting daily historical data for needed period and needed coin
 - (void)getDailyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
-    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histoday"];
-    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byRelativeURL:RelativeURLDailyHistory completion:^(NSMutableArray<DBModel *> *coinData) {
         completion(coinData);
     }];
 }
@@ -87,8 +90,7 @@
 // Getting hourly historical data for needed period and needed coin
 - (void)getHourlyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
-    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histohour"];
-    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byRelativeURL:RelativeURLHourlyHistory completion:^(NSMutableArray<DBModel *> *coinData) {
         completion(coinData);
     }];
 }
@@ -96,8 +98,7 @@
 // Getting minutely historical data for needed period and needed coin
 - (void)getMinutelyHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
-    NSString *url = [self.baseUrl stringByAppendingString:@"/data/v2/histominute"];
-    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byURL:url completion:^(NSMutableArray<DBModel *> *coinData) {
+    [self getAndParseHistoricalDataForCoin:coin withLimit:limit byRelativeURL:RelativeURLMinutelyHistory completion:^(NSMutableArray<DBModel *> *coinData) {
         NSMutableArray *tenMinutesChanges = [NSMutableArray new];
         for (int i = 0; i < coinData.count; i += 10) {
             [tenMinutesChanges addObject:coinData[i]];
@@ -110,10 +111,9 @@
 // Getting array of NSString names of all available coins
 - (void)getAvailableCoins:(void (^)(NSArray *availableCoins))completion {
     
-    NSString *url = [self.baseUrl stringByAppendingString:@"/data/blockchain/list"];
     NSDictionary *body = @{@"api_key":self.apiKey};
     
-    [self downloadData:url parameters:body headers:nil completion:^(NSObject * _Nullable data) {
+    [self downloadData:RelativeURLAvailableCoins parameters:body headers:nil completion:^(NSObject * _Nullable data) {
         if ([data isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = (NSDictionary *)data;
             NSDictionary *dataField = [response valueForKey:@"Data"];
