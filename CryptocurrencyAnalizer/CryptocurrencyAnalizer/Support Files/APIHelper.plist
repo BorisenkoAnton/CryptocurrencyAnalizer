@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Base url</key>
+	<string>https://min-api.cryptocompare.com</string>
+	<key>API key</key>
+	<string>f2796ad1a4b0f52d336872f658e1d1fd76b0ca2789ee28e89f9b5858fde95461</string>
+</dict>
+</plist>
