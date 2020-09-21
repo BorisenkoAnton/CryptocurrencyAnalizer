@@ -8,6 +8,7 @@
 
 #import "CacheService.h"
 #import "DBModel.h"
+#import "FixedValues.h"
 
 @implementation CacheService
 
@@ -20,7 +21,7 @@
 // Checking cache for need to be updating with the help of comparison of the current date and the latest date from table
 + (void)checkCacheForNeedToBeUpdating:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions maxSeparation:(NSDateComponents *)components completion:(void (^)(BOOL needsToBeUpdated))completion{
     
-    [DBService getMaxValue:@"timestamp" fromTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+    [DBService getMaxValue:DB_TIMESTAMP_COLUMN fromTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         // Success means that there were needed items in the table
         if (success) {
             [result next];
@@ -28,7 +29,7 @@
             NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             
             // Adding maximum separation (in some time units) to the latest date from table
-            NSDate *latestDate = [calendar dateByAddingComponents:components toDate:[result dateForColumn:@"timestamp"] options:0];
+            NSDate *latestDate = [calendar dateByAddingComponents:components toDate:[result dateForColumn:DB_TIMESTAMP_COLUMN] options:0];
             
             if ([[NSDate now] timeIntervalSince1970] > [latestDate timeIntervalSince1970]) {
                 completion(YES);
@@ -43,7 +44,7 @@
 // Clearing all the cach for needed coin
 + (void)clearCacheInTable:(NSString *)table forCoin:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
-    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:@"pairName" andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
     [DBService deleteFromTable:table whereConditions:[NSArray arrayWithObject:condition] completion:^(BOOL success, NSError * _Nullable error) {
         if (success) {
             completion(YES);
