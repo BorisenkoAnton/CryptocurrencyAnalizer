@@ -7,6 +7,7 @@
 //
 
 #import "DBModel.h"
+#import "URLService.h"
 @import AFNetworking;
 
 #ifndef NetworkService_h
@@ -22,7 +23,7 @@ typedef void (^NetworkServiceCompletion)(NSMutableArray<DBModel *> * _Nullable c
 
 + (id _Nonnull)shared;
 
-- (void)downloadData:(NSString *_Nonnull)url
+- (void)downloadData:(RelativeURL)relativeURL
           parameters:(id _Nullable )parameters
           headers:(nullable NSDictionary<NSString *, NSString *> *)headers
           completion:(void (^_Nonnull)(NSObject * _Nullable data))completion;
