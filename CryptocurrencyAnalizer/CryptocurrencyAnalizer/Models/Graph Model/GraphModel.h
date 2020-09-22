@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
+#import "GraphOptions.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,12 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSMutableArray<CPTMutableLineStyle *> *lineStyles;
 @property NSMutableArray<CPTMutableLineStyle *> *gridLineStyles;
 
-- (id)initModelWithFrame:(CGRect)frame
-            backgroundColor:(CGColorRef)color
-            bottomPadding:(CGFloat)paddingBottom
-            leftPadding:(CGFloat)paddingLeft
-            topPadding:(CGFloat)paddingTop
-            andRightPadding:(CGFloat)paddingRight;
+- (id)initModelWithOptions:(GraphOptions)options;
 
 @end
 
