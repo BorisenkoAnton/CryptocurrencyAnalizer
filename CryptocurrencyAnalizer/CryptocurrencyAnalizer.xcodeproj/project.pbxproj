@@ -33,6 +33,7 @@
 		535C7EA8250EA7EA004274C0 /* ViewWithGraphController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewWithGraphController.m; sourceTree = "<group>"; };
 		535C7EA9250EA7EA004274C0 /* ViewWithGraphController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewWithGraphController.xib; sourceTree = "<group>"; };
 		A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptocurrencyAnalizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLStatementOptions.h; sourceTree = "<group>"; };
 		B41AF5B1250A4C3C00E71454 /* GraphModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphModel.h; sourceTree = "<group>"; };
 		B41AF5B2250A4C3C00E71454 /* GraphModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphModel.m; sourceTree = "<group>"; };
 		B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptocurrencyAnalizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +151,8 @@
 		B48467EF250B9A3B009338C5 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				B4CC602D250F8F7B007DE213 /* WHERE condition */,
+				B4CC6028250F5742007DE213 /* Table Column */,
 				B420C0A425060BB4008873FF /* Assets.xcassets */,
 				B420C09B25060BB3008873FF /* SceneDelegate.h */,
 				B420C09C25060BB3008873FF /* SceneDelegate.m */,
@@ -159,6 +162,7 @@
 				B480197F2518DBD100CAC395 /* FixedValues.h */,
 				B48019802518E83800CAC395 /* APIHelper.plist */,
 				B48019822518F1A300CAC395 /* RelativeURLs.h */,
+				B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -193,13 +197,13 @@
 			path = "DB Service";
 			sourceTree = "<group>";
 		};
-		B4CC6028250F5742007DE213 /* Table Column Model */ = {
+		B4CC6028250F5742007DE213 /* Table Column */ = {
 			isa = PBXGroup;
 			children = (
 				B4CC602A250F681D007DE213 /* TableColumn.h */,
 				B4CC602B250F681D007DE213 /* TableColumn.m */,
 			);
-			path = "Table Column Model";
+			path = "Table Column";
 			sourceTree = "<group>";
 		};
 		B4CC602D250F8F7B007DE213 /* WHERE condition */ = {
@@ -232,8 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				B4DB90482510B23100060564 /* DB Model */,
-				B4CC602D250F8F7B007DE213 /* WHERE condition */,
-				B4CC6028250F5742007DE213 /* Table Column Model */,
 				B48467ED250B99B0009338C5 /* Graph Model */,
 			);
 			path = Models;
