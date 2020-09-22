@@ -32,6 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)dropTable:(NSString *)table completion:(nullable Completion)completion;
 
++ (NSArray<WhereCondition *> *)createWhereConditionsFromDictionary:(NSDictionary *)conditions;
+
++ (NSArray<TableColumn *> *)createTableColumnsFromDictionary:(NSDictionary *)columns;
+
 @end
 
 NS_ASSUME_NONNULL_END
