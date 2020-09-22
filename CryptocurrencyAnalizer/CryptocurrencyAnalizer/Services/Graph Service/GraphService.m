@@ -11,21 +11,6 @@
 
 @implementation GraphService
 
-+ (CPTGraph *)createAndConfigureGraphWithFrame:(CGRect)frame backgroundColor:(CGColorRef)color bottomPadding:(CGFloat)paddingBottom leftPadding:(CGFloat)paddingLeft topPadding:(CGFloat)paddingTop andRightPadding:(CGFloat)paddingRight {
-    
-    CPTGraph* graph = [[CPTXYGraph alloc] initWithFrame:frame];
-    // If YES, a sublayer mask is applied to clip sublayer content to the inside of the border
-    graph.plotAreaFrame.masksToBorder = NO;
-    graph.backgroundColor = color;
-    // Padding from graph to its container
-    graph.paddingBottom = paddingBottom;
-    graph.paddingLeft = paddingLeft;
-    graph.paddingTop = paddingTop;
-    graph.paddingRight = paddingRight;
-    
-    return graph;
-}
-
 // Plot space defines the coordinate system of a plot
 + (void)configurePlotSpace:(CPTXYPlotSpace *)plotSpace forPlotwithMaxXValue:(NSNumber *)maxXValue andMaxYValue:(NSNumber *)maxYValue {
     
@@ -61,26 +46,26 @@
 }
 
 // CPTXYAxisSet is a set of cartesian (X-Y) axes
-+ (void)configureAxisSet:(CPTXYAxisSet **)axisSet withLabelTextStyle:(CPTTextStyle *)labelTextStyle minorGridLineStyle:(CPTLineStyle *)gridLineStyle axisLineStyle:(CPTLineStyle *)axisLineStyle xAxisConstraints:(CPTConstraints *)xAxisConstraints yAxisConstraints:(CPTConstraints *)yAxisConstraints xAxisDelegate:(id<CALayerDelegate>)xAxisDelegate andYAxisDelegate:(id<CALayerDelegate>)yAxisDelegate {
++ (void)configureAxisSet:(CPTXYAxisSet **)axisSet withOptions:(AxisSetOptions)options {
     
     CPTXYAxisSet *configuredAxisSet = *axisSet;
     
-    configuredAxisSet.xAxis.labelTextStyle = labelTextStyle;
-    configuredAxisSet.xAxis.minorGridLineStyle = gridLineStyle;
-    configuredAxisSet.xAxis.axisLineStyle = axisLineStyle;
-    configuredAxisSet.xAxis.axisConstraints = xAxisConstraints;
-    configuredAxisSet.xAxis.delegate = xAxisDelegate;
+    configuredAxisSet.xAxis.labelTextStyle = options.labelTextStyle;
+    configuredAxisSet.xAxis.minorGridLineStyle = options.gridLineStyle;
+    configuredAxisSet.xAxis.axisLineStyle = options.axisLineStyle;
+    configuredAxisSet.xAxis.axisConstraints = options.xAxisConstraints;
+    configuredAxisSet.xAxis.delegate = options.xAxisDelegate;
     
-    configuredAxisSet.yAxis.labelTextStyle = labelTextStyle;
-    configuredAxisSet.yAxis.minorGridLineStyle = gridLineStyle;
+    configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
+    configuredAxisSet.yAxis.minorGridLineStyle = options.gridLineStyle;
     CPTFillArray *alternatingBF = [CPTFillArray arrayWithObjects:
                                    [CPTFill fillWithColor:[CPTColor colorWithComponentRed:255.0 green:255.0 blue:255.0 alpha:0.03]],
                                    [CPTFill fillWithColor:[CPTColor blackColor]],
                                    nil];
     configuredAxisSet.yAxis.alternatingBandFills = alternatingBF;
-    configuredAxisSet.yAxis.axisLineStyle = axisLineStyle;
-    configuredAxisSet.yAxis.axisConstraints = yAxisConstraints;
-    configuredAxisSet.yAxis.delegate = yAxisDelegate;
+    configuredAxisSet.yAxis.axisLineStyle = options.axisLineStyle;
+    configuredAxisSet.yAxis.axisConstraints = options.yAxisConstraints;
+    configuredAxisSet.yAxis.delegate = options.yAxisDelegate;
 }
 
 + (void)configureAxisSet:(CPTXYAxisSet **)axisSet withMaxXvalue:(NSNumber *)maxXValue maxYvalue:(NSNumber *)maxYValue numberOfXMajorIntervals:(int)numOfXMajorIntervals andNumberOfXMinorTicksPerInterval:(int)numOfXTicksPerInterval {
