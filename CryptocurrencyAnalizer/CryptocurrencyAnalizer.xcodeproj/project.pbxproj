@@ -36,6 +36,7 @@
 		B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLStatementOptions.h; sourceTree = "<group>"; };
 		B41AF5B1250A4C3C00E71454 /* GraphModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphModel.h; sourceTree = "<group>"; };
 		B41AF5B2250A4C3C00E71454 /* GraphModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphModel.m; sourceTree = "<group>"; };
+		B41D1659251A3F6600E82139 /* GraphOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphOptions.h; sourceTree = "<group>"; };
 		B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptocurrencyAnalizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B420C09825060BB3008873FF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B420C09925060BB3008873FF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,6 +48,7 @@
 		B420C0AA25060BB4008873FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B424C8E42518FB040091A808 /* URLService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLService.h; sourceTree = "<group>"; };
 		B424C8E52518FB040091A808 /* URLService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLService.m; sourceTree = "<group>"; };
+		B44B21EC251A46240073D497 /* AxisSetOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AxisSetOptions.h; sourceTree = "<group>"; };
 		B480197F2518DBD100CAC395 /* FixedValues.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FixedValues.h; sourceTree = "<group>"; };
 		B48019802518E83800CAC395 /* APIHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIHelper.plist; sourceTree = "<group>"; };
 		B48019822518F1A300CAC395 /* RelativeURLs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelativeURLs.h; sourceTree = "<group>"; };
@@ -96,6 +98,16 @@
 				A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B41D1658251A3F5000E82139 /* Options structs */ = {
+			isa = PBXGroup;
+			children = (
+				B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */,
+				B41D1659251A3F6600E82139 /* GraphOptions.h */,
+				B44B21EC251A46240073D497 /* AxisSetOptions.h */,
+			);
+			path = "Options structs";
 			sourceTree = "<group>";
 		};
 		B420C08C25060BB3008873FF = {
@@ -151,6 +163,7 @@
 		B48467EF250B9A3B009338C5 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				B41D1658251A3F5000E82139 /* Options structs */,
 				B4CC602D250F8F7B007DE213 /* WHERE condition */,
 				B4CC6028250F5742007DE213 /* Table Column */,
 				B420C0A425060BB4008873FF /* Assets.xcassets */,
@@ -162,7 +175,6 @@
 				B480197F2518DBD100CAC395 /* FixedValues.h */,
 				B48019802518E83800CAC395 /* APIHelper.plist */,
 				B48019822518F1A300CAC395 /* RelativeURLs.h */,
-				B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
