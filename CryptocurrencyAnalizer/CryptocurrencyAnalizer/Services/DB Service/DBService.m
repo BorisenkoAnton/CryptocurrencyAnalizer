@@ -59,24 +59,25 @@ static FMDatabaseQueue *sharedQueue;
         sharedDatabase = [DBService sharedDatabase];
     }
     
-    @try {
-        if (!sharedDatabase.isOpen) {
-            [sharedDatabase open];
+    //[sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+        @try {
+            if (!sharedDatabase.isOpen) {
+                [sharedDatabase open];
+            }
+            
+            [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
+            if(completion) {
+                completion(YES, nil);
+            }
+            [sharedDatabase close];
+        } @catch (NSException *exception) {
+            NSLog(@"Updating failed: %@", exception.name);
+            if(completion) {
+                completion(NO, (NSError *)exception);
+            }
+            [sharedDatabase close];
         }
-        
-        [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
-        if(completion) {
-            completion(YES, nil);
-        }
-        [sharedDatabase close];
-    } @catch (NSException *exception) {
-        NSLog(@"Updating failed: %@", exception.name);
-        if(completion) {
-            completion(NO, (NSError *)exception);
-        }
-        [sharedDatabase close];
-
-    }
+    //}];
 }
 
 // Inserting an array of values in the given table
@@ -91,105 +92,61 @@ static FMDatabaseQueue *sharedQueue;
     [DBService update:sqlStatement values:values completion:completion];
 }
 
-// Query with COUNT. It is useful to know are there any needed items in DB
-+ (void)countQueryOnTable:(NSString *)table whereConditions:(WhereCondition *)condition limit:(NSString *)limit completion:(Completion)completion {
-    
-    NSMutableString *sqlCountStatement = [NSMutableString stringWithFormat:@"SELECT COUNT(*) FROM %@", table];
-
-    if (condition) {
-        
-        [sqlCountStatement appendFormat:@" WHERE %@ = '%@'", condition.column, condition.value];
-    }
-    
-    if (limit) {
-        
-        [sqlCountStatement appendFormat:@" LIMIT %@", limit];
-    }
-
-    @try {
-        if (!sharedDatabase.isOpen) {
-            [sharedDatabase open];
-        }
-        int count = [sharedDatabase intForQuery:sqlCountStatement];
-        
-        if (count >= [limit intValue]) {
-            completion(YES, nil);
-        } else {
-            completion(NO, nil);
-        }
-        [sharedDatabase close];
-    } @catch (NSException *exception) {
-        completion(NO, (NSError *)exception);
-        [sharedDatabase close];
-    }
-    
-}
-
 // Query the given table based on conditions provided
-+ (void)queryOnTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions limit:(NSString *)limit completion:(ResultCompletion)completion {
++ (void)queryOnTable:(NSString *)table sqlStatementOptions:(SQLStatementOptions)options completion:(ResultCompletion)completion {
     
-    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
+    NSMutableString *sqlStatement;
+    if (options.count) {
+        sqlStatement = [NSMutableString stringWithFormat:@"SELECT COUNT(*) FROM %@", table];
+    } else {
+        sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
+    }
+    
     NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
-    
-    if (conditions) {
+    if (options.whereConditions) {
         [sqlStatement appendString:@" WHERE"];
-        for (WhereCondition *condition in conditions) {
+        for (WhereCondition *condition in options.whereConditions) {
             [values addObject:condition.value];
-            [sqlStatement appendFormat:@" %@ = ?", condition.column];
-            ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
+            [sqlStatement appendFormat:@" %@ = '%@'", condition.column, condition.value];
+            ([options.whereConditions indexOfObjectIdenticalTo:condition] == options.whereConditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
         }
     }
     
-    if (limit) {
-        
-        [sqlStatement appendFormat:@" LIMIT %@", limit];
+    if (options.orderBy) {
+        [sqlStatement appendFormat:@" ORDER BY %@", options.orderBy];
     }
     
+    if (options.desc) {
+        [sqlStatement appendString:@" desc"];
+    }
+    
+    if (options.limit) {
+        [sqlStatement appendFormat:@" limit %@", options.limit];
+    }
+    NSLog(sqlStatement);
     @try {
         if (!sharedDatabase.isOpen) {
             [sharedDatabase open];
         }
-        FMResultSet *fmresult = [sharedDatabase executeQuery:sqlStatement values:values error:nil];
-        completion(YES, fmresult, nil);
+        
+        if (options.count && options.limit) {
+            int count = [sharedDatabase intForQuery:sqlStatement];
+            if (count >= [options.limit intValue]) {
+                completion(YES, nil, nil);
+            } else {
+                completion(NO, nil, nil);
+            }
+        } else {
+            FMResultSet *fmresult = [sharedDatabase executeQuery:sqlStatement values:values error:nil];
+            completion(YES, fmresult, nil);
+        }
+        
         [sharedDatabase close];
     } @catch (NSException *exception) {
         completion(YES, nil, (NSError *)exception);
         [sharedDatabase close];
     }
     
-}
-
-// Getting max value from table. In checkCacheForNeedToBeUpdating it is used to get the latest date
-+ (void) getMaxValue:(NSString *)value fromTable:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions completion:(ResultCompletion)completion {
-    
-    NSMutableString *sqlStatement = [NSMutableString stringWithFormat:@"SELECT * FROM %@", table];
-    NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
-    
-    if (conditions) {
-        [sqlStatement appendString:@" WHERE"];
-        for (WhereCondition *condition in conditions) {
-            [values addObject:condition.value];
-            [sqlStatement appendFormat:@" %@ = ?", condition.column];
-            ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
-        }
-    }
-    
-    [sqlStatement appendFormat:@" ORDER BY %@ desc LIMIT 1", value];
-    
-    [sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-        @try {
-            if (!sharedDatabase.isOpen) {
-                [sharedDatabase open];
-            }
-            FMResultSet *fmresult = [sharedDatabase executeQuery:sqlStatement values:values error:nil];
-            completion(YES, fmresult, nil);
-            [sharedDatabase close];
-        } @catch (NSException *exception) {
-            rollback = (BOOL *)YES;
-            completion(YES, nil, (NSError *)exception);
-            [sharedDatabase close];
-        }
-    }];
 }
 
 // Deleting a row of data from a given table based on conditions
