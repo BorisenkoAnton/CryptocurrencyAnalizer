@@ -75,12 +75,14 @@
     self.coinNamePickerView.dataSource = self;
     self.coinNameTextField.delegate = self;
     
-    self.graphModel = [[GraphModel alloc] initModelWithFrame:self.graphView.frame
-                                             backgroundColor:[UIColor blackColor].CGColor
-                                               bottomPadding:40.0
-                                                 leftPadding:65.0
-                                                  topPadding:30.0
-                                             andRightPadding:15.0];
+    GraphOptions options;
+    options.frame = self.graphView.frame;
+    options.color = [UIColor blackColor].CGColor;
+    options.paddingBottom = 40.0;
+    options.paddingLeft = 65.0;
+    options.paddingTop = 30.0;
+    options.paddingRight = 15.0;
+    self.graphModel = [[GraphModel alloc] initModelWithOptions:options];
     
     self.graphModel.textStyles[0] = [GraphService createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
     self.graphModel.lineStyles[0] = [GraphService createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
@@ -342,9 +344,17 @@
     [GraphService configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
 
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graphModel.axisSet;
+    AxisSetOptions options;
+    options.labelTextStyle = self.graphModel.textStyles[0];
+    options.gridLineStyle = self.graphModel.gridLineStyles[0];
+    options.axisLineStyle = self.graphModel.lineStyles[0];
+    options.xAxisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
+    options.yAxisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
+    options.xAxisDelegate = self;
+    options.yAxisDelegate = self;
     
-    [GraphService configureAxisSet:&axisSet withLabelTextStyle:self.graphModel.textStyles[0] minorGridLineStyle:self.graphModel.gridLineStyles[0] axisLineStyle:self.graphModel.lineStyles[0] xAxisConstraints:[CPTConstraints constraintWithLowerOffset:0.0] yAxisConstraints:[CPTConstraints constraintWithLowerOffset:0.0] xAxisDelegate:self andYAxisDelegate:self];
-
+    [GraphService configureAxisSet:&axisSet withOptions:options];
+    
     // Depending on the selected time period, we will get different number of dots
     switch (self.graphModel.plotDots.count) {
         // For one day history
