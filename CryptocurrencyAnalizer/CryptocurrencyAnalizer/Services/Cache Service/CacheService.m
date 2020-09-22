@@ -19,10 +19,18 @@
 }
 
 // Checking cache for need to be updating with the help of comparison of the current date and the latest date from table
-+ (void)checkCacheForNeedToBeUpdating:(NSString *)table whereConditions:(NSArray<WhereCondition *> *)conditions maxSeparation:(NSDateComponents *)components completion:(void (^)(BOOL needsToBeUpdated))completion{
++ (void)checkCacheForNeedToBeUpdating:(NSString *)table forCoin:(NSString *)coinName maxSeparation:(NSDateComponents *)components completion:(void (^)(BOOL needsToBeUpdated))completion{
     
-    [DBService getMaxValue:DB_TIMESTAMP_COLUMN fromTable:table whereConditions:conditions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
-        // Success means that there were needed items in the table
+    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+    
+    SQLStatementOptions options;
+    options.count = NO;
+    options.orderBy = DB_TIMESTAMP_COLUMN;
+    options.desc = YES;
+    options.limit = @"1";
+    options.whereConditions = [NSMutableArray arrayWithObject:condition];
+    
+    [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         if (success) {
             [result next];
             
@@ -36,9 +44,9 @@
             } else {
                 completion(NO);
             }
-            
         }
     }];
+
 }
 
 // Clearing all the cach for needed coin
@@ -68,4 +76,3 @@
 }
 
 @end
-

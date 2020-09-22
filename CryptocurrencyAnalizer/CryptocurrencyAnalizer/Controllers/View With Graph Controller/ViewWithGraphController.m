@@ -156,27 +156,34 @@
 #pragma mark - Cache handling
 - (void)getCachedDataIfExists:(NSString *)table limit:(NSString *)limit maxSeparation:(nonnull NSDateComponents *)components coinName:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
+    // First, check if cache exists with needed volume of data
+    SQLStatementOptions options;
     WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
-    [DBService countQueryOnTable:table whereConditions:condition limit:limit completion:^(BOOL success, NSError * _Nullable error) {
-
+    options.limit = limit;
+    options.count = YES;
+    options.whereConditions = [NSMutableArray arrayWithObject:condition];
+    [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         if (success) {
-            
-            WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
-            [CacheService checkCacheForNeedToBeUpdating:table whereConditions:[NSArray<WhereCondition *> arrayWithObject:condition] maxSeparation:components completion:^(BOOL needsToBeUpdated) {
+            [CacheService checkCacheForNeedToBeUpdating:table forCoin:coinName maxSeparation:components completion:^(BOOL needsToBeUpdated) {
                 if (needsToBeUpdated) {
                     completion(NO);
                 } else {
-                    [DBService queryOnTable:table whereConditions:[NSArray<WhereCondition *> arrayWithObject:condition] limit:limit completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
-                                       if (success) {
-                                           [self.graphModel.plotDots removeAllObjects];
-                                           while ([result next]) {
-                                               [self.graphModel.plotDots addObject:[NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]]];
-                                           }
-                                           [self configureAndAddPlot];
-                                           completion(YES);
-                                       } else {
-                                           completion(NO);
-                                       }
+                    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+                    SQLStatementOptions newOptions;
+                    newOptions.limit = limit;
+                    newOptions.count = NO;
+                    newOptions.whereConditions = [NSMutableArray arrayWithObject:condition];
+                    [DBService queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+                        if (success) {
+                            [self.graphModel.plotDots removeAllObjects];
+                            while ([result next]) {
+                                [self.graphModel.plotDots addObject:[NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]]];
+                            }
+                            [self configureAndAddPlot];
+                            completion(YES);
+                        } else {
+                            completion(NO);
+                        }
                     }];
                 }
             }];
@@ -184,7 +191,7 @@
             completion(NO);
         }
     }];
-            
+             
 }
 
 
@@ -218,7 +225,6 @@
             
             [self getCachedDataIfExists:DB_MINUTELY_TABLE limit:@"144" maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
-                        
                         [self.networkService getMinutelyHistoricalDataForCoin:coinName withLimit:@1439 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
                         for (DBModel *model in coinData) {
