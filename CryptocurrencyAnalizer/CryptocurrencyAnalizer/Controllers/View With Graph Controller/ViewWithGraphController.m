@@ -220,9 +220,9 @@
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setMinute:10];
             
-            [self getCachedDataIfExists:DB_MINUTELY_TABLE limit:@"144" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_MINUTELY_TABLE limit:DB_LIMIT_FOR_MINUTELY_TABLE maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
-                        [self.networkService getMinutelyHistoricalDataForCoin:coinName withLimit:@1439 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                        [self.networkService getMinutelyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_MINUTELY_HISTORY completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
                         for (DBModel *model in coinData) {
                             [self.graphModel.plotDots addObject:model.price];
@@ -247,9 +247,9 @@
         case 1: {
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setHour:1];
-            [self getCachedDataIfExists:DB_HOURLY_TABLE limit:@"168" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_HOURLY_TABLE limit:DB_LIMIT_FOR_HOURLY_TABLE maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
-                        [self.networkService getHourlyHistoricalDataForCoin:coinName withLimit:@167 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                        [self.networkService getHourlyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_HOURLY_HISTORY completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
                         for (DBModel *model in coinData) {
                             [self.graphModel.plotDots addObject:model.price];
@@ -274,9 +274,9 @@
         case 2: {
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setDay:1];
-            [self getCachedDataIfExists:DB_DAILY_TABLE limit:@"30" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_DAILY_TABLE limit:DB_LIMIT_FOR_DAILY_TABLE_M maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
-                        [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:@29 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                        [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_DAILY_HISTORY_M completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
                         for (DBModel *model in coinData) {
                             [self.graphModel.plotDots addObject:model.price];
@@ -301,9 +301,9 @@
         case 3: {
             NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setDay:1];
-            [self getCachedDataIfExists:DB_DAILY_TABLE limit:@"365" maxSeparation:components coinName:coinName completion:^(BOOL success) {
+            [self getCachedDataIfExists:DB_DAILY_TABLE limit:DB_LIMIT_FOR_DAILY_TABLE_Y maxSeparation:components coinName:coinName completion:^(BOOL success) {
                 if (!success) {
-                    [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:@364 completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                    [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_DAILY_HISTORY_Y completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                         [self.graphModel.plotDots removeAllObjects];
                         for (DBModel *model in coinData) {
                             [self.graphModel.plotDots addObject:model.price];
@@ -348,29 +348,29 @@
     // Depending on the selected time period, we will get different number of dots
     switch (self.graphModel.plotDots.count) {
         // For one day history
-        case 144: {
+        case PLOT_DOTS_COUNT_DAY: {
             [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:6 andNumberOfXMinorTicksPerInterval:3];
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = 0.0;
+            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_0_DEGREES;
             break;
         }
         // For 7 days history
-        case 168: {
+        case PLOT_DOTS_COUNT_WEEK: {
             [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:7 andNumberOfXMinorTicksPerInterval:1];
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = 0.0;
+            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_0_DEGREES;
             break;
         }
         // For month history
-        case 30: {
+        case PLOT_DOTS_COUNT_MONTH: {
             [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:30 andNumberOfXMinorTicksPerInterval:1];
             // We need to rotate labels on x axis, to see them all
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = 1.5708;
+            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_90_DEGREES;
             break;
         }
             
         // For one year history
-        case 365: {
+        case PLOT_DOTS_COUNT_YEAR: {
             [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:12 andNumberOfXMinorTicksPerInterval:3];
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = 1.5708;
+            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_90_DEGREES;
             break;
         }
         default:

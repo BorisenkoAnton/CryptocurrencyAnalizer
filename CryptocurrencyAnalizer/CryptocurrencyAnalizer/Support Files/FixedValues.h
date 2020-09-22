@@ -24,4 +24,24 @@
 #define DB_PRICE_COLUMN @"price"
 #define DB_TIMESTAMP_COLUMN @"timestamp"
 
+// Limits for queries and API calls
+#define DB_LIMIT_FOR_MINUTELY_TABLE @"144"
+#define DB_LIMIT_FOR_HOURLY_TABLE @"168"
+#define DB_LIMIT_FOR_DAILY_TABLE_M @"30"
+#define DB_LIMIT_FOR_DAILY_TABLE_Y @"365"
+
+#define API_LIMIT_FOR_MINUTELY_HISTORY @1439
+#define API_LIMIT_FOR_HOURLY_HISTORY @167
+#define API_LIMIT_FOR_DAILY_HISTORY_M @29
+#define API_LIMIT_FOR_DAILY_HISTORY_Y @364
+
+// Plot dots count
+#define PLOT_DOTS_COUNT_DAY 144
+#define PLOT_DOTS_COUNT_WEEK 168
+#define PLOT_DOTS_COUNT_MONTH 30
+#define PLOT_DOTS_COUNT_YEAR 365
+
+// Rotation in degrees
+#define ROTATION_0_DEGREES 0
+#define ROTATION_90_DEGREES 1.5708
 #endif /* FixedValues_h */
