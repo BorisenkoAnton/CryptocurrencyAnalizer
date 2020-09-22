@@ -54,11 +54,8 @@
     [super viewDidLoad];
     
     // Creating all needed for caching tables if they are not exist
-    NSMutableArray<TableColumn *> *columnsForTablesWithPrices = [NSMutableArray<TableColumn *> arrayWithObjects:
-                                              [[TableColumn alloc] initWithName:DB_PAIR_NAME_COLUMN andType:DB_TEXT_TYPE],
-                                              [[TableColumn alloc] initWithName:DB_PRICE_COLUMN andType:DB_REAL_TYPE],
-                                              [[TableColumn alloc] initWithName:DB_TIMESTAMP_COLUMN andType:DB_INTEGER_TYPE],
-                                              nil];
+    NSDictionary *columns = @{DB_PAIR_NAME_COLUMN:DB_TEXT_TYPE, DB_PRICE_COLUMN:DB_REAL_TYPE, DB_TIMESTAMP_COLUMN:DB_INTEGER_TYPE};
+    NSArray<TableColumn *> *columnsForTablesWithPrices = [DBService createTableColumnsFromDictionary:columns];
     [DBService createTable:DB_MINUTELY_TABLE withColumns:columnsForTablesWithPrices completion:nil];
     [DBService createTable:DB_HOURLY_TABLE withColumns:columnsForTablesWithPrices completion:nil];
     [DBService createTable:DB_DAILY_TABLE withColumns:columnsForTablesWithPrices completion:nil];
@@ -158,21 +155,21 @@
     
     // First, check if cache exists with needed volume of data
     SQLStatementOptions options;
-    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+    NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
     options.limit = limit;
     options.count = YES;
-    options.whereConditions = [NSMutableArray arrayWithObject:condition];
+    options.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
     [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         if (success) {
             [CacheService checkCacheForNeedToBeUpdating:table forCoin:coinName maxSeparation:components completion:^(BOOL needsToBeUpdated) {
                 if (needsToBeUpdated) {
                     completion(NO);
                 } else {
-                    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+                    NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
                     SQLStatementOptions newOptions;
                     newOptions.limit = limit;
                     newOptions.count = NO;
-                    newOptions.whereConditions = [NSMutableArray arrayWithObject:condition];
+                    newOptions.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
                     [DBService queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
                         if (success) {
                             [self.graphModel.plotDots removeAllObjects];

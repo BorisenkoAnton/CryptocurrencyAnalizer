@@ -123,7 +123,7 @@ static FMDatabaseQueue *sharedQueue;
     if (options.limit) {
         [sqlStatement appendFormat:@" limit %@", options.limit];
     }
-    NSLog(sqlStatement);
+
     @try {
         if (!sharedDatabase.isOpen) {
             [sharedDatabase open];
@@ -170,6 +170,26 @@ static FMDatabaseQueue *sharedQueue;
     
     NSString *sqlStatement = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", table];
     [DBService update:sqlStatement values:nil completion:completion];
+}
+
++ (NSArray<WhereCondition *> *)createWhereConditionsFromDictionary:(NSDictionary *)conditions {
+    
+    NSMutableArray<WhereCondition *> * createdConditions = [NSMutableArray<WhereCondition *> new];
+    for(id key in conditions) {
+        WhereCondition *newCondition = [[WhereCondition alloc] initWithColumn:key andValue:[conditions valueForKey:key]];
+        [createdConditions addObject:newCondition];
+    }
+    return createdConditions;
+}
+
++ (NSArray<TableColumn *> *)createTableColumnsFromDictionary:(NSDictionary *)columns {
+    
+    NSMutableArray<TableColumn *> * createdColumns = [NSMutableArray<TableColumn *> new];
+    for(id key in columns) {
+        TableColumn *newColumn = [[TableColumn alloc] initWithName:key andType:[columns valueForKey:key]];
+        [createdColumns addObject:newColumn];
+    }
+    return createdColumns;
 }
 
 @end

@@ -21,14 +21,14 @@
 // Checking cache for need to be updating with the help of comparison of the current date and the latest date from table
 + (void)checkCacheForNeedToBeUpdating:(NSString *)table forCoin:(NSString *)coinName maxSeparation:(NSDateComponents *)components completion:(void (^)(BOOL needsToBeUpdated))completion{
     
-    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
+    NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
     
     SQLStatementOptions options;
     options.count = NO;
     options.orderBy = DB_TIMESTAMP_COLUMN;
     options.desc = YES;
     options.limit = @"1";
-    options.whereConditions = [NSMutableArray arrayWithObject:condition];
+    options.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
     
     [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         if (success) {
@@ -52,8 +52,8 @@
 // Clearing all the cach for needed coin
 + (void)clearCacheInTable:(NSString *)table forCoin:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
-    WhereCondition *condition = [[WhereCondition alloc] initWithColumn:DB_PAIR_NAME_COLUMN andValue:[NSString stringWithFormat:@"%@/USD", coinName]];
-    [DBService deleteFromTable:table whereConditions:[NSArray arrayWithObject:condition] completion:^(BOOL success, NSError * _Nullable error) {
+    NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
+    [DBService deleteFromTable:table whereConditions:[DBService createWhereConditionsFromDictionary:whereConditions] completion:^(BOOL success, NSError * _Nullable error) {
         if (success) {
             completion(YES);
         } else {
