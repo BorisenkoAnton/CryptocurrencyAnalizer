@@ -12,7 +12,7 @@
 #define SQLStatement_h
 
 typedef struct {
-    NSMutableArray<WhereCondition *> * _Nullable whereConditions;
+    NSArray<WhereCondition *> * _Nullable whereConditions;
     BOOL count;
     NSString * _Nullable orderBy;
     BOOL desc;
