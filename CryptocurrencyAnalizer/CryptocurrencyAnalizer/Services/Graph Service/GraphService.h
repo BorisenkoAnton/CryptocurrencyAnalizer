@@ -7,16 +7,12 @@
 //
 
 #import "CorePlot-CocoaTouch.h"
+#import "GraphOptions.h"
+#import "AxisSetOptions.h"
+#import "GraphModel.h"
 
 // Module to manage actions directed to graphs, plots, their options
 @interface GraphService : NSObject
-
-+ (CPTGraph *)createAndConfigureGraphWithFrame:(CGRect)frame
-                               backgroundColor:(CGColorRef)color
-                               bottomPadding:(CGFloat)paddingBottom
-                               leftPadding:(CGFloat)paddingLeft
-                               topPadding:(CGFloat)paddingTop
-                               andRightPadding:(CGFloat)paddingRight;
 
 + (void)configurePlotSpace:(CPTXYPlotSpace *)plotSpace forPlotwithMaxXValue:(NSNumber *)maxXValue andMaxYValue:(NSNumber *)maxYValue;
 
@@ -27,13 +23,7 @@
 
 + (CPTMutableLineStyle *)createLineStyleWithWidth:(CGFloat)width andColor:(CPTColor *)color;
 
-+ (void)configureAxisSet:(CPTXYAxisSet **)axisSet withLabelTextStyle:(CPTTextStyle *)labelTextStyle
-                               minorGridLineStyle:(CPTLineStyle *)gridLineStyle
-                               axisLineStyle:(CPTLineStyle *)axisLineStyle
-                               xAxisConstraints:(CPTConstraints *)xAxisConstraints
-                               yAxisConstraints:(CPTConstraints *)yAxisConstraints
-                               xAxisDelegate:(id<CALayerDelegate>)xAxisDelegate
-                               andYAxisDelegate:(id<CALayerDelegate>)yAxisDelegate;
++ (void)configureAxisSet:(CPTXYAxisSet **)axisSet withOptions:(AxisSetOptions)options;
 
 + (void)configureAxisSet:(CPTXYAxisSet **)axisSet
            withMaxXvalue:(NSNumber *)maxXValue

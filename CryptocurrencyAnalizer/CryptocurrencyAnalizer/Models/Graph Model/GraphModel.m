@@ -11,17 +11,17 @@
 
 @implementation GraphModel
 
-- (id)initModelWithFrame:(CGRect)frame backgroundColor:(CGColorRef)color bottomPadding:(CGFloat)paddingBottom leftPadding:(CGFloat)paddingLeft topPadding:(CGFloat)paddingTop andRightPadding:(CGFloat)paddingRight {
+- (id)initModelWithOptions:(GraphOptions)options {
     
-    self = [self initWithFrame:frame];
+    self = [self initWithFrame:options.frame];
     
     // A layer drawn on top of the graph layer and behind all plot elements
     self.plotAreaFrame.masksToBorder = NO; // If YES, a sublayer mask is applied to clip sublayer content to the inside of the border
-    self.backgroundColor = color;
-    self.paddingBottom = paddingBottom;
-    self.paddingLeft = paddingLeft;
-    self.paddingTop = paddingTop;
-    self.paddingRight = paddingRight;
+    self.backgroundColor = options.color;
+    self.paddingBottom = options.paddingBottom;
+    self.paddingLeft = options.paddingLeft;
+    self.paddingTop = options.paddingTop;
+    self.paddingRight = options.paddingRight;
     
     self.plotDots = [NSMutableArray<NSNumber *> new];
     self.textStyles = [NSMutableArray<CPTMutableTextStyle *> new];
