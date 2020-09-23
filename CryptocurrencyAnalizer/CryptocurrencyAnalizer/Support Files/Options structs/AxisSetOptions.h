@@ -18,8 +18,11 @@ typedef struct {
     CPTConstraints *yAxisConstraints;
     id<CALayerDelegate> xAxisDelegate;
     id<CALayerDelegate> yAxisDelegate;
+    NSNumber *maxXValue;
+    NSNumber *maxYValue;
+    int numberOfXMajorIntervals;
+    int numberOfXMinorTicksPerInterval;
+    CGFloat labelRotation;
 } AxisSetOptions;
 
 #endif /* AxisSetOptions_h */
-
-
