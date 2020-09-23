@@ -25,12 +25,6 @@
 
 + (void)configureAxisSet:(CPTXYAxisSet **)axisSet withOptions:(AxisSetOptions)options;
 
-+ (void)configureAxisSet:(CPTXYAxisSet **)axisSet
-           withMaxXvalue:(NSNumber *)maxXValue
-           maxYvalue:(NSNumber *)maxYValue
-           numberOfXMajorIntervals:(int)numOfXMajorIntervals
-           andNumberOfXMinorTicksPerInterval:(int)numOfXTicksPerInterval;
-
 + (CPTScatterPlot *)createScatterPlotWithLineWidth:(CGFloat)lineWidth
                                          lineColor:(CPTColor *)color
                                          dataSource:(id<CPTPlotDataSource>)dataSource

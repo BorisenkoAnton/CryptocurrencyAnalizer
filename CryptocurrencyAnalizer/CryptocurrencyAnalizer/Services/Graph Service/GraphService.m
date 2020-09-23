@@ -66,25 +66,20 @@
     configuredAxisSet.yAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.yAxis.axisConstraints = options.yAxisConstraints;
     configuredAxisSet.yAxis.delegate = options.yAxisDelegate;
-}
-
-+ (void)configureAxisSet:(CPTXYAxisSet **)axisSet withMaxXvalue:(NSNumber *)maxXValue maxYvalue:(NSNumber *)maxYValue numberOfXMajorIntervals:(int)numOfXMajorIntervals andNumberOfXMinorTicksPerInterval:(int)numOfXTicksPerInterval {
-    
-    CPTXYAxisSet *configuredAxisSet = *axisSet;
-    
-    configuredAxisSet.xAxis.majorIntervalLength = @([maxXValue intValue] / numOfXMajorIntervals);
-    configuredAxisSet.xAxis.minorTicksPerInterval = numOfXTicksPerInterval;
+    configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
+    configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
        
-    if ([maxYValue doubleValue] > 1.0) {
-        configuredAxisSet.yAxis.majorIntervalLength = @([maxYValue doubleValue] / 10);
+    if ([options.maxYValue doubleValue] > 1.0) {
+        configuredAxisSet.yAxis.majorIntervalLength = @([options.maxYValue doubleValue] / 10);
     } else {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.usesSignificantDigits = YES;
         configuredAxisSet.yAxis.labelFormatter = formatter;
-        configuredAxisSet.yAxis.majorIntervalLength = @([maxYValue doubleValue]);
+        configuredAxisSet.yAxis.majorIntervalLength = @([options.maxYValue doubleValue]);
     }
        
     configuredAxisSet.yAxis.minorTicksPerInterval = 5;
+    configuredAxisSet.xAxis.labelRotation = options.labelRotation;
 }
 
 + (CPTScatterPlot *)createScatterPlotWithLineWidth:(CGFloat)lineWidth lineColor:(CPTColor *)color dataSource:(id<CPTPlotDataSource>)dataSource andDelegate:(id<CALayerDelegate>)delegate {
