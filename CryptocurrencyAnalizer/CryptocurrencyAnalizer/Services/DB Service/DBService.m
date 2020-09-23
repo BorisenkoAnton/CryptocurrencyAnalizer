@@ -182,13 +182,14 @@ static FMDatabaseQueue *sharedQueue;
     return createdConditions;
 }
 
-+ (NSArray<TableColumn *> *)createTableColumnsFromDictionary:(NSDictionary *)columns {
++ (NSArray<TableColumn *> *)createTableColumnsFromArray:(NSArray *)columns {
     
     NSMutableArray<TableColumn *> * createdColumns = [NSMutableArray<TableColumn *> new];
-    for(id key in columns) {
-        TableColumn *newColumn = [[TableColumn alloc] initWithName:key andType:[columns valueForKey:key]];
+    for (int i = 0; i < columns.count; i++) {
+        TableColumn *newColumn = [[TableColumn alloc] initWithName:columns[i] andType:columns[i++]];
         [createdColumns addObject:newColumn];
     }
+    
     return createdColumns;
 }
 
