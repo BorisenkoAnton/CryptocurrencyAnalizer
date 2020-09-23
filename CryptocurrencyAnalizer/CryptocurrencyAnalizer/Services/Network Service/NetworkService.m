@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NetworkService.h"
 #import "RelativeURLs.h"
+#import "FixedValues.h"
 
 // Service to manage networking via AFNetworking
 @implementation NetworkService
@@ -48,6 +49,27 @@
     }];
     
 }
+
+- (void)getAndParseData:(NSString *)coin withAPILimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
+    
+    RelativeURL relativeURL;
+    if ([limit  isEqual:API_LIMIT_FOR_MINUTELY_HISTORY]) {
+        relativeURL = RelativeURLMinutelyHistory;
+    } else if ([limit  isEqual:API_LIMIT_FOR_HOURLY_HISTORY]) {
+        relativeURL = RelativeURLHourlyHistory;
+    } else if ([limit  isEqual:API_LIMIT_FOR_DAILY_HISTORY_M]) {
+        relativeURL = RelativeURLDailyHistory;
+    } else if ([limit  isEqual:API_LIMIT_FOR_DAILY_HISTORY_Y]){
+        relativeURL = RelativeURLDailyHistory;
+    } else {
+        relativeURL = RelativeURLAvailableCoins;
+    }
+}
+
+//RelativeURLDailyHistory,
+//RelativeURLHourlyHistory,
+//RelativeURLMinutelyHistory,
+//RelativeURLAvailableCoins
 
 // Getting any type of historical data for needed coin and parse it
 - (void)getAndParseHistoricalDataForCoin:(NSString *)coin withLimit:(NSNumber *)limit byRelativeURL:(RelativeURL)relativeURL completion:(NetworkServiceCompletion _Nullable )completion {
