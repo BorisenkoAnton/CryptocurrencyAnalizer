@@ -352,41 +352,46 @@
     options.yAxisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
     options.xAxisDelegate = self;
     options.yAxisDelegate = self;
-    
-    [GraphService configureAxisSet:&axisSet withOptions:options];
+    options.maxXValue = maxXValue;
+    options.maxYValue = maxYValue;
     
     // Depending on the selected time period, we will get different number of dots
     switch (self.graphModel.plotDots.count) {
         // For one day history
         case PLOT_DOTS_COUNT_DAY: {
-            [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:6 andNumberOfXMinorTicksPerInterval:3];
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_0_DEGREES;
+            options.numberOfXMajorIntervals = 6;
+            options.numberOfXMinorTicksPerInterval = 3;
+            options.labelRotation = ROTATION_0_DEGREES;
             break;
         }
         // For 7 days history
         case PLOT_DOTS_COUNT_WEEK: {
-            [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:7 andNumberOfXMinorTicksPerInterval:1];
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_0_DEGREES;
+            options.numberOfXMajorIntervals = 7;
+            options.numberOfXMinorTicksPerInterval = 1;
+            options.labelRotation = ROTATION_0_DEGREES;
             break;
         }
         // For month history
         case PLOT_DOTS_COUNT_MONTH: {
-            [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:30 andNumberOfXMinorTicksPerInterval:1];
-            // We need to rotate labels on x axis, to see them all
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_90_DEGREES;
+            options.numberOfXMajorIntervals = 30;
+            options.numberOfXMinorTicksPerInterval = 1;
+            options.labelRotation = ROTATION_90_DEGREES; // We need to rotate labels on x axis, to see them all
             break;
         }
             
         // For one year history
         case PLOT_DOTS_COUNT_YEAR: {
-            [GraphService configureAxisSet:&axisSet withMaxXvalue:maxXValue maxYvalue:maxYValue numberOfXMajorIntervals:12 andNumberOfXMinorTicksPerInterval:3];
-            ((CPTXYAxisSet *)self.graphModel.axisSet).xAxis.labelRotation = ROTATION_90_DEGREES;
+            options.numberOfXMajorIntervals = 12;
+            options.numberOfXMinorTicksPerInterval = 3;
+            options.labelRotation = ROTATION_90_DEGREES;
             break;
         }
         default:
             break;
     }
 
+    [GraphService configureAxisSet:&axisSet withOptions:options];
+    
     CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
 
     [self.graphModel addPlot:plot toPlotSpace:self.graphModel.defaultPlotSpace];
