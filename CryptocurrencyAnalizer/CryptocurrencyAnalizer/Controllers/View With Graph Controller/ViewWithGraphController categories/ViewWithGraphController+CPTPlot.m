@@ -52,31 +52,23 @@
     switch (self.graphModel.plotDots.count) {
         // For one day history
         case PLOT_DOTS_COUNT_DAY: {
-            options.numberOfXMajorIntervals = 6;
-            options.numberOfXMinorTicksPerInterval = 3;
-            options.labelRotation = ROTATION_0_DEGREES;
+            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 andLabelRotation:ROTATION_0_DEGREES];
             break;
         }
         // For 7 days history
         case PLOT_DOTS_COUNT_WEEK: {
-            options.numberOfXMajorIntervals = 7;
-            options.numberOfXMinorTicksPerInterval = 1;
-            options.labelRotation = ROTATION_0_DEGREES;
+            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 andLabelRotation:ROTATION_0_DEGREES];
             break;
         }
         // For month history
         case PLOT_DOTS_COUNT_MONTH: {
-            options.numberOfXMajorIntervals = 30;
-            options.numberOfXMinorTicksPerInterval = 1;
-            options.labelRotation = ROTATION_90_DEGREES; // We need to rotate labels on x axis, to see them all
+            [self configureOptions:&options withXMajorIntervals:30 XMinorTicks:1 andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
         // For one year history
         case PLOT_DOTS_COUNT_YEAR: {
-            options.numberOfXMajorIntervals = 12;
-            options.numberOfXMinorTicksPerInterval = 3;
-            options.labelRotation = ROTATION_90_DEGREES;
+            [self configureOptions:&options withXMajorIntervals:12 XMinorTicks:3 andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
         default:
@@ -88,6 +80,13 @@
     CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
 
     [self.graphModel addPlot:plot toPlotSpace:self.graphModel.defaultPlotSpace];
+}
+
+- (void)configureOptions:(AxisSetOptions *)options withXMajorIntervals:(int)majorIntervals XMinorTicks:(int)XMinorTicks andLabelRotation:(CGFloat)labelRotation {
+    
+    (*options).numberOfXMajorIntervals = majorIntervals;
+    (*options).numberOfXMinorTicksPerInterval = XMinorTicks;
+    (*options).labelRotation = labelRotation;
 }
 
 #pragma mark - CPTPlotDataSource
