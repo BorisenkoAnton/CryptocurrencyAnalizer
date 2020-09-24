@@ -7,9 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+
+// Frameworks
 #import "CorePlot-CocoaTouch.h"
+
+// Helpers
 #import "GraphOptions.h"
 
+// Services
+#import "GraphService.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GraphModel : CPTXYGraph

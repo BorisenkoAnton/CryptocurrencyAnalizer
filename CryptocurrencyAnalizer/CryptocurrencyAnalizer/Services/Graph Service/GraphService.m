@@ -58,10 +58,10 @@
     
     configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
     configuredAxisSet.yAxis.minorGridLineStyle = options.gridLineStyle;
-    CPTFillArray *alternatingBF = [CPTFillArray arrayWithObjects:
+    CPTFillArray *alternatingBF = @[
                                    [CPTFill fillWithColor:[CPTColor colorWithComponentRed:255.0 green:255.0 blue:255.0 alpha:0.03]],
                                    [CPTFill fillWithColor:[CPTColor blackColor]],
-                                   nil];
+                                   ];
     configuredAxisSet.yAxis.alternatingBandFills = alternatingBF;
     configuredAxisSet.yAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.yAxis.axisConstraints = options.yAxisConstraints;

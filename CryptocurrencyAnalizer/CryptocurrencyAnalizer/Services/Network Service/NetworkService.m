@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "NetworkService.h"
-#import "RelativeURLs.h"
-#import "FixedValues.h"
 
 // Service to manage networking via AFNetworking
 @implementation NetworkService

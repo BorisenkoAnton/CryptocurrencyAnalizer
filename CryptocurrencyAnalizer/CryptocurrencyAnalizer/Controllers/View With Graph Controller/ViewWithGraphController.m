@@ -7,7 +7,8 @@
 //
 
 #import "ViewWithGraphController.h"
-#import "CorePlot-CocoaTouch.h"
+
+// Categories
 #import "ViewWithGraphController+TextFieldDelegate.h"
 #import "ViewWithGraphController+PickerView.h"
 #import "ViewWithGraphController+CPTPlot.h"

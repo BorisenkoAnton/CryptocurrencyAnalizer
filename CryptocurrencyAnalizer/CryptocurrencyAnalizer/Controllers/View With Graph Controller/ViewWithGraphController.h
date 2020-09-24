@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+
+// Frameworks
 #import "CorePlot-CocoaTouch.h"
+
+// Models
 #import "GraphModel.h"
+
+// Services
 #import "NetworkService.h"
 
 NS_ASSUME_NONNULL_BEGIN
