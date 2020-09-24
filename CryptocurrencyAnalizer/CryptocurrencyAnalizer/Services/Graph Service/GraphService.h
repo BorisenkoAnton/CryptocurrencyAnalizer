@@ -6,9 +6,14 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
+// Frameworks
 #import "CorePlot-CocoaTouch.h"
+
+// Helpers
 #import "GraphOptions.h"
 #import "AxisSetOptions.h"
+
+// Modules
 #import "GraphModel.h"
 
 // Module to manage actions directed to graphs, plots, their options

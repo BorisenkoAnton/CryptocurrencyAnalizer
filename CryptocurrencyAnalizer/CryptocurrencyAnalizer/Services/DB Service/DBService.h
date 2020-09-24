@@ -6,8 +6,11 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
+// Frameworks
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+
+// Helpers
 #import "TableColumn.h"
 #import "WhereCondition.h"
 #import "SQLStatementOptions.h"

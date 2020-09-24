@@ -7,9 +7,15 @@
 //
 
 #import "ViewWithGraphController.h"
-#import "GraphService.h"
+
+// Helpers
 #import "GraphOptions.h"
 #import "FixedValues.h"
+
+// Services
+#import "GraphService.h"
+
+
 
 NS_ASSUME_NONNULL_BEGIN
 

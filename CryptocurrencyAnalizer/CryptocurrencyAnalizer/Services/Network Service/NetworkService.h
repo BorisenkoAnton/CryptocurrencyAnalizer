@@ -7,7 +7,15 @@
 //
 
 #import "DBModel.h"
+
+// Helpers
+#import "RelativeURLs.h"
+#import "FixedValues.h"
+
+// Services
 #import "URLService.h"
+
+//Modules
 @import AFNetworking;
 
 #ifndef NetworkService_h

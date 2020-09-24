@@ -6,10 +6,15 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
+// Frameworks
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+
+// Helpers
 #import "TableColumn.h"
 #import "WhereCondition.h"
+
+// Services
 #import "DBService.h"
 
 NS_ASSUME_NONNULL_BEGIN

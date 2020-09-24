@@ -7,8 +7,13 @@
 //
 
 #import "ViewWithGraphController.h"
-#import "DBService.h"
+
+// Helpers
 #import "FixedValues.h"
+
+// Services
+#import "DBService.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 

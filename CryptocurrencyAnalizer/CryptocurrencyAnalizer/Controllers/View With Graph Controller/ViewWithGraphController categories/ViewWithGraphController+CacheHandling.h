@@ -7,11 +7,17 @@
 //
 
 #import "ViewWithGraphController.h"
+#import "ViewWithGraphController+CPTPlot.h"
+
+// Helpers
 #import "SQLStatementOptions.h"
 #import "FixedValues.h"
+
+// Services
 #import "DBService.h"
 #import "CacheService.h"
-#import "ViewWithGraphController+CPTPlot.h"
+
+
 
 NS_ASSUME_NONNULL_BEGIN
 
