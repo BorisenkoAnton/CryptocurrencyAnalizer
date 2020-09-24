@@ -59,25 +59,24 @@ static FMDatabaseQueue *sharedQueue;
         sharedDatabase = [DBService sharedDatabase];
     }
     
-    //[sharedQueue inDeferredTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-        @try {
-            if (!sharedDatabase.isOpen) {
-                [sharedDatabase open];
-            }
-            
-            [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
-            if(completion) {
-                completion(YES, nil);
-            }
-            [sharedDatabase close];
-        } @catch (NSException *exception) {
-            NSLog(@"Updating failed: %@", exception.name);
-            if(completion) {
-                completion(NO, (NSError *)exception);
-            }
-            [sharedDatabase close];
+    @try {
+        if (!sharedDatabase.isOpen) {
+            [sharedDatabase open];
         }
-    //}];
+        
+        [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
+        if(completion) {
+            completion(YES, nil);
+        }
+        [sharedDatabase close];
+    } @catch (NSException *exception) {
+        NSLog(@"Updating failed: %@", exception.name);
+        if(completion) {
+            completion(NO, (NSError *)exception);
+        }
+        [sharedDatabase close];
+    }
+
 }
 
 // Inserting an array of values in the given table
