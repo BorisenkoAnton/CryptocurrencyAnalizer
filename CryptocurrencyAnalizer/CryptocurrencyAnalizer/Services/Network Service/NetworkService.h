@@ -28,19 +28,7 @@ typedef void (^NetworkServiceCompletion)(NSMutableArray<DBModel *> * _Nullable c
           headers:(nullable NSDictionary<NSString *, NSString *> *)headers
           completion:(void (^_Nonnull)(NSObject * _Nullable data))completion;
 
-- (void)getAvailableCoins:(void (^_Nullable)(NSArray * _Nonnull availableCoins))completion;
-
-- (void)getDailyHistoricalDataForCoin:(NSString *_Nonnull)coin
-                       withLimit:(NSNumber *_Nullable)limit
-                           completion:(NetworkServiceCompletion _Nullable )completion;
-
-- (void)getHourlyHistoricalDataForCoin:(NSString *_Nonnull)coin
-                       withLimit:(NSNumber *_Nullable)limit
-                       completion:(NetworkServiceCompletion _Nullable )completion;
-
-- (void)getMinutelyHistoricalDataForCoin:(NSString *_Nonnull)coin
-                       withLimit:(NSNumber *_Nullable)limit
-                       completion:(NetworkServiceCompletion _Nullable )completion;
+- (void)getAndParseData:(NSString *_Nullable)coin withAPILimit:(NSNumber *_Nullable)limit completion:(NetworkServiceCompletion _Nullable )completion;
 
 @end
 
