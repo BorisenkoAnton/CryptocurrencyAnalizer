@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray<WhereCondition *> *)createWhereConditionsFromDictionary:(NSDictionary *)conditions;
 
-+ (NSArray<TableColumn *> *)createTableColumnsFromDictionary:(NSDictionary *)columns;
++ (NSArray<TableColumn *> *)createTableColumnsFromArray:(NSArray *)columns;
 
 @end
 

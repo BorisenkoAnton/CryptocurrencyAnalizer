@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSMutableArray<NSString *> *filteredAvailableCoins;   // List of available coins after searching with the help of text Field
 @property (strong) GraphModel *graphModel;
 @property NetworkService * networkService;
+@property NSString *table;
+@property NSString *dbLimit;
+@property NSNumber *apiLimit;
 
 @end
 

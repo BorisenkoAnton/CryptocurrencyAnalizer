@@ -20,9 +20,9 @@
 - (void)neededPeriodSelected:(id)sender {
     
     [self.graphView addSubview:self.activityIndicator];
-    
     [self.activityIndicator startAnimating];
 
+    // Removing previous plot on graph
     for (CPTScatterPlot *plot in self.graphModel.allPlots) {
         [self.graphModel removePlot:plot];
     }
@@ -35,121 +35,68 @@
     }
     NSString *coinName = [[self.coinNamePickerView delegate] pickerView:self.coinNamePickerView titleForRow:selectedRow forComponent:0];
     
+    // This components play role of the maximum separatiion between current time and the latest time of the cache
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    
     // There are four segments, based on the selected we need to get data with different limit (different number of data units)
     switch (self.periodChoosingSegmentedControl.selectedSegmentIndex) {
         case 0: {
-            // This components play role of the maximum separatiion between current time and the latest time of the cache
-            NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setMinute:10];
-            
-            [self getCachedDataIfExists:DB_MINUTELY_TABLE limit:DB_LIMIT_FOR_MINUTELY_TABLE maxSeparation:components coinName:coinName completion:^(BOOL success) {
-                if (!success) {
-                        [self.networkService getMinutelyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_MINUTELY_HISTORY completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
-                        [self.graphModel.plotDots removeAllObjects];
-                        for (DBModel *model in coinData) {
-                            [self.graphModel.plotDots addObject:model.price];
-                        }
-                        [self configureAndAddPlot];
-                        [self.activityIndicator stopAnimating];
-                            
-                        [CacheService clearCacheInTable:DB_MINUTELY_TABLE forCoin:coinName completion:^(BOOL success) {
-                            if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:DB_MINUTELY_TABLE];
-                            }
-                        }];
-                            
-                    }];
-                } else {
-                    [self.activityIndicator stopAnimating];
-                }
-            }];
+            [self configureLimitsForTable:DB_MINUTELY_TABLE dbLimit:DB_LIMIT_FOR_MINUTELY_TABLE apiLimit:API_LIMIT_FOR_MINUTELY_HISTORY];
             break;
         }
             
         case 1: {
-            NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setHour:1];
-            [self getCachedDataIfExists:DB_HOURLY_TABLE limit:DB_LIMIT_FOR_HOURLY_TABLE maxSeparation:components coinName:coinName completion:^(BOOL success) {
-                if (!success) {
-                        [self.networkService getHourlyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_HOURLY_HISTORY completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
-                        [self.graphModel.plotDots removeAllObjects];
-                        for (DBModel *model in coinData) {
-                            [self.graphModel.plotDots addObject:model.price];
-                        }
-                        [self configureAndAddPlot];
-                        [self.activityIndicator stopAnimating];
-                            
-                        [CacheService clearCacheInTable:DB_HOURLY_TABLE forCoin:coinName completion:^(BOOL success) {
-                            if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:DB_HOURLY_TABLE];
-                            }
-                        }];
-
-                    }];
-                } else {
-                    [self.activityIndicator stopAnimating];
-                }
-            }];
+            [self configureLimitsForTable:DB_HOURLY_TABLE dbLimit:DB_LIMIT_FOR_HOURLY_TABLE apiLimit:API_LIMIT_FOR_HOURLY_HISTORY];
             break;
         }
             
         case 2: {
-            NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setDay:1];
-            [self getCachedDataIfExists:DB_DAILY_TABLE limit:DB_LIMIT_FOR_DAILY_TABLE_M maxSeparation:components coinName:coinName completion:^(BOOL success) {
-                if (!success) {
-                        [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_DAILY_HISTORY_M completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
-                        [self.graphModel.plotDots removeAllObjects];
-                        for (DBModel *model in coinData) {
-                            [self.graphModel.plotDots addObject:model.price];
-                        }
-                        [self configureAndAddPlot];
-                        [self.activityIndicator stopAnimating];
-                            
-                        [CacheService clearCacheInTable:DB_DAILY_TABLE forCoin:coinName completion:^(BOOL success) {
-                            if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:DB_DAILY_TABLE];
-                            }
-                        }];
-
-                    }];
-                } else {
-                    [self.activityIndicator stopAnimating];
-                }
-            }];
+            [self configureLimitsForTable:DB_DAILY_TABLE dbLimit:DB_LIMIT_FOR_DAILY_TABLE_M apiLimit:API_LIMIT_FOR_DAILY_HISTORY_M];
             break;
         }
         
         case 3: {
-            NSDateComponents *components = [[NSDateComponents alloc] init];
             [components setDay:1];
-            [self getCachedDataIfExists:DB_DAILY_TABLE limit:DB_LIMIT_FOR_DAILY_TABLE_Y maxSeparation:components coinName:coinName completion:^(BOOL success) {
-                if (!success) {
-                    [self.networkService getDailyHistoricalDataForCoin:coinName withLimit:API_LIMIT_FOR_DAILY_HISTORY_Y completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
-                        [self.graphModel.plotDots removeAllObjects];
-                        for (DBModel *model in coinData) {
-                            [self.graphModel.plotDots addObject:model.price];
-                        }
-                        [self configureAndAddPlot];
-                        [self.activityIndicator stopAnimating];
-                        
-                        [CacheService clearCacheInTable:DB_DAILY_TABLE forCoin:coinName completion:^(BOOL success) {
-                            if (success) {
-                                [CacheService cacheArrayOfObjects:coinData toTable:DB_DAILY_TABLE];
-                            }
-                        }];
-
-                    }];
-                } else {
-                    [self.activityIndicator stopAnimating];
-                }
-            }];
+            [self configureLimitsForTable:DB_DAILY_TABLE dbLimit:DB_LIMIT_FOR_DAILY_TABLE_Y apiLimit:API_LIMIT_FOR_DAILY_HISTORY_Y];
             break;
         }
             
         default:
             break;
     }
+    
+    [self getCachedDataIfExists:self.table limit:self.dbLimit maxSeparation:components coinName:coinName completion:^(BOOL success) {
+        if (!success) {
+            [self.networkService getAndParseData:coinName withAPILimit:self.apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                [self.graphModel.plotDots removeAllObjects];
+                for (DBModel *model in coinData) {
+                   [self.graphModel.plotDots addObject:model.price];
+                }
+                [self configureAndAddPlot];
+                [self.activityIndicator stopAnimating];
+
+                [CacheService clearCacheInTable:self.table forCoin:coinName completion:^(BOOL success) {
+                   if (success) {
+                       [CacheService cacheArrayOfObjects:coinData toTable:self.table];
+                   }
+                }];
+            }];
+            
+        } else {
+            [self.activityIndicator stopAnimating];
+        }
+    }];
+}
+
+// Configuring parameters for getting data from db or from server
+- (void)configureLimitsForTable:(NSString *)table dbLimit:(NSString *)dbLimit apiLimit:(NSNumber *)apiLimit {
+    
+    self.table = table;
+    self.dbLimit = dbLimit;
+    self.apiLimit = apiLimit;
 }
 
 @end
