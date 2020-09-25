@@ -34,8 +34,9 @@
     NSNumber *maxXValue = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count];
     
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graphModel.defaultPlotSpace;
+    plotSpace.delegate = self;
     [GraphService configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
-
+    plotSpace.allowsUserInteraction = NO;
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graphModel.axisSet;
     AxisSetOptions options;
     options.labelTextStyle = self.graphModel.textStyles[0];
@@ -78,7 +79,7 @@
     [GraphService configureAxisSet:&axisSet withOptions:options];
     
     CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
-
+    
     [self.graphModel addPlot:plot toPlotSpace:self.graphModel.defaultPlotSpace];
 }
 
@@ -89,13 +90,13 @@
     (*options).labelRotation = labelRotation;
 }
 
-#pragma mark - CPTPlotDataSource
+#pragma mark - CPTPlotDataSource and CPTPlotDelegate
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plotnumberOfRecords {
+- (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plotnumberOfRecords {
     return self.graphModel.plotDots.count;
 }
  
--(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+- (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
 
     if(fieldEnum == CPTScatterPlotFieldX)
@@ -104,6 +105,15 @@
     } else {
         return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index];
     }
+}
+
+- (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
+    
+    
+    CGPoint layer = [self.graphModel.graph convertPoint:point toLayer:self.graphView.hostedGraph.plotAreaFrame.plotArea];
+    NSNumber *y = [NSNumber numberWithFloat:layer.y];
+    NSLog([y stringValue]);
+    return YES;
 }
 
 @end
