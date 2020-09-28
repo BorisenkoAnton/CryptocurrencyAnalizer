@@ -20,11 +20,11 @@
     options.paddingTop = 30.0;
     options.paddingRight = 15.0;
     self.graphModel = [[GraphModel alloc] initModelWithOptions:options];
-    
     self.graphModel.textStyles[0] = [GraphService createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
     self.graphModel.lineStyles[0] = [GraphService createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
     self.graphModel.gridLineStyles[0] = [GraphService createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
 }
+
 
 - (void)configureAndAddPlot{
     
@@ -79,9 +79,12 @@
     [GraphService configureAxisSet:&axisSet withOptions:options];
     
     CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
+    plot.delegate = self;
+    plot.plotSymbolMarginForHitDetection = 10.0;
     
     [self.graphModel addPlot:plot toPlotSpace:self.graphModel.defaultPlotSpace];
 }
+
 
 - (void)configureOptions:(AxisSetOptions *)options withXMajorIntervals:(int)majorIntervals XMinorTicks:(int)XMinorTicks andLabelRotation:(CGFloat)labelRotation {
     
@@ -96,6 +99,7 @@
     return self.graphModel.plotDots.count;
 }
  
+
 - (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
 
@@ -107,13 +111,114 @@
     }
 }
 
-- (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
+
+//-(BOOL)plotSpace:(nonnull CPTPlotSpace *__unused)space shouldHandlePointingDeviceDraggedEvent:(nonnull CPTNativeEvent *__unused)event atPoint:(CGPoint)interactionPoint
+//{
+//    CPTPlotSpaceAnnotation *annotation = self.zoomAnnotation;
+//
+//    if ( annotation ) {
+//        CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+//        CGRect plotBounds     = plotArea.bounds;
+//
+//// convert the dragStart and dragEnd values to plot coordinates
+//        CGPoint dragStartInPlotArea = [self.graph convertPoint:self.dragStart toLayer:plotArea];
+//        CGPoint dragEndInPlotArea   = [self.graph convertPoint:interactionPoint toLayer:plotArea];
+//
+//// create the dragrect from dragStart to the current location
+//        CGFloat endX      = MAX(MIN(dragEndInPlotArea.x, CGRectGetMaxX(plotBounds)), CGRectGetMinX(plotBounds));
+//        CGFloat endY      = MAX(MIN(dragEndInPlotArea.y, CGRectGetMaxY(plotBounds)), CGRectGetMinY(plotBounds));
+//        CGRect borderRect = CGRectMake(dragStartInPlotArea.x, dragStartInPlotArea.y,
+//                                       (endX - dragStartInPlotArea.x),
+//                                       (endY - dragStartInPlotArea.y));
+//
+//        annotation.contentAnchorPoint = CGPointMake(dragEndInPlotArea.x >= dragStartInPlotArea.x ? 0.0 : 1.0,
+//                                                    dragEndInPlotArea.y >= dragStartInPlotArea.y ? 0.0 : 1.0);
+//        annotation.contentLayer.frame = borderRect;
+//    }
+//
+//    return NO;
+//}
+
+
+- (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDraggedEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
     
+    [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
     
-    CGPoint layer = [self.graphModel.graph convertPoint:point toLayer:self.graphView.hostedGraph.plotAreaFrame.plotArea];
-    NSNumber *y = [NSNumber numberWithFloat:layer.y];
-    NSLog([y stringValue]);
-    return YES;
+    CGPoint plotAreaPoint = [self.graphView.hostedGraph convertPoint:point toLayer:self.graphView.hostedGraph.plotAreaFrame.plotArea];
+    CPTNumberArray *plotPoint = [space plotPointForPlotAreaViewPoint:plotAreaPoint];
+    NSNumber *x = plotPoint[0];
+    NSNumber *count = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count];
+    if ([x floatValue] <= 0) {
+        x = @0;
+    } else if (([x compare:count] == NSOrderedSame) || ([x compare:count] == NSOrderedDescending)){
+        x = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count - 1];
+    }
+    unsigned long index = self.graphModel.plotDots.count - floorf([x floatValue]) - 1;
+
+    NSNumber *y = self.graphModel.plotDots[index];
+    
+    NSArray *anchorPoint = @[x, y];
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    formatter.usesSignificantDigits = YES;
+    CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:[y stringValue] style:self.graphModel.textStyles[0]];
+    CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:self.graphView.hostedGraph.defaultPlotSpace anchorPlotPoint:anchorPoint];
+    annotation.contentLayer = textLayer;
+    annotation.displacement = CGPointMake(0.0, 30.0);
+    annotation.contentLayer.frame = CGRectMake(30.0, 30.0, 50.0, 20.0);
+    annotation.contentLayer.backgroundColor = [UIColor redColor].CGColor;
+    //annotation.contentAnchorPoint = CGPointMake([x floatValue] <= 30.0 ? 0.0 : 1.0, 1.0);
+    [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
+    
+    return NO;
 }
 
+- (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
+
+    return NO;
+}
+
+- (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
+
+    return NO;
+}
+
+- (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceCancelledEvent:(nonnull CPTNativeEvent *)event {
+    
+    return NO;
+}
+
+//- (void)scatterPlot:(CPTScatterPlot *)plot plotSymbolTouchDownAtRecordIndex:(NSUInteger)idx {
+//
+//    [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
+//
+//    NSNumber *x = [NSNumber numberWithUnsignedInteger:idx];
+//    unsigned long index = self.graphModel.plotDots.count - idx;
+//    NSNumber *y = self.graphModel.plotDots[index];
+//    NSArray *anchorPoint = @[x, y];
+//
+//    NSNumberFormatter *formatter = [NSNumberFormatter new];
+//    formatter.usesSignificantDigits = YES;
+//
+//    CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:[y stringValue] style:self.graphModel.textStyles[0]];
+//    CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:self.graphView.hostedGraph.defaultPlotSpace anchorPlotPoint:anchorPoint];
+//    annotation.contentLayer = textLayer;
+//    annotation.displacement = CGPointMake(0.0, 10.0);
+//    [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
+//}
+
+
+
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//
+//    NSLog(@"touches began");
+//}
+
+//- (void)touchesMoved:(NSSet<UITouch *> *)touches {
+//    NSLog(@"touches moved");
+//}
+
+//- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//
+//    NSLog(@"touches ended");
+//}
 @end
