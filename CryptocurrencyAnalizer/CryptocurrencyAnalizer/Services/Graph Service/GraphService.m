@@ -58,6 +58,14 @@
     configuredAxisSet.xAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.xAxis.axisConstraints = options.xAxisConstraints;
     configuredAxisSet.xAxis.delegate = options.xAxisDelegate;
+    configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
+    configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    dateFormatter.dateStyle = kCFDateFormatterLongStyle;
+    [dateFormatter setDateFormat:options.xAxisDateFormatString];
+    CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
+    configuredAxisSet.xAxis.labelFormatter = timeFormatter;
     
     configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
     configuredAxisSet.yAxis.minorGridLineStyle = options.gridLineStyle;
@@ -69,8 +77,7 @@
     configuredAxisSet.yAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.yAxis.axisConstraints = options.yAxisConstraints;
     configuredAxisSet.yAxis.delegate = options.yAxisDelegate;
-    configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
-    configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
+    
        
     if ([options.maxYValue doubleValue] > 1.0) {
         configuredAxisSet.yAxis.majorIntervalLength = @([options.maxYValue doubleValue] / 10);
