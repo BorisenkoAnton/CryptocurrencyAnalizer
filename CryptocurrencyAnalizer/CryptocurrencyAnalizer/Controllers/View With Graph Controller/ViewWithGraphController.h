@@ -19,7 +19,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewWithGraphController : UIViewController
+@interface ViewWithGraphController : UIViewController {
+    id<NSCopying, NSCoding, NSObject> trackerLine;
+    NSArray<NSNumber *> *highlitedPoint;
+}
 
 @property (weak, nonatomic) IBOutlet UITextField *coinNameTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *periodChoosingSegmentedControl;
