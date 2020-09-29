@@ -16,11 +16,15 @@
 
 // Services
 #import "GraphService.h"
+
+// Models
+#import "DBModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GraphModel : CPTXYGraph
 
-@property NSMutableArray<NSNumber *> *plotDots;
+@property NSMutableArray<DBModel *> *plotDots;
 @property NSMutableArray<CPTMutableTextStyle *> *textStyles;
 @property NSMutableArray<CPTMutableLineStyle *> *lineStyles;
 @property NSMutableArray<CPTMutableLineStyle *> *gridLineStyles;
