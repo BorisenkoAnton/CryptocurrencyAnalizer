@@ -45,3 +45,11 @@
 #define ROTATION_0_DEGREES 0
 #define ROTATION_90_DEGREES 1.5708
 #endif /* FixedValues_h */
+
+
+// Date formats
+#define DATE_FORMAT_DAILY @"dd/mm HH:mm"
+#define DATE_FORMAT_WEEKLY @"dd/mm hh"
+#define DATE_FORMAT_MONTHLY @"dd/mm/yyyy"
+#define DATE_FORMAT_YEARLY @"dd/mm/yyyy"
+
