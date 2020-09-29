@@ -26,6 +26,31 @@
 }
 
 
+- (void)addIndicatorLineWithConstraints:(CPTConstraints *)constraints {
+    
+    CPTXYAxis *indicatorLine = [CPTXYAxis new];
+    indicatorLine.hidden = NO;
+    indicatorLine.coordinate = CPTCoordinateY;
+    indicatorLine.plotSpace = self.graphView.hostedGraph.defaultPlotSpace;
+    indicatorLine.axisConstraints = constraints;
+    indicatorLine.labelingPolicy = CPTAxisLabelingPolicyNone;
+    indicatorLine.separateLayers = YES;
+    indicatorLine.preferredNumberOfMajorTicks = 1;
+    indicatorLine.minorTicksPerInterval = 0;
+    
+    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
+    lineStyle.lineWidth = 2;
+    lineStyle.lineColor = [CPTColor redColor];
+    indicatorLine.axisLineStyle = lineStyle;
+    indicatorLine.majorTickLineStyle = nil;
+    
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graphModel.axisSet;
+    CPTXYAxis *xAxis = axisSet.xAxis;
+    CPTXYAxis *yAxis = axisSet.yAxis;
+    axisSet.axes = @[xAxis, yAxis, indicatorLine];
+}
+
+
 - (void)configureAndAddPlot{
     
     self.graphView.hostedGraph = self.graphModel;
@@ -103,46 +128,29 @@
 - (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
 
-    if(fieldEnum == CPTScatterPlotFieldX)
-    {
-        return [NSNumber numberWithUnsignedInteger:index];
+    if(fieldEnum == CPTScatterPlotFieldX) {
+        if ([plot.identifier isEqual:self->trackerLine]) {
+            return self->highlitedPoint[0];
+        } else {
+            return [NSNumber numberWithUnsignedInteger:index];
+        }
     } else {
-        return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index];
+        if ([plot.identifier isEqual:self->trackerLine]) {
+            return self->highlitedPoint[1];
+        } else {
+            return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index];
+        }
     }
 }
-
-
-//-(BOOL)plotSpace:(nonnull CPTPlotSpace *__unused)space shouldHandlePointingDeviceDraggedEvent:(nonnull CPTNativeEvent *__unused)event atPoint:(CGPoint)interactionPoint
-//{
-//    CPTPlotSpaceAnnotation *annotation = self.zoomAnnotation;
-//
-//    if ( annotation ) {
-//        CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
-//        CGRect plotBounds     = plotArea.bounds;
-//
-//// convert the dragStart and dragEnd values to plot coordinates
-//        CGPoint dragStartInPlotArea = [self.graph convertPoint:self.dragStart toLayer:plotArea];
-//        CGPoint dragEndInPlotArea   = [self.graph convertPoint:interactionPoint toLayer:plotArea];
-//
-//// create the dragrect from dragStart to the current location
-//        CGFloat endX      = MAX(MIN(dragEndInPlotArea.x, CGRectGetMaxX(plotBounds)), CGRectGetMinX(plotBounds));
-//        CGFloat endY      = MAX(MIN(dragEndInPlotArea.y, CGRectGetMaxY(plotBounds)), CGRectGetMinY(plotBounds));
-//        CGRect borderRect = CGRectMake(dragStartInPlotArea.x, dragStartInPlotArea.y,
-//                                       (endX - dragStartInPlotArea.x),
-//                                       (endY - dragStartInPlotArea.y));
-//
-//        annotation.contentAnchorPoint = CGPointMake(dragEndInPlotArea.x >= dragStartInPlotArea.x ? 0.0 : 1.0,
-//                                                    dragEndInPlotArea.y >= dragStartInPlotArea.y ? 0.0 : 1.0);
-//        annotation.contentLayer.frame = borderRect;
-//    }
-//
-//    return NO;
-//}
 
 
 - (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDraggedEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
     
     [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
+    
+    if (self->trackerLine) {
+        [self.graphModel removePlotWithIdentifier:self->trackerLine];
+    }
     
     CGPoint plotAreaPoint = [self.graphView.hostedGraph convertPoint:point toLayer:self.graphView.hostedGraph.plotAreaFrame.plotArea];
     CPTNumberArray *plotPoint = [space plotPointForPlotAreaViewPoint:plotAreaPoint];
@@ -156,69 +164,55 @@
     unsigned long index = self.graphModel.plotDots.count - floorf([x floatValue]) - 1;
 
     NSNumber *y = self.graphModel.plotDots[index];
+
+    PlotSpaceAnnotationOptions options;
+    options.plotSpace = space;
+    options.anchorPoint = @[x, y];
+    options.textLayer = [[CPTTextLayer alloc] initWithText:[y stringValue] style:self.graphModel.textStyles[0]];
+    options.displacement = CGPointMake(0.0, 30.0);
+    options.contentLayerFrame = CGRectMake(30.0, 30.0, 50.0, 20.0);
+    options.contentLayerBackgroundColor = [UIColor redColor];
+    options.contentAnchorPoint = CGPointMake([x floatValue] <= 30.0 ? 0.0 : 1.0, 1.0);
     
-    NSArray *anchorPoint = @[x, y];
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.usesSignificantDigits = YES;
-    CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:[y stringValue] style:self.graphModel.textStyles[0]];
-    CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:self.graphView.hostedGraph.defaultPlotSpace anchorPlotPoint:anchorPoint];
-    annotation.contentLayer = textLayer;
-    annotation.displacement = CGPointMake(0.0, 30.0);
-    annotation.contentLayer.frame = CGRectMake(30.0, 30.0, 50.0, 20.0);
-    annotation.contentLayer.backgroundColor = [UIColor redColor].CGColor;
-    //annotation.contentAnchorPoint = CGPointMake([x floatValue] <= 30.0 ? 0.0 : 1.0, 1.0);
+    CPTPlotSpaceAnnotation *annotation = [GraphService createAnnotationWithOptions:options];
+
     [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
+    
+    [self addIndicatorLineWithConstraints:[CPTConstraints constraintWithLowerOffset: point.x - self.graphModel.paddingLeft]];
+    
+    CPTScatterPlot *indicatorPlot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
+
+    CPTPlotSymbol *plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+    plotSymbol.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
+    plotSymbol.size = CGSizeMake(10.0, 10.0);
+    
+    indicatorPlot.plotSymbol = plotSymbol;
+    indicatorPlot.identifier = @"Tracker line";
+    
+    [self.graphModel addPlot:indicatorPlot toPlotSpace:self.graphModel.defaultPlotSpace];
+
+    self->trackerLine = indicatorPlot.identifier;
+    self->highlitedPoint = @[x, y];
     
     return NO;
 }
+
 
 - (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
 
     return NO;
 }
 
+
 - (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point {
 
     return NO;
 }
+
 
 - (BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceCancelledEvent:(nonnull CPTNativeEvent *)event {
     
     return NO;
 }
 
-//- (void)scatterPlot:(CPTScatterPlot *)plot plotSymbolTouchDownAtRecordIndex:(NSUInteger)idx {
-//
-//    [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
-//
-//    NSNumber *x = [NSNumber numberWithUnsignedInteger:idx];
-//    unsigned long index = self.graphModel.plotDots.count - idx;
-//    NSNumber *y = self.graphModel.plotDots[index];
-//    NSArray *anchorPoint = @[x, y];
-//
-//    NSNumberFormatter *formatter = [NSNumberFormatter new];
-//    formatter.usesSignificantDigits = YES;
-//
-//    CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:[y stringValue] style:self.graphModel.textStyles[0]];
-//    CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:self.graphView.hostedGraph.defaultPlotSpace anchorPlotPoint:anchorPoint];
-//    annotation.contentLayer = textLayer;
-//    annotation.displacement = CGPointMake(0.0, 10.0);
-//    [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
-//}
-
-
-
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//
-//    NSLog(@"touches began");
-//}
-
-//- (void)touchesMoved:(NSSet<UITouch *> *)touches {
-//    NSLog(@"touches moved");
-//}
-
-//- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//
-//    NSLog(@"touches ended");
-//}
 @end
