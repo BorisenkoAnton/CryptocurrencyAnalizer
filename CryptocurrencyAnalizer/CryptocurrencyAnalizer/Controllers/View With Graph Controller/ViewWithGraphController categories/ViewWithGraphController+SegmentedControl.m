@@ -73,7 +73,7 @@
             [self.networkService getAndParseData:coinName withAPILimit:self.apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                 [self.graphModel.plotDots removeAllObjects];
                 for (DBModel *model in coinData) {
-                   [self.graphModel.plotDots addObject:model.price];
+                   [self.graphModel.plotDots addObject:model];
                 }
                 [self configureAndAddPlot];
                 [self.activityIndicator stopAnimating];
