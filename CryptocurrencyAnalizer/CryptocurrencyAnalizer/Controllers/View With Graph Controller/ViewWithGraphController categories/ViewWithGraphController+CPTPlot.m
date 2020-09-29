@@ -15,7 +15,7 @@
     GraphOptions options;
     options.frame = self.graphView.frame;
     options.color = [UIColor blackColor].CGColor;
-    options.paddingBottom = 40.0;
+    options.paddingBottom = 60.0;
     options.paddingLeft = 65.0;
     options.paddingTop = 30.0;
     options.paddingRight = 15.0;
@@ -55,7 +55,11 @@
     
     self.graphView.hostedGraph = self.graphModel;
 
-    NSNumber *maxYValue = [NSNumber numberWithDouble:[(NSNumber *)[self.graphModel.plotDots valueForKeyPath:@"@max.self"] doubleValue] * 1.3];
+    NSMutableArray *prices = [NSMutableArray new];
+    for (DBModel *model in self.graphModel.plotDots) {
+        [prices addObject:model.price];
+    }
+    NSNumber *maxYValue = [NSNumber numberWithDouble:[(NSNumber *)[prices valueForKeyPath:@"@max.self"] doubleValue] * 1.3];
     NSNumber *maxXValue = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count];
     
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graphModel.defaultPlotSpace;
@@ -78,23 +82,23 @@
     switch (self.graphModel.plotDots.count) {
         // For one day history
         case PLOT_DOTS_COUNT_DAY: {
-            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 andLabelRotation:ROTATION_0_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_0_DEGREES];
             break;
         }
         // For 7 days history
         case PLOT_DOTS_COUNT_WEEK: {
-            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 andLabelRotation:ROTATION_0_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_0_DEGREES];
             break;
         }
         // For month history
         case PLOT_DOTS_COUNT_MONTH: {
-            [self configureOptions:&options withXMajorIntervals:30 XMinorTicks:1 andLabelRotation:ROTATION_90_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:30 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_MONTHLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
         // For one year history
         case PLOT_DOTS_COUNT_YEAR: {
-            [self configureOptions:&options withXMajorIntervals:12 XMinorTicks:3 andLabelRotation:ROTATION_90_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:12 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_YEARLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
         default:
@@ -111,11 +115,16 @@
 }
 
 
-- (void)configureOptions:(AxisSetOptions *)options withXMajorIntervals:(int)majorIntervals XMinorTicks:(int)XMinorTicks andLabelRotation:(CGFloat)labelRotation {
+- (void)configureOptions:(AxisSetOptions *)options
+                        withXMajorIntervals:(int)majorIntervals
+                        XMinorTicks:(int)XMinorTicks
+                        xAxisDateFotmat:(NSString *)xAxisDateFormat
+                        andLabelRotation:(CGFloat)labelRotation {
     
     (*options).numberOfXMajorIntervals = majorIntervals;
     (*options).numberOfXMinorTicksPerInterval = XMinorTicks;
     (*options).labelRotation = labelRotation;
+    (*options).xAxisDateFormatString = xAxisDateFormat;
 }
 
 #pragma mark - CPTPlotDataSource and CPTPlotDelegate
@@ -125,20 +134,23 @@
 }
  
 
-- (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
-{
+- (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
 
     if(fieldEnum == CPTScatterPlotFieldX) {
         if ([plot.identifier isEqual:self->trackerLine]) {
             return self->highlitedPoint[0];
         } else {
-            return [NSNumber numberWithUnsignedInteger:index];
+            NSDate *timestamp = self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].timestamp;
+            NSInteger intrvl = [timestamp timeIntervalSince1970];
+            NSNumber *interval = [NSNumber numberWithInteger:intrvl];
+            return interval;
         }
     } else {
         if ([plot.identifier isEqual:self->trackerLine]) {
             return self->highlitedPoint[1];
         } else {
-            return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index];
+            NSLog(@"%@", self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].price);
+            return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].price;
         }
     }
 }
@@ -163,7 +175,7 @@
     }
     unsigned long index = self.graphModel.plotDots.count - floorf([x floatValue]) - 1;
 
-    NSNumber *y = self.graphModel.plotDots[index];
+    NSNumber *y = self.graphModel.plotDots[index].price;
 
     PlotSpaceAnnotationOptions options;
     options.plotSpace = space;
