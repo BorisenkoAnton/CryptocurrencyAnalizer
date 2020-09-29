@@ -22,6 +22,7 @@
     }
 }
 
+
 + (CPTMutableTextStyle *)createMutableTextStyleWithFontName:(NSString *)fontName fontSize:(CGFloat)fontSize color:(CPTColor *)color andTextAlignment:(CPTTextAlignment)textAlignment {
     
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle new];
@@ -34,6 +35,7 @@
     return textStyle;
 }
 
+
 // Mutable wrapper for various line drawing properties
 + (CPTMutableLineStyle *)createLineStyleWithWidth:(CGFloat)width andColor:(CPTColor *)color {
     
@@ -44,6 +46,7 @@
     
     return lineStyle;
 }
+
 
 // CPTXYAxisSet is a set of cartesian (X-Y) axes
 + (void)configureAxisSet:(CPTXYAxisSet **)axisSet withOptions:(AxisSetOptions)options {
@@ -82,6 +85,7 @@
     configuredAxisSet.xAxis.labelRotation = options.labelRotation;
 }
 
+
 + (CPTScatterPlot *)createScatterPlotWithLineWidth:(CGFloat)lineWidth lineColor:(CPTColor *)color dataSource:(id<CPTPlotDataSource>)dataSource andDelegate:(id<CALayerDelegate>)delegate {
     
     CPTScatterPlot* plot = [CPTScatterPlot new];
@@ -103,6 +107,18 @@
     plot.delegate = delegate;
     
     return plot;
+}
+
+
++ (CPTPlotSpaceAnnotation *)createAnnotationWithOptions:(PlotSpaceAnnotationOptions)options {
+    
+    CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:options.plotSpace anchorPlotPoint:options.anchorPoint];
+    annotation.contentLayer = options.textLayer;
+    annotation.displacement = options.displacement;
+    annotation.contentLayer.frame = options.contentLayerFrame;
+    annotation.contentLayer.backgroundColor = options.contentLayerBackgroundColor.CGColor;
+    annotation.contentAnchorPoint = options.contentAnchorPoint;
+    return annotation;
 }
 
 @end
