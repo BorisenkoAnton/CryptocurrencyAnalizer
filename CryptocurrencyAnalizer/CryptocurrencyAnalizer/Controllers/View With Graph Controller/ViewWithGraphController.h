@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ViewWithGraphController : UIViewController {
     id<NSCopying, NSCoding, NSObject> trackerLine;
     NSArray<NSNumber *> *highlitedPoint;
+    unsigned long divider;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *coinNameTextField;
