@@ -15,7 +15,7 @@
     GraphOptions options;
     options.frame = self.graphView.frame;
     options.color = [UIColor blackColor].CGColor;
-    options.paddingBottom = 60.0;
+    options.paddingBottom = 80.0;
     options.paddingLeft = 65.0;
     options.paddingTop = 30.0;
     options.paddingRight = 15.0;
@@ -60,12 +60,8 @@
         [prices addObject:model.price];
     }
     NSNumber *maxYValue = [NSNumber numberWithDouble:[(NSNumber *)[prices valueForKeyPath:@"@max.self"] doubleValue] * 1.3];
-    NSNumber *maxXValue = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count];
+    NSNumber *maxXValue;
     
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graphModel.defaultPlotSpace;
-    plotSpace.delegate = self;
-    [GraphService configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
-    plotSpace.allowsUserInteraction = NO;
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graphModel.axisSet;
     AxisSetOptions options;
     options.labelTextStyle = self.graphModel.textStyles[0];
@@ -75,29 +71,41 @@
     options.yAxisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
     options.xAxisDelegate = self;
     options.yAxisDelegate = self;
-    options.maxXValue = maxXValue;
     options.maxYValue = maxYValue;
+    options.referenceDate = self.graphModel.plotDots[0].timestamp;
     
     // Depending on the selected time period, we will get different number of dots
     switch (self.graphModel.plotDots.count) {
         // For one day history
         case PLOT_DOTS_COUNT_DAY: {
+            self->divider = DIVIDER_TEN_MINUTE;
+            maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * [DB_LIMIT_FOR_MINUTELY_TABLE intValue] / self->divider)];
+            options.maxXValue = maxXValue;
             [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_0_DEGREES];
             break;
         }
         // For 7 days history
         case PLOT_DOTS_COUNT_WEEK: {
+            self->divider = DIVIDER_ONE_HOUR;
+            maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 7)];
+            options.maxXValue = maxXValue;
             [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_0_DEGREES];
             break;
         }
         // For month history
         case PLOT_DOTS_COUNT_MONTH: {
+            self->divider = DIVIDER_ONE_DAY;
+            maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 30)];
+            options.maxXValue = maxXValue;
             [self configureOptions:&options withXMajorIntervals:30 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_MONTHLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
         // For one year history
         case PLOT_DOTS_COUNT_YEAR: {
+            self->divider = DIVIDER_ONE_DAY;
+            maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 365)];
+            options.maxXValue = maxXValue;
             [self configureOptions:&options withXMajorIntervals:12 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_YEARLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
@@ -106,6 +114,11 @@
     }
 
     [GraphService configureAxisSet:&axisSet withOptions:options];
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graphModel.defaultPlotSpace;
+    plotSpace.delegate = self;
+    [GraphService configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
+    plotSpace.allowsUserInteraction = NO;
     
     CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
     plot.delegate = self;
@@ -140,16 +153,13 @@
         if ([plot.identifier isEqual:self->trackerLine]) {
             return self->highlitedPoint[0];
         } else {
-            NSDate *timestamp = self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].timestamp;
-            NSInteger intrvl = [timestamp timeIntervalSince1970];
-            NSNumber *interval = [NSNumber numberWithInteger:intrvl];
-            return interval;
+            unsigned long numberForPlot = DATE_ONE_DAY * index / self->divider;
+            return [NSNumber numberWithUnsignedLong:numberForPlot];
         }
     } else {
         if ([plot.identifier isEqual:self->trackerLine]) {
             return self->highlitedPoint[1];
         } else {
-            NSLog(@"%@", self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].price);
             return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].price;
         }
     }
@@ -167,15 +177,19 @@
     CGPoint plotAreaPoint = [self.graphView.hostedGraph convertPoint:point toLayer:self.graphView.hostedGraph.plotAreaFrame.plotArea];
     CPTNumberArray *plotPoint = [space plotPointForPlotAreaViewPoint:plotAreaPoint];
     NSNumber *x = plotPoint[0];
-    NSNumber *count = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count];
+    
+    unsigned long count = self.graphModel.plotDots.count;
+    
     if ([x floatValue] <= 0) {
         x = @0;
-    } else if (([x compare:count] == NSOrderedSame) || ([x compare:count] == NSOrderedDescending)){
-        x = [NSNumber numberWithUnsignedInteger:self.graphModel.plotDots.count - 1];
+    } else if (([x compare:@(count * DATE_ONE_DAY / self->divider)] == NSOrderedSame) || ([x compare:@(count * DATE_ONE_DAY / self->divider)] == NSOrderedDescending)){
+        
+        x = [NSNumber numberWithUnsignedInteger:(self.graphModel.plotDots.count - 1) * DATE_ONE_DAY / self->divider];
     }
-    unsigned long index = self.graphModel.plotDots.count - floorf([x floatValue]) - 1;
+        
+    unsigned long index = floorf([x floatValue]) * self->divider / DATE_ONE_DAY;
 
-    NSNumber *y = self.graphModel.plotDots[index].price;
+    NSNumber *y = self.graphModel.plotDots[count - index - 1].price;
 
     PlotSpaceAnnotationOptions options;
     options.plotSpace = space;
