@@ -61,10 +61,14 @@
     configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
     configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
     
+    NSTimeInterval ti = [options.referenceDate timeIntervalSince1970];
+    NSDate *refDate = [NSDate dateWithTimeIntervalSince1970:ti];
+    
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     dateFormatter.dateStyle = kCFDateFormatterLongStyle;
     [dateFormatter setDateFormat:options.xAxisDateFormatString];
     CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
+    timeFormatter.referenceDate = refDate;
     configuredAxisSet.xAxis.labelFormatter = timeFormatter;
     
     configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
