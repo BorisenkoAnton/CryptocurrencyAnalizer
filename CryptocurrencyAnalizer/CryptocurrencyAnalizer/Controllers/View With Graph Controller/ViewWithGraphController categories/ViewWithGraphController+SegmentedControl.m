@@ -21,7 +21,9 @@
     
     [self.graphView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
-
+    
+    [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
+    
     // Removing previous plot on graph
     for (CPTScatterPlot *plot in self.graphModel.allPlots) {
         [self.graphModel removePlot:plot];
