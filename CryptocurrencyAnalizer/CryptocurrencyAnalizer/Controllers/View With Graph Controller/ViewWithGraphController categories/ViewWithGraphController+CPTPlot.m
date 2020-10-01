@@ -81,7 +81,7 @@
             self->divider = DIVIDER_TEN_MINUTE;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * [DB_LIMIT_FOR_MINUTELY_TABLE intValue] / self->divider)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_45_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
         // For 7 days history
@@ -89,7 +89,7 @@
             self->divider = DIVIDER_ONE_HOUR;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 7)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_45_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
         // For month history
