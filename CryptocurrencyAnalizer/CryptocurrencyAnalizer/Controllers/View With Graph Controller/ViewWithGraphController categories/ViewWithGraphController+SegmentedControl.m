@@ -20,6 +20,7 @@
 - (void)neededPeriodSelected:(id)sender {
     
     [self.graphView addSubview:self.activityIndicator];
+    
     [self.activityIndicator startAnimating];
     
     [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
@@ -30,11 +31,15 @@
     }
     
     NSUInteger selectedRow;
+    
     selectedRow = [self.coinNamePickerView selectedRowInComponent:0]; // A zero-indexed number identifying the selected row, or -1 if no row is selected
+    
     if (selectedRow == -1) {
         [self.coinNamePickerView selectRow:0 inComponent:0 animated:NO];
+        
         selectedRow = [self.coinNamePickerView selectedRowInComponent:0];
     }
+    
     NSString *coinName = [[self.coinNamePickerView delegate] pickerView:self.coinNamePickerView titleForRow:selectedRow forComponent:0];
     
     // This components play role of the maximum separatiion between current time and the latest time of the cache
@@ -74,10 +79,13 @@
         if (!success) {
             [self.networkService getAndParseData:coinName withAPILimit:self.apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                 [self.graphModel.plotDots removeAllObjects];
+                
                 for (DBModel *model in coinData) {
                    [self.graphModel.plotDots addObject:model];
                 }
+                
                 [self configureAndAddPlot];
+                
                 [self.activityIndicator stopAnimating];
 
                 [CacheService clearCacheInTable:self.table forCoin:coinName completion:^(BOOL success) {

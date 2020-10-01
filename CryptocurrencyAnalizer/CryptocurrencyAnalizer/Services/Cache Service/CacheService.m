@@ -24,6 +24,7 @@
     NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
     
     SQLStatementOptions options;
+    
     options.count = NO;
     options.orderBy = DB_TIMESTAMP_COLUMN;
     options.desc = YES;
@@ -31,6 +32,7 @@
     options.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
     
     [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+        
         if (success) {
             [result next];
             
@@ -53,7 +55,9 @@
 + (void)clearCacheInTable:(NSString *)table forCoin:(NSString *)coinName completion:(void (^)(BOOL success))completion{
     
     NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
+    
     [DBService deleteFromTable:table whereConditions:[DBService createWhereConditionsFromDictionary:whereConditions] completion:^(BOOL success, NSError * _Nullable error) {
+        
         if (success) {
             completion(YES);
         } else {
@@ -66,11 +70,13 @@
 + (void)cacheArrayOfObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table {
     
     NSMutableArray<NSObject *> *cachingObjects = [NSMutableArray<NSObject *> new];
+    
     for (DBModel *model in objects) {
         [cachingObjects removeAllObjects];
         [cachingObjects addObject:model.pairName];
         [cachingObjects addObject:model.price];
         [cachingObjects addObject:model.timestamp];
+        
         [CacheService cacheObjects:cachingObjects toTable:table];
     }
 }

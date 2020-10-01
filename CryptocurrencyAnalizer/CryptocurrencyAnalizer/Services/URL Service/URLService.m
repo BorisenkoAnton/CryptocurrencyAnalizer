@@ -16,22 +16,25 @@
     
     switch (relativeUrl) {
         case RelativeURLDailyHistory: {
-        
             url = @"/data/v2/histoday";
             break;
         }
+            
         case RelativeURLHourlyHistory: {
             url = @"/data/v2/histohour";
             break;
         }
+            
         case RelativeURLMinutelyHistory: {
             url = @"/data/v2/histominute";
             break;
         }
+            
         case RelativeURLAvailableCoins: {
             url = @"/data/blockchain/list";
             break;
         }
+            
         default:
             break;
     }

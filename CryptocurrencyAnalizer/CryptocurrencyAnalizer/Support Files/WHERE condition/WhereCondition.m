@@ -16,6 +16,7 @@
         self.value = value;
         self.column = column;
     }
+    
     return self;
 }
 

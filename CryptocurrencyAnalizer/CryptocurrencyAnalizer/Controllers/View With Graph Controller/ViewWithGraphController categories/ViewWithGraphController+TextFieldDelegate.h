@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ViewWithGraphController (TextFieldDelegate) <UITextFieldDelegate>
 
 - (void)configureTextField;
+
 - (NSMutableArray *)searchInArray:(NSMutableArray<NSString *> *)arrayToSearchInto withKey:(NSString *)key andCharacters:(NSString *)charecters;
 
 @end

@@ -53,6 +53,7 @@
 
 #define DATE_ONE_DAY (24 * 60 * 60)
 
+// Dividers (for confiduring graph)
 #define DIVIDER_TEN_MINUTE 150
 #define DIVIDER_ONE_HOUR 24
 #define DIVIDER_ONE_DAY 1

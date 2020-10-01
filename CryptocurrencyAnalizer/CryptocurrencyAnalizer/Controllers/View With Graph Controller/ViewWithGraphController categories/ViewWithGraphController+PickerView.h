@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ViewWithGraphController (PickerView) <UIPickerViewDelegate, UIPickerViewDataSource>
 
-- (void)appointPickerViewDelegate:(id)delegate andDataSource:(id)dataSource;
+- (void)appointPickerViewDelegate:(id<UIPickerViewDelegate>)delegate andDataSource:(id<UIPickerViewDataSource>)dataSource;
 
 @end
 

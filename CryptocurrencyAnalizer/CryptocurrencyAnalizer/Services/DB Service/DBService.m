@@ -23,17 +23,21 @@ static FMDatabaseQueue *sharedQueue;
     } @catch (NSException *exception) {
         NSLog(@"DB error: %@", exception.name);
     }
+    
     return sharedDatabase;
 };
 
 + (FMDatabaseQueue *) sharedQueue {
     @try {
         NSURL *documents = [NSFileManager.defaultManager URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+        
         NSURL *fileUrl = [documents URLByAppendingPathComponent:@"test.sqlite"];
+        
         sharedQueue = [FMDatabaseQueue databaseQueueWithPath:fileUrl.path];
     } @catch (NSException *exception) {
         NSLog(@"Database Queue error: %@", exception.name);
     }
+    
     return sharedQueue;
 };
 
@@ -46,6 +50,7 @@ static FMDatabaseQueue *sharedQueue;
         [sqlStatement appendFormat:@"%@ %@ ",tableColumn.name, tableColumn.type];
         ([columns indexOfObjectIdenticalTo:tableColumn] == columns.count - 1) ? [sqlStatement appendString:@");"] : [sqlStatement appendString:@","];
     }
+    
     [DBService update:sqlStatement values:nil completion:completion];
 }
 
@@ -55,6 +60,7 @@ static FMDatabaseQueue *sharedQueue;
     if (!sharedQueue) {
         sharedQueue = [DBService sharedQueue];
     }
+    
     if (!sharedDatabase) {
         sharedDatabase = [DBService sharedDatabase];
     }
@@ -65,15 +71,19 @@ static FMDatabaseQueue *sharedQueue;
         }
         
         [sharedDatabase executeUpdate:sqlStatement values:values error:nil];
+        
         if(completion) {
             completion(YES, nil);
         }
+        
         [sharedDatabase close];
     } @catch (NSException *exception) {
         NSLog(@"Updating failed: %@", exception.name);
+        
         if(completion) {
             completion(NO, (NSError *)exception);
         }
+        
         [sharedDatabase close];
     }
 
@@ -95,6 +105,7 @@ static FMDatabaseQueue *sharedQueue;
 + (void)queryOnTable:(NSString *)table sqlStatementOptions:(SQLStatementOptions)options completion:(ResultCompletion)completion {
     
     NSMutableString *sqlStatement;
+    
     if (options.count) {
         sqlStatement = [NSMutableString stringWithFormat:@"SELECT COUNT(*) FROM %@", table];
     } else {
@@ -102,10 +113,13 @@ static FMDatabaseQueue *sharedQueue;
     }
     
     NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
+    
     if (options.whereConditions) {
         [sqlStatement appendString:@" WHERE"];
+        
         for (WhereCondition *condition in options.whereConditions) {
             [values addObject:condition.value];
+            
             [sqlStatement appendFormat:@" %@ = '%@'", condition.column, condition.value];
             ([options.whereConditions indexOfObjectIdenticalTo:condition] == options.whereConditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
         }
@@ -130,6 +144,7 @@ static FMDatabaseQueue *sharedQueue;
         
         if (options.count && options.limit) {
             int count = [sharedDatabase intForQuery:sqlStatement];
+            
             if (count >= [options.limit intValue]) {
                 completion(YES, nil, nil);
             } else {
@@ -156,8 +171,10 @@ static FMDatabaseQueue *sharedQueue;
     NSMutableArray<NSObject *> *values = [NSMutableArray<NSObject *> new];
     
     [sqlStatement appendString:@" WHERE"];
+    
     for (WhereCondition *condition in conditions) {
         [values addObject:condition.value];
+        
         [sqlStatement appendFormat:@" %@ = ?", condition.column];
         ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
     }
@@ -174,16 +191,19 @@ static FMDatabaseQueue *sharedQueue;
 + (NSArray<WhereCondition *> *)createWhereConditionsFromDictionary:(NSDictionary *)conditions {
     
     NSMutableArray<WhereCondition *> * createdConditions = [NSMutableArray<WhereCondition *> new];
+    
     for(id key in conditions) {
         WhereCondition *newCondition = [[WhereCondition alloc] initWithColumn:key andValue:[conditions valueForKey:key]];
         [createdConditions addObject:newCondition];
     }
+    
     return createdConditions;
 }
 
 + (NSArray<TableColumn *> *)createTableColumnsFromArray:(NSArray *)columns {
     
     NSMutableArray<TableColumn *> * createdColumns = [NSMutableArray<TableColumn *> new];
+    
     for (int i = 0; i < columns.count; i++) {
         TableColumn *newColumn = [[TableColumn alloc] initWithName:columns[i] andType:columns[i++]];
         [createdColumns addObject:newColumn];

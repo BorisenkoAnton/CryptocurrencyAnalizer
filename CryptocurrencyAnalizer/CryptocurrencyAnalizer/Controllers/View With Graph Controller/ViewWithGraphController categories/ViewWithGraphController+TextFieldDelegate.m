@@ -13,18 +13,24 @@
 - (void)configureTextField {
     
     self.coinNameTextField.delegate = self;
+    
     [self.coinNameTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    
     // Adding controller as observer to notifications, to know when keyboard appears and dissapears (to manage UI elements size)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     // To hide keyboard when user tapped on the screen (outside keyboard)
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    
     [self.view addGestureRecognizer:tap];
 }
 
 // This method enables or disables the processing of return key
 -(BOOL) textFieldShouldReturn:(UITextField *)textField {
+    
    [textField resignFirstResponder];
+    
    return YES;
 }
 
@@ -43,15 +49,18 @@
 }
 
 - (void)dismissKeyboard {
+    
     [self.coinNameTextField resignFirstResponder];
 }
 
--(NSMutableArray *)searchInArray:(NSMutableArray<NSString *> *)arrayToSearchInto withKey:(NSString *)key andCharacters:(NSString *)charecters {
+-(NSMutableArray *)searchInArray:(NSMutableArray<NSString *> *)arrayToSearchInto withKey:(NSString *)key andCharacters:(NSString *)characters {
 
     NSMutableArray *resultArray= [NSMutableArray new];
+    
     for (int index = 0 ; index < arrayToSearchInto.count; index++) {
         NSString *coinName  = arrayToSearchInto[index];
-        if ([coinName localizedCaseInsensitiveContainsString:charecters]) {
+        
+        if ([coinName localizedCaseInsensitiveContainsString:characters]) {
             [resultArray addObject:coinName];
         }
 
@@ -66,13 +75,18 @@
 - (void) keyboardWillShow:(NSNotification *)notification {
     
     NSDictionary* keyboardInfo = [notification userInfo];
+    
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
     CGSize keyboardSize = keyboardFrameBeginRect.size;
     
     if (self.view.frame.origin.y == 0) {
         CGRect frame = self.view.frame;
+        
         frame.origin.y -= keyboardSize.height;
+        
         self.view.frame = frame;
     }
     
@@ -82,7 +96,9 @@
     
     if (self.view.frame.origin.y != 0) {
         CGRect frame = self.view.frame;
+        
         frame.origin.y = 0;
+        
         self.view.frame = frame;
     }
 }

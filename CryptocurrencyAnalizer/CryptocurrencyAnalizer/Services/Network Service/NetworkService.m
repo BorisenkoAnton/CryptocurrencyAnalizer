@@ -17,7 +17,9 @@
     
     static NetworkService *networkService = nil;
     static dispatch_once_t onceToken;
+    
     [URLService getBaseURL];
+    
     dispatch_once(&onceToken, ^{
         networkService = [[self alloc] init];
         networkService.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -25,6 +27,7 @@
         networkService.apiKey = [URLService getAPIKey];
         networkService.requestSerializer = [AFJSONRequestSerializer serializer];
     });
+    
     return networkService;
 }
 
@@ -35,6 +38,7 @@
           completion:(void (^)(NSObject *data))completion {
 
     NSMutableString *url = [NSMutableString stringWithString:self.baseUrl];
+    
     [url appendString:[URLService getRelativeStringFrom:relativeURL]];
     
     [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -51,6 +55,7 @@
 - (void)getAndParseData:(NSString *)coin withAPILimit:(NSNumber *)limit completion:(NetworkServiceCompletion _Nullable )completion {
     
     RelativeURL relativeURL;
+    
     if ([limit  isEqual:API_LIMIT_FOR_MINUTELY_HISTORY]) {
         relativeURL = RelativeURLMinutelyHistory;
     } else if ([limit  isEqual:API_LIMIT_FOR_HOURLY_HISTORY]) {
@@ -64,6 +69,7 @@
     }
     
     NSDictionary *body;
+    
     if (coin && limit) {
         body = @{@"fsym":coin, @"tsym":@"USD", @"limit":limit};
     } else {
@@ -86,7 +92,9 @@
                 completion(availableCoins);
             } else {
                 NSArray *historicalInfo = [dataField valueForKey:@"Data"];
+                
                 NSString *pairName = [NSString stringWithFormat:@"%@/USD", coin];
+                
                 NSMutableArray<DBModel *> *historicalInfoForCoin = [NSMutableArray<DBModel *> new];
                 
                 for (NSObject *historicalInfoItem in historicalInfo) {
@@ -94,6 +102,7 @@
                     NSDate *timestamp = (NSDate *)[(NSDictionary *)historicalInfoItem valueForKey:@"time"];
                     
                     DBModel *model = [[DBModel alloc] initWithPairName:pairName timeStamp:timestamp andPrice:price];
+                    
                     [historicalInfoForCoin addObject:model];
                 }
                 

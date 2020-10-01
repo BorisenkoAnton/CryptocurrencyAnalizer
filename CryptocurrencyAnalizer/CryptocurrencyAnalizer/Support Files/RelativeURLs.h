@@ -16,5 +16,4 @@ typedef NS_ENUM(NSInteger, RelativeURL) {
     RelativeURLAvailableCoins
 };
 
-
 #endif /* RelativeURLs_h */
