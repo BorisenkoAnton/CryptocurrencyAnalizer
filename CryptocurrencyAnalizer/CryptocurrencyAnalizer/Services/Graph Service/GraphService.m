@@ -61,15 +61,15 @@
     configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
     configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
     
-    NSTimeInterval ti = [options.referenceDate timeIntervalSince1970];
-    NSDate *refDate = [NSDate dateWithTimeIntervalSince1970:ti];
+    NSTimeInterval referenceTimeInterval = [(NSNumber *)options.referenceDate doubleValue];
+    NSDate *referenceDate = [NSDate dateWithTimeIntervalSince1970:referenceTimeInterval];
     
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    dateFormatter.dateStyle = kCFDateFormatterLongStyle;
-    [dateFormatter setDateFormat:options.xAxisDateFormatString];
-    CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
-    timeFormatter.referenceDate = refDate;
-    configuredAxisSet.xAxis.labelFormatter = timeFormatter;
+    NSDateFormatter *labelDateFormatter = [NSDateFormatter new];
+    labelDateFormatter.dateStyle = kCFDateFormatterLongStyle;
+    [labelDateFormatter setDateFormat:options.xAxisDateFormatString];
+    CPTTimeFormatter *labelTimeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:labelDateFormatter];
+    labelTimeFormatter.referenceDate = referenceDate;
+    configuredAxisSet.xAxis.labelFormatter = labelTimeFormatter;
     
     configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
     configuredAxisSet.yAxis.minorGridLineStyle = options.gridLineStyle;
