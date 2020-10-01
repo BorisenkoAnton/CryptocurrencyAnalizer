@@ -88,9 +88,9 @@
                 
                 [self.activityIndicator stopAnimating];
 
-                [CacheService clearCacheInTable:self.table forCoin:coinName completion:^(BOOL success) {
+                [CacheManager clearCacheInTable:self.table forCoin:coinName completion:^(BOOL success) {
                    if (success) {
-                       [CacheService cacheArrayOfObjects:coinData toTable:self.table];
+                       [CacheManager cacheArrayOfObjects:coinData toTable:self.table];
                    }
                 }];
             }];

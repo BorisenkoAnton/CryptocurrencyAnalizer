@@ -23,9 +23,9 @@
     
     self.graphModel = [[GraphModel alloc] initModelWithOptions:options];
     
-    self.graphModel.textStyles[0] = [GraphService createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
-    self.graphModel.lineStyles[0] = [GraphService createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
-    self.graphModel.gridLineStyles[0] = [GraphService createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
+    self.graphModel.textStyles[0] = [GraphManager createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
+    self.graphModel.lineStyles[0] = [GraphManager createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
+    self.graphModel.gridLineStyles[0] = [GraphManager createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
 }
 
 
@@ -126,16 +126,16 @@
             break;
     }
 
-    [GraphService configureAxisSet:&axisSet withOptions:options];
+    [GraphManager configureAxisSet:&axisSet withOptions:options];
     
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graphModel.defaultPlotSpace;
     
     plotSpace.delegate = self;
     plotSpace.allowsUserInteraction = NO;
     
-    [GraphService configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
+    [GraphManager configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
     
-    CPTScatterPlot* plot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
+    CPTScatterPlot* plot = [GraphManager createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
     
     plot.delegate = self;
     plot.plotSymbolMarginForHitDetection = 10.0;
@@ -229,13 +229,13 @@
     options.contentLayerBackgroundColor = [UIColor redColor];
     options.contentAnchorPoint = CGPointMake([x floatValue] <= middleValueOfXAxis ? 0.0 : 1.0, 1.0);
 
-    CPTPlotSpaceAnnotation *annotation = [GraphService createAnnotationWithOptions:options];
+    CPTPlotSpaceAnnotation *annotation = [GraphManager createAnnotationWithOptions:options];
 
     [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
     
     [self addIndicatorLineWithConstraints:[CPTConstraints constraintWithLowerOffset: point.x - self.graphModel.paddingLeft]];
     
-    CPTScatterPlot *indicatorPlot = [GraphService createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
+    CPTScatterPlot *indicatorPlot = [GraphManager createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
 
     CPTPlotSymbol *plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
     

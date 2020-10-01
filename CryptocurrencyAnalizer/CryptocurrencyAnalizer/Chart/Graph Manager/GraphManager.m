@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GraphService.h"
+#import "GraphManager.h"
 
-@implementation GraphService
+@implementation GraphManager
 
 // Plot space defines the coordinate system of a plot
 + (void)configurePlotSpace:(CPTXYPlotSpace *)plotSpace forPlotwithMaxXValue:(NSNumber *)maxXValue andMaxYValue:(NSNumber *)maxYValue {

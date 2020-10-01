@@ -25,7 +25,7 @@
     [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         // Then, if data is cached in needed volume, checking it for updating
         if (success) {
-            [CacheService checkCacheForNeedToBeUpdating:table forCoin:coinName maxSeparation:components completion:^(BOOL needsToBeUpdated) {
+            [CacheManager checkCacheForNeedToBeUpdating:table forCoin:coinName maxSeparation:components completion:^(BOOL needsToBeUpdated) {
                 if (needsToBeUpdated) {
                     completion(NO);
                 } else {
@@ -73,7 +73,7 @@
 - (void)loadAvailableCoins {
     
     self.availableCoins = [NSMutableArray<NSString *> new];
-    self.networkService = [NetworkService shared];
+    self.networkService = [NetworkManager shared];
     
     // Getting list of all available coins, unreasonable to cache it because of the max-age=120
     [self.networkService getAndParseData:nil withAPILimit:nil completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {

@@ -6,9 +6,9 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
-#import "URLService.h"
+#import "URLHelper.h"
 
-@implementation URLService
+@implementation URLHelper
 
 + (NSString *)getRelativeStringFrom:(RelativeURL)relativeUrl {
     

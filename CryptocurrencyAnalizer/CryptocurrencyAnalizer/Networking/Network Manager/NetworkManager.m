@@ -7,24 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NetworkService.h"
+#import "NetworkManager.h"
 
 // Service to manage networking via AFNetworking
-@implementation NetworkService
+@implementation NetworkManager
 
 // Singleton method
 + (id)shared {
     
-    static NetworkService *networkService = nil;
+    static NetworkManager *networkService = nil;
     static dispatch_once_t onceToken;
     
-    [URLService getBaseURL];
+    [URLHelper getBaseURL];
     
     dispatch_once(&onceToken, ^{
         networkService = [[self alloc] init];
         networkService.configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        networkService.baseUrl = [URLService getBaseURL];
-        networkService.apiKey = [URLService getAPIKey];
+        networkService.baseUrl = [URLHelper getBaseURL];
+        networkService.apiKey = [URLHelper getAPIKey];
         networkService.requestSerializer = [AFJSONRequestSerializer serializer];
     });
     
@@ -39,7 +39,7 @@
 
     NSMutableString *url = [NSMutableString stringWithString:self.baseUrl];
     
-    [url appendString:[URLService getRelativeStringFrom:relativeURL]];
+    [url appendString:[URLHelper getRelativeStringFrom:relativeURL]];
     
     [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     

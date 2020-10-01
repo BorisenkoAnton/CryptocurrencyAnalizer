@@ -18,7 +18,7 @@
 #import "GraphModel.h"
 
 // Module to manage actions directed to graphs, plots, their options
-@interface GraphService : NSObject
+@interface GraphManager : NSObject
 
 + (void)configurePlotSpace:(CPTXYPlotSpace *)plotSpace forPlotwithMaxXValue:(NSNumber *)maxXValue andMaxYValue:(NSNumber *)maxYValue;
 

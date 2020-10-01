@@ -15,7 +15,7 @@
 #import "GraphModel.h"
 
 // Services
-#import "NetworkService.h"
+#import "NetworkManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSMutableArray<NSString *> *availableCoins;           // Full list of available coins
 @property NSMutableArray<NSString *> *filteredAvailableCoins;   // List of available coins after searching with the help of text Field
 @property (strong) GraphModel *graphModel;
-@property NetworkService * networkService;
+@property NetworkManager * networkService;
 @property NSString *table;
 @property NSString *dbLimit;
 @property NSNumber *apiLimit;

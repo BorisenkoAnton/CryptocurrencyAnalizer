@@ -19,7 +19,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CacheService : NSObject
+@interface CacheManager : NSObject
 
 + (void)cacheObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table;
 

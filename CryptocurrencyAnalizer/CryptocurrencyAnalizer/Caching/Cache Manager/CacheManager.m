@@ -6,11 +6,11 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
-#import "CacheService.h"
+#import "CacheManager.h"
 #import "DBModel.h"
 #import "FixedValues.h"
 
-@implementation CacheService
+@implementation CacheManager
 
 // Caching objects (like ["BTC/USD", 10898, 1600560000]) to given table
 + (void)cacheObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table {
@@ -77,7 +77,7 @@
         [cachingObjects addObject:model.price];
         [cachingObjects addObject:model.timestamp];
         
-        [CacheService cacheObjects:cachingObjects toTable:table];
+        [CacheManager cacheObjects:cachingObjects toTable:table];
     }
 }
 

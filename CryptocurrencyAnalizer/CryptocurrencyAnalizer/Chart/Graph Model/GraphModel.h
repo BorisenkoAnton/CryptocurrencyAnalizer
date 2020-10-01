@@ -15,7 +15,7 @@
 #import "GraphOptions.h"
 
 // Services
-#import "GraphService.h"
+#import "GraphManager.h"
 
 // Models
 #import "DBModel.h"

@@ -13,17 +13,17 @@
 #import "FixedValues.h"
 
 // Services
-#import "URLService.h"
+#import "URLHelper.h"
 
 //Modules
 @import AFNetworking;
 
-#ifndef NetworkService_h
-#define NetworkService_h
+#ifndef NetworkManager_h
+#define NetworkManager_h
 
 typedef void (^NetworkServiceCompletion)(NSMutableArray<DBModel *> * _Nullable coinData);
 
-@interface NetworkService : AFHTTPSessionManager
+@interface NetworkManager : AFHTTPSessionManager
 
 @property NSURLSessionConfiguration * _Nonnull configuration;
 @property NSString * _Nonnull baseUrl;

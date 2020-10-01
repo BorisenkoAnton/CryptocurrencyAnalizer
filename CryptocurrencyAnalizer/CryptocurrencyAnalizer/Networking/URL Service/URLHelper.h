@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface URLService : NSObject
+@interface URLHelper : NSObject
 
 + (NSString *)getRelativeStringFrom:(RelativeURL)relativeUrl;
 + (NSString *)getBaseURL;
