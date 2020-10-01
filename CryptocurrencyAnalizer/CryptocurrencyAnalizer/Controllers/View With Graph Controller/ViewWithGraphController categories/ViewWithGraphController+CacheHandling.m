@@ -36,7 +36,12 @@
                         if (success) {
                             [self.graphModel.plotDots removeAllObjects];
                             while ([result next]) {
-                                [self.graphModel.plotDots addObject:[NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]]];
+                                DBModel *model = [DBModel new];
+                                model.price = [NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]];
+                                NSNumber *timestampInMS = [NSNumber numberWithInteger:[result intForColumn:DB_TIMESTAMP_COLUMN]];
+                                NSDate *timestampDate = [[NSDate alloc] initWithTimeIntervalSince1970:[timestampInMS intValue]];
+                                model.timestamp = timestampDate;
+                                [self.graphModel.plotDots addObject:model];
                             }
                             [self configureAndAddPlot];
                             completion(YES);

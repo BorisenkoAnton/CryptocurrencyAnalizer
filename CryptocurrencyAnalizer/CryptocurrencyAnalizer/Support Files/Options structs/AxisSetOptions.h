@@ -23,6 +23,8 @@ typedef struct {
     int numberOfXMajorIntervals;
     int numberOfXMinorTicksPerInterval;
     CGFloat labelRotation;
+    NSString *xAxisDateFormatString;
+    NSDate *referenceDate;
 } AxisSetOptions;
 
 #endif /* AxisSetOptions_h */

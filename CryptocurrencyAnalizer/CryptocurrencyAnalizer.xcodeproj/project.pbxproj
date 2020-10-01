@@ -54,6 +54,7 @@
 		B420C0AA25060BB4008873FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B424C8E42518FB040091A808 /* URLService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLService.h; sourceTree = "<group>"; };
 		B424C8E52518FB040091A808 /* URLService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLService.m; sourceTree = "<group>"; };
+		B441DD9825232D90008C22DA /* PlotSpaceAnnotationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlotSpaceAnnotationOptions.h; sourceTree = "<group>"; };
 		B44B21EC251A46240073D497 /* AxisSetOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AxisSetOptions.h; sourceTree = "<group>"; };
 		B4515D2B251B3637003B46AA /* ViewWithGraphController+TextFieldDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ViewWithGraphController+TextFieldDelegate.h"; sourceTree = "<group>"; };
 		B4515D2C251B3637003B46AA /* ViewWithGraphController+TextFieldDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ViewWithGraphController+TextFieldDelegate.m"; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 				B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */,
 				B41D1659251A3F6600E82139 /* GraphOptions.h */,
 				B44B21EC251A46240073D497 /* AxisSetOptions.h */,
+				B441DD9825232D90008C22DA /* PlotSpaceAnnotationOptions.h */,
 			);
 			path = "Options structs";
 			sourceTree = "<group>";

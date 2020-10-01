@@ -22,7 +22,7 @@
     self.paddingTop = options.paddingTop;
     self.paddingRight = options.paddingRight;
     
-    self.plotDots = [NSMutableArray<NSNumber *> new];
+    self.plotDots = [NSMutableArray<DBModel *> new];
     self.textStyles = [NSMutableArray<CPTMutableTextStyle *> new];
     self.lineStyles = [NSMutableArray<CPTMutableLineStyle *> new];
     self.gridLineStyles = [NSMutableArray<CPTMutableLineStyle *> new];

@@ -7,6 +7,7 @@
 //
 
 #import "ViewWithGraphController.h"
+#import "PlotSpaceAnnotationOptions.h"
 
 // Helpers
 #import "GraphOptions.h"
@@ -19,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewWithGraphController (CPTPlot) <CPTPlotDataSource, CPTPlotDelegate, CALayerDelegate>
+@interface ViewWithGraphController (CPTPlot) <CPTPlotDataSource, CPTPlotDelegate, CPTPlotSpaceDelegate, CPTScatterPlotDelegate,CALayerDelegate> 
 
 - (void)configureGraphModel;
 - (void)configureAndAddPlot;

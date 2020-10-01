@@ -22,6 +22,7 @@
     }
 }
 
+
 + (CPTMutableTextStyle *)createMutableTextStyleWithFontName:(NSString *)fontName fontSize:(CGFloat)fontSize color:(CPTColor *)color andTextAlignment:(CPTTextAlignment)textAlignment {
     
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle new];
@@ -34,6 +35,7 @@
     return textStyle;
 }
 
+
 // Mutable wrapper for various line drawing properties
 + (CPTMutableLineStyle *)createLineStyleWithWidth:(CGFloat)width andColor:(CPTColor *)color {
     
@@ -45,6 +47,7 @@
     return lineStyle;
 }
 
+
 // CPTXYAxisSet is a set of cartesian (X-Y) axes
 + (void)configureAxisSet:(CPTXYAxisSet **)axisSet withOptions:(AxisSetOptions)options {
     
@@ -55,6 +58,18 @@
     configuredAxisSet.xAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.xAxis.axisConstraints = options.xAxisConstraints;
     configuredAxisSet.xAxis.delegate = options.xAxisDelegate;
+    configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
+    configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
+    
+    NSTimeInterval referenceTimeInterval = [(NSNumber *)options.referenceDate doubleValue];
+    NSDate *referenceDate = [NSDate dateWithTimeIntervalSince1970:referenceTimeInterval];
+    
+    NSDateFormatter *labelDateFormatter = [NSDateFormatter new];
+    labelDateFormatter.dateStyle = kCFDateFormatterLongStyle;
+    [labelDateFormatter setDateFormat:options.xAxisDateFormatString];
+    CPTTimeFormatter *labelTimeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:labelDateFormatter];
+    labelTimeFormatter.referenceDate = referenceDate;
+    configuredAxisSet.xAxis.labelFormatter = labelTimeFormatter;
     
     configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
     configuredAxisSet.yAxis.minorGridLineStyle = options.gridLineStyle;
@@ -66,8 +81,7 @@
     configuredAxisSet.yAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.yAxis.axisConstraints = options.yAxisConstraints;
     configuredAxisSet.yAxis.delegate = options.yAxisDelegate;
-    configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
-    configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
+    
        
     if ([options.maxYValue doubleValue] > 1.0) {
         configuredAxisSet.yAxis.majorIntervalLength = @([options.maxYValue doubleValue] / 10);
@@ -81,6 +95,7 @@
     configuredAxisSet.yAxis.minorTicksPerInterval = 5;
     configuredAxisSet.xAxis.labelRotation = options.labelRotation;
 }
+
 
 + (CPTScatterPlot *)createScatterPlotWithLineWidth:(CGFloat)lineWidth lineColor:(CPTColor *)color dataSource:(id<CPTPlotDataSource>)dataSource andDelegate:(id<CALayerDelegate>)delegate {
     
@@ -103,6 +118,18 @@
     plot.delegate = delegate;
     
     return plot;
+}
+
+
++ (CPTPlotSpaceAnnotation *)createAnnotationWithOptions:(PlotSpaceAnnotationOptions)options {
+    
+    CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:options.plotSpace anchorPlotPoint:options.anchorPoint];
+    annotation.contentLayer = options.textLayer;
+    annotation.displacement = options.displacement;
+    annotation.contentLayer.frame = options.contentLayerFrame;
+    annotation.contentLayer.backgroundColor = options.contentLayerBackgroundColor.CGColor;
+    annotation.contentAnchorPoint = options.contentAnchorPoint;
+    return annotation;
 }
 
 @end
