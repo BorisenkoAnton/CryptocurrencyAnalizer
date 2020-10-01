@@ -62,7 +62,7 @@
     configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
     configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
     
-    NSTimeInterval referenceTimeInterval = [(NSNumber *)options.referenceDate doubleValue];
+    NSTimeInterval referenceTimeInterval = [(NSNumber *)(options.referenceDate) doubleValue];
     
     NSDate *referenceDate = [NSDate dateWithTimeIntervalSince1970:referenceTimeInterval];
     

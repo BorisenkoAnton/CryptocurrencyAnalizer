@@ -209,7 +209,7 @@
     unsigned long index = floorf([x floatValue]) * self->divider / DATE_ONE_DAY;
 
     NSNumber *y = self.graphModel.plotDots[index].price;
-
+    
     NSDate *dateForAnnotation = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)(self.graphModel.plotDots[index].timestamp) doubleValue]];
     NSDateFormatter *annotationDateFormatter = [NSDateFormatter new];
     

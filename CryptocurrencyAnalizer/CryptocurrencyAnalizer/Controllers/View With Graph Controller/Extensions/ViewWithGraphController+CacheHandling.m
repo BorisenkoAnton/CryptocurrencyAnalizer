@@ -47,9 +47,8 @@
                                 model.price = [NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]];
                                 
                                 NSNumber *timestampInMS = [NSNumber numberWithInteger:[result intForColumn:DB_TIMESTAMP_COLUMN]];
-                                NSDate *timestampDate = [[NSDate alloc] initWithTimeIntervalSince1970:[timestampInMS intValue]];
                                 
-                                model.timestamp = timestampDate;
+                                model.timestamp = timestampInMS;
                                 
                                 [self.graphModel.plotDots addObject:model];
                             }
