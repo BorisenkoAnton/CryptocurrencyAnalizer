@@ -81,7 +81,7 @@
             self->divider = DIVIDER_TEN_MINUTE;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * [DB_LIMIT_FOR_MINUTELY_TABLE intValue] / self->divider)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_0_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_45_DEGREES];
             break;
         }
         // For 7 days history
@@ -89,7 +89,7 @@
             self->divider = DIVIDER_ONE_HOUR;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 7)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_0_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_45_DEGREES];
             break;
         }
         // For month history
@@ -160,7 +160,7 @@
         if ([plot.identifier isEqual:self->trackerLine]) {
             return self->highlitedPoint[1];
         } else {
-            return self.graphModel.plotDots[self.graphModel.plotDots.count - 1 - index].price;
+            return self.graphModel.plotDots[index].price;
         }
     }
 }
@@ -189,17 +189,24 @@
         
     unsigned long index = floorf([x floatValue]) * self->divider / DATE_ONE_DAY;
 
-    NSNumber *y = self.graphModel.plotDots[count - index - 1].price;
+    NSNumber *y = self.graphModel.plotDots[index].price;
 
+    NSDate *dateForAnnotation = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)(self.graphModel.plotDots[index].timestamp) doubleValue]];
+    NSDateFormatter *annotationDateFormatter = [NSDateFormatter new];
+    annotationDateFormatter.dateFormat = DATE_FORMAT_FOR_ANNOTATION;
+    NSString *dateForAnnotationString = [annotationDateFormatter stringFromDate:dateForAnnotation];
+    NSString *annotationText = [NSString stringWithFormat:@"%@\n%@", [y stringValue], dateForAnnotationString];
+    
     PlotSpaceAnnotationOptions options;
     options.plotSpace = space;
     options.anchorPoint = @[x, y];
-    options.textLayer = [[CPTTextLayer alloc] initWithText:[y stringValue] style:self.graphModel.textStyles[0]];
+    options.textLayer = [[CPTTextLayer alloc] initWithText:annotationText style:self.graphModel.textStyles[0]];
     options.displacement = CGPointMake(0.0, 30.0);
-    options.contentLayerFrame = CGRectMake(30.0, 30.0, 50.0, 20.0);
+    options.contentLayerFrame = CGRectMake(50.0, 30.0, 75.0, 30.0);
     options.contentLayerBackgroundColor = [UIColor redColor];
-    options.contentAnchorPoint = CGPointMake([x floatValue] <= 30.0 ? 0.0 : 1.0, 1.0);
-    
+    unsigned long middleValueOfXAxis = (self.graphModel.plotDots.count / 2) * DATE_ONE_DAY / self->divider;
+    options.contentAnchorPoint = CGPointMake([x floatValue] <= middleValueOfXAxis ? 0.0 : 1.0, 1.0);
+
     CPTPlotSpaceAnnotation *annotation = [GraphService createAnnotationWithOptions:options];
 
     [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
