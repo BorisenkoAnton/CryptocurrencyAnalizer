@@ -42,19 +42,19 @@
 #define PLOT_DOTS_COUNT_YEAR 365
 
 // Rotation in degrees
-#define ROTATION_0_DEGREES 0
 #define ROTATION_90_DEGREES 1.5708
-#endif /* FixedValues_h */
-
 
 // Date formats
 #define DATE_FORMAT_DAILY @"dd/MM HH:mm"
-#define DATE_FORMAT_WEEKLY @"dd/MM HH"
+#define DATE_FORMAT_WEEKLY @"dd/MM HH:mm"
 #define DATE_FORMAT_MONTHLY @"dd/MM/yyyy"
 #define DATE_FORMAT_YEARLY @"dd/MM/yyyy"
+#define DATE_FORMAT_FOR_ANNOTATION @"dd.MM.yy HH:mm"
 
 #define DATE_ONE_DAY (24 * 60 * 60)
 
-#define DIVIDER_TEN_MINUTE 600
+#define DIVIDER_TEN_MINUTE 150
 #define DIVIDER_ONE_HOUR 24
 #define DIVIDER_ONE_DAY 1
+
+#endif /* FixedValues_h */
