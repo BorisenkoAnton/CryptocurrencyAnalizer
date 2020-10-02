@@ -15,7 +15,7 @@
     GraphOptions options;
     
     options.frame = self.graphView.frame;
-    options.color = [UIColor blackColor].CGColor;
+    options.color = [UIColor whiteColor].CGColor;
     options.paddingBottom = 80.0;
     options.paddingLeft = 65.0;
     options.paddingTop = 30.0;
@@ -23,7 +23,7 @@
     
     self->graphModel = [[GraphModel alloc] initModelWithOptions:options];
     
-    self->graphModel.textStyles[0] = [GraphManager createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
+    self->graphModel.textStyles[0] = [GraphManager createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor grayColor] andTextAlignment:CPTTextAlignmentCenter];
     self->graphModel.lineStyles[0] = [GraphManager createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
     self->graphModel.gridLineStyles[0] = [GraphManager createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
 }
@@ -44,8 +44,8 @@
     
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     
-    lineStyle.lineWidth = 2;
-    lineStyle.lineColor = [CPTColor redColor];
+    lineStyle.lineWidth = 1;
+    lineStyle.lineColor = [CPTColor colorWithComponentRed:70.0/255.0 green:88.0/255.0 blue:209.0/255.0 alpha:1.0];
     indicatorLine.axisLineStyle = lineStyle;
     indicatorLine.majorTickLineStyle = nil;
     
@@ -91,7 +91,7 @@
             self->divider = DIVIDER_TEN_MINUTE;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * [DB_LIMIT_FOR_MINUTELY_TABLE intValue] / self->divider)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_90_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:6 XMinorTicks:0 xAxisDateFotmat:DATE_FORMAT_DAILY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
@@ -100,7 +100,7 @@
             self->divider = DIVIDER_ONE_HOUR;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 7)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_90_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:7 XMinorTicks:0 xAxisDateFotmat:DATE_FORMAT_WEEKLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
@@ -109,7 +109,7 @@
             self->divider = DIVIDER_ONE_DAY;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 30)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:30 XMinorTicks:1 xAxisDateFotmat:DATE_FORMAT_MONTHLY andLabelRotation:ROTATION_90_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:30 XMinorTicks:0 xAxisDateFotmat:DATE_FORMAT_MONTHLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
@@ -118,7 +118,7 @@
             self->divider = DIVIDER_ONE_DAY;
             maxXValue = [NSNumber numberWithInt:(DATE_ONE_DAY * 365)];
             options.maxXValue = maxXValue;
-            [self configureOptions:&options withXMajorIntervals:12 XMinorTicks:3 xAxisDateFotmat:DATE_FORMAT_YEARLY andLabelRotation:ROTATION_90_DEGREES];
+            [self configureOptions:&options withXMajorIntervals:12 XMinorTicks:0 xAxisDateFotmat:DATE_FORMAT_YEARLY andLabelRotation:ROTATION_90_DEGREES];
             break;
         }
             
@@ -135,7 +135,8 @@
     
     [GraphManager configurePlotSpace:plotSpace forPlotwithMaxXValue:maxXValue andMaxYValue:maxYValue];
     
-    CPTScatterPlot* plot = [GraphManager createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
+    CPTColor *plotLineColor = [CPTColor colorWithComponentRed:70.0/255.0 green:88.0/255.0 blue:209.0/255.0 alpha:1.0];
+    CPTScatterPlot* plot = [GraphManager createScatterPlotWithLineWidth:3.0 lineColor:plotLineColor dataSource:self andDelegate:self];
     
     plot.delegate = self;
     plot.plotSymbolMarginForHitDetection = 10.0;
@@ -216,21 +217,30 @@
     annotationDateFormatter.dateFormat = DATE_FORMAT_FOR_ANNOTATION;
     
     NSString *dateForAnnotationString = [annotationDateFormatter stringFromDate:dateForAnnotation];
-    NSString *annotationText = [NSString stringWithFormat:@"%@\n%@", [y stringValue], dateForAnnotationString];
     
-    PlotSpaceAnnotationOptions options;
+    NSNumberFormatter *numberFormatterForAnnotation = [NSNumberFormatter new];
+    
+    numberFormatterForAnnotation.numberStyle = DECIMAL_DIG;
+    numberFormatterForAnnotation.maximumFractionDigits = 8;
+    
+    NSString *annotationText = [NSString stringWithFormat:@"%@\n%@", [numberFormatterForAnnotation stringFromNumber:y], dateForAnnotationString];
+    
     unsigned long middleValueOfXAxis = (self->graphModel.plotDots.count / 2) * DATE_ONE_DAY / self->divider;
     
+    PlotSpaceAnnotationOptions options;
+    
+    CPTTextStyle *annotationTextStyle = [GraphManager createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:14.0 color:[CPTColor blackColor] andTextAlignment:CPTTextAlignmentCenter];
+    
+    options.textLayer = [[CPTTextLayer alloc] initWithText:annotationText style:annotationTextStyle];
     options.plotSpace = space;
     options.anchorPoint = @[x, y];
-    options.textLayer = [[CPTTextLayer alloc] initWithText:annotationText style:self->graphModel.textStyles[0]];
     options.displacement = CGPointMake(0.0, 30.0);
-    options.contentLayerFrame = CGRectMake(50.0, 30.0, 75.0, 30.0);
-    options.contentLayerBackgroundColor = [UIColor redColor];
-    options.contentAnchorPoint = CGPointMake([x floatValue] <= middleValueOfXAxis ? 0.0 : 1.0, 1.0);
+    options.contentLayerFrame = CGRectMake(50.0, 30.0, 100.0, 40.0);
+    options.contentLayerBackgroundColor = [UIColor whiteColor];
+    options.contentAnchorPoint = CGPointMake([x floatValue] <= middleValueOfXAxis ? -0.1 : 1.1, 0.3);
 
     CPTPlotSpaceAnnotation *annotation = [GraphManager createAnnotationWithOptions:options];
-
+    
     [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
     
     [self addIndicatorLineWithConstraints:[CPTConstraints constraintWithLowerOffset: point.x - self->graphModel.paddingLeft]];
@@ -239,9 +249,14 @@
 
     CPTPlotSymbol *plotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
     
-    plotSymbol.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
-    plotSymbol.size = CGSizeMake(10.0, 10.0);
+    CPTMutableLineStyle *plotSymbolLineStyle = [CPTMutableLineStyle lineStyle];
     
+    plotSymbolLineStyle.lineWidth = 3.0;
+    
+    plotSymbol.lineStyle = plotSymbolLineStyle;
+    plotSymbol.fill = [CPTFill fillWithColor:[CPTColor colorWithComponentRed:70.0/255.0 green:88.0/255.0 blue:209.0/255.0 alpha:1.0]];
+    plotSymbol.size = CGSizeMake(15.0, 15.0);
+
     indicatorPlot.plotSymbol = plotSymbol;
     indicatorPlot.identifier = @"Tracker line";
     
