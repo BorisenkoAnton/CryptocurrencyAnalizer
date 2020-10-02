@@ -61,6 +61,7 @@
     configuredAxisSet.xAxis.delegate = options.xAxisDelegate;
     configuredAxisSet.xAxis.majorIntervalLength = @([options.maxXValue intValue] / options.numberOfXMajorIntervals);
     configuredAxisSet.xAxis.minorTicksPerInterval = options.numberOfXMinorTicksPerInterval;
+    configuredAxisSet.xAxis.labelRotation = options.labelRotation;
     
     NSTimeInterval referenceTimeInterval = [(NSNumber *)(options.referenceDate) doubleValue];
     
@@ -77,19 +78,12 @@
     
     configuredAxisSet.xAxis.labelFormatter = labelTimeFormatter;
     
-    CPTFillArray *alternatingBF = @[
-    [CPTFill fillWithColor:[CPTColor colorWithComponentRed:255.0 green:255.0 blue:255.0 alpha:0.03]],
-    [CPTFill fillWithColor:[CPTColor blackColor]],
-    ];
-    
-    configuredAxisSet.yAxis.alternatingBandFills = alternatingBF;
     configuredAxisSet.yAxis.labelTextStyle = options.labelTextStyle;
     configuredAxisSet.yAxis.minorGridLineStyle = options.gridLineStyle;
     configuredAxisSet.yAxis.axisLineStyle = options.axisLineStyle;
     configuredAxisSet.yAxis.axisConstraints = options.yAxisConstraints;
     configuredAxisSet.yAxis.delegate = options.yAxisDelegate;
-    configuredAxisSet.yAxis.minorTicksPerInterval = 5;
-    configuredAxisSet.xAxis.labelRotation = options.labelRotation;
+    configuredAxisSet.yAxis.minorTicksPerInterval = 0;
        
     if ([options.maxYValue doubleValue] > 1.0) {
         configuredAxisSet.yAxis.majorIntervalLength = @([options.maxYValue doubleValue] / 10);
@@ -117,10 +111,9 @@
     
     plot.dataLineStyle = plotLineStyle;
     
-    // The interpolation method used to generate the curved plot line
-    plot.curvedInterpolationOption = CPTScatterPlotCurvedInterpolationCatmullCustomAlpha; // Catmull-Rom Spline Interpolation with a custom alpha value
-    plot.interpolation = CPTScatterPlotInterpolationCurved;
-
+    plot.areaFill = [CPTFill fillWithColor:[CPTColor colorWithComponentRed:139.0/255.0 green:211.0/255.0 blue:246.0/255/0 alpha:0.25]];
+    plot.areaBaseValue = @0;
+    
     plot.dataSource = dataSource;
     plot.delegate = delegate;
     
@@ -132,9 +125,21 @@
     
     CPTPlotSpaceAnnotation *annotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:options.plotSpace anchorPlotPoint:options.anchorPoint];
     
+    CGPathRef outerPath = CGPathCreateWithEllipseInRect(options.contentLayerFrame, NULL);
+    
+    options.textLayer.outerBorderPath = outerPath;
+    
+    CPTMutableShadow *annotationContentLayerShadow = [CPTMutableShadow shadow];
+    
+    annotationContentLayerShadow.shadowColor = [CPTColor blackColor];
+    annotationContentLayerShadow.shadowOffset = CGSizeMake(0.0, 0.0);
+    annotationContentLayerShadow.shadowBlurRadius = 6.0;
+    
+    options.textLayer.shadow = annotationContentLayerShadow;
     annotation.contentLayer = options.textLayer;
     annotation.displacement = options.displacement;
     annotation.contentLayer.frame = options.contentLayerFrame;
+    annotation.contentLayer.opacity = 1.0;
     annotation.contentLayer.backgroundColor = options.contentLayerBackgroundColor.CGColor;
     annotation.contentAnchorPoint = options.contentAnchorPoint;
     
