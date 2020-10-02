@@ -26,8 +26,8 @@
     [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
     
     // Removing previous plot on graph
-    for (CPTScatterPlot *plot in self.graphModel.allPlots) {
-        [self.graphModel removePlot:plot];
+    for (CPTScatterPlot *plot in self->graphModel.allPlots) {
+        [self->graphModel removePlot:plot];
     }
     
     NSUInteger selectedRow;
@@ -75,22 +75,22 @@
             break;
     }
     
-    [self getCachedDataIfExists:self.table limit:self.dbLimit maxSeparation:components coinName:coinName completion:^(BOOL success) {
+    [self getCachedDataIfExists:self->table limit:self->dbLimit maxSeparation:components coinName:coinName completion:^(BOOL success) {
         if (!success) {
-            [self.networkService getAndParseData:coinName withAPILimit:self.apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
-                [self.graphModel.plotDots removeAllObjects];
+            [self->networkService getAndParseData:coinName withAPILimit:self->apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+                [self->graphModel.plotDots removeAllObjects];
                 
                 for (DBModel *model in coinData) {
-                   [self.graphModel.plotDots addObject:model];
+                   [self->graphModel.plotDots addObject:model];
                 }
                 
                 [self configureAndAddPlot];
                 
                 [self.activityIndicator stopAnimating];
 
-                [CacheManager clearCacheInTable:self.table forCoin:coinName completion:^(BOOL success) {
+                [CacheManager clearCacheInTable:self->table forCoin:coinName completion:^(BOOL success) {
                    if (success) {
-                       [CacheManager cacheArrayOfObjects:coinData toTable:self.table];
+                       [CacheManager cacheArrayOfObjects:coinData toTable:self->table];
                    }
                 }];
             }];
@@ -104,9 +104,9 @@
 // Configuring parameters for getting data from db or from server
 - (void)configureLimitsForTable:(NSString *)table dbLimit:(NSString *)dbLimit apiLimit:(NSNumber *)apiLimit {
     
-    self.table = table;
-    self.dbLimit = dbLimit;
-    self.apiLimit = apiLimit;
+    self->table = table;
+    self->dbLimit = dbLimit;
+    self->apiLimit = apiLimit;
 }
 
 @end

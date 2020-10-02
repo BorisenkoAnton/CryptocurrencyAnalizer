@@ -21,11 +21,11 @@
     options.paddingTop = 30.0;
     options.paddingRight = 15.0;
     
-    self.graphModel = [[GraphModel alloc] initModelWithOptions:options];
+    self->graphModel = [[GraphModel alloc] initModelWithOptions:options];
     
-    self.graphModel.textStyles[0] = [GraphManager createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
-    self.graphModel.lineStyles[0] = [GraphManager createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
-    self.graphModel.gridLineStyles[0] = [GraphManager createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
+    self->graphModel.textStyles[0] = [GraphManager createMutableTextStyleWithFontName:@"HelveticaNeue-Bold" fontSize:10.0 color:[CPTColor whiteColor] andTextAlignment:CPTTextAlignmentCenter];
+    self->graphModel.lineStyles[0] = [GraphManager createLineStyleWithWidth:5.0 andColor:[CPTColor whiteColor]];
+    self->graphModel.gridLineStyles[0] = [GraphManager createLineStyleWithWidth:0.5 andColor:[CPTColor grayColor]];
 }
 
 
@@ -49,7 +49,7 @@
     indicatorLine.axisLineStyle = lineStyle;
     indicatorLine.majorTickLineStyle = nil;
     
-    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graphModel.axisSet;
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self->graphModel.axisSet;
     
     CPTXYAxis *xAxis = axisSet.xAxis;
     CPTXYAxis *yAxis = axisSet.yAxis;
@@ -59,33 +59,33 @@
 
 - (void)configureAndAddPlot{
     
-    self.graphView.hostedGraph = self.graphModel;
+    self.graphView.hostedGraph = self->graphModel;
 
     NSMutableArray *prices = [NSMutableArray new];
     
-    for (DBModel *model in self.graphModel.plotDots) {
+    for (DBModel *model in self->graphModel.plotDots) {
         [prices addObject:model.price];
     }
     
     NSNumber *maxYValue = [NSNumber numberWithDouble:[(NSNumber *)[prices valueForKeyPath:@"@max.self"] doubleValue] * 1.3];
     NSNumber *maxXValue;
     
-    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graphModel.axisSet;
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self->graphModel.axisSet;
     
     AxisSetOptions options;
     
-    options.labelTextStyle = self.graphModel.textStyles[0];
-    options.gridLineStyle = self.graphModel.gridLineStyles[0];
-    options.axisLineStyle = self.graphModel.lineStyles[0];
+    options.labelTextStyle = self->graphModel.textStyles[0];
+    options.gridLineStyle = self->graphModel.gridLineStyles[0];
+    options.axisLineStyle = self->graphModel.lineStyles[0];
     options.xAxisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
     options.yAxisConstraints = [CPTConstraints constraintWithLowerOffset:0.0];
     options.xAxisDelegate = self;
     options.yAxisDelegate = self;
     options.maxYValue = maxYValue;
-    options.referenceDate = self.graphModel.plotDots[0].timestamp;
+    options.referenceDate = self->graphModel.plotDots[0].timestamp;
     
     // Depending on the selected time period, we will get different number of dots
-    switch (self.graphModel.plotDots.count) {
+    switch (self->graphModel.plotDots.count) {
         // For one day history
         case PLOT_DOTS_COUNT_DAY: {
             self->divider = DIVIDER_TEN_MINUTE;
@@ -128,7 +128,7 @@
 
     [GraphManager configureAxisSet:&axisSet withOptions:options];
     
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graphModel.defaultPlotSpace;
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self->graphModel.defaultPlotSpace;
     
     plotSpace.delegate = self;
     plotSpace.allowsUserInteraction = NO;
@@ -140,7 +140,7 @@
     plot.delegate = self;
     plot.plotSymbolMarginForHitDetection = 10.0;
     
-    [self.graphModel addPlot:plot toPlotSpace:self.graphModel.defaultPlotSpace];
+    [self->graphModel addPlot:plot toPlotSpace:self->graphModel.defaultPlotSpace];
 }
 
 
@@ -160,7 +160,7 @@
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plotnumberOfRecords {
     
-    return self.graphModel.plotDots.count;
+    return self->graphModel.plotDots.count;
 }
  
 
@@ -178,7 +178,7 @@
         if ([plot.identifier isEqual:self->trackerLine]) {
             return self->highlitedPoint[1];
         } else {
-            return self.graphModel.plotDots[index].price;
+            return self->graphModel.plotDots[index].price;
         }
     }
 }
@@ -189,7 +189,7 @@
     [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
     
     if (self->trackerLine) {
-        [self.graphModel removePlotWithIdentifier:self->trackerLine];
+        [self->graphModel removePlotWithIdentifier:self->trackerLine];
     }
     
     CGPoint plotAreaPoint = [self.graphView.hostedGraph convertPoint:point toLayer:self.graphView.hostedGraph.plotAreaFrame.plotArea];
@@ -198,19 +198,19 @@
     
     NSNumber *x = plotPoint[0];
     
-    unsigned long count = self.graphModel.plotDots.count;
+    unsigned long count = self->graphModel.plotDots.count;
     
     if ([x floatValue] <= 0) {
         x = @0;
     } else if (([x compare:@(count * DATE_ONE_DAY / self->divider)] == NSOrderedSame) || ([x compare:@(count * DATE_ONE_DAY / self->divider)] == NSOrderedDescending)) {
-        x = [NSNumber numberWithUnsignedInteger:(self.graphModel.plotDots.count - 1) * DATE_ONE_DAY / self->divider];
+        x = [NSNumber numberWithUnsignedInteger:(self->graphModel.plotDots.count - 1) * DATE_ONE_DAY / self->divider];
     }
         
     unsigned long index = floorf([x floatValue]) * self->divider / DATE_ONE_DAY;
 
-    NSNumber *y = self.graphModel.plotDots[index].price;
+    NSNumber *y = self->graphModel.plotDots[index].price;
     
-    NSDate *dateForAnnotation = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)(self.graphModel.plotDots[index].timestamp) doubleValue]];
+    NSDate *dateForAnnotation = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)(self->graphModel.plotDots[index].timestamp) doubleValue]];
     NSDateFormatter *annotationDateFormatter = [NSDateFormatter new];
     
     annotationDateFormatter.dateFormat = DATE_FORMAT_FOR_ANNOTATION;
@@ -219,11 +219,11 @@
     NSString *annotationText = [NSString stringWithFormat:@"%@\n%@", [y stringValue], dateForAnnotationString];
     
     PlotSpaceAnnotationOptions options;
-    unsigned long middleValueOfXAxis = (self.graphModel.plotDots.count / 2) * DATE_ONE_DAY / self->divider;
+    unsigned long middleValueOfXAxis = (self->graphModel.plotDots.count / 2) * DATE_ONE_DAY / self->divider;
     
     options.plotSpace = space;
     options.anchorPoint = @[x, y];
-    options.textLayer = [[CPTTextLayer alloc] initWithText:annotationText style:self.graphModel.textStyles[0]];
+    options.textLayer = [[CPTTextLayer alloc] initWithText:annotationText style:self->graphModel.textStyles[0]];
     options.displacement = CGPointMake(0.0, 30.0);
     options.contentLayerFrame = CGRectMake(50.0, 30.0, 75.0, 30.0);
     options.contentLayerBackgroundColor = [UIColor redColor];
@@ -233,7 +233,7 @@
 
     [self.graphView.hostedGraph.plotAreaFrame.plotArea addAnnotation:annotation];
     
-    [self addIndicatorLineWithConstraints:[CPTConstraints constraintWithLowerOffset: point.x - self.graphModel.paddingLeft]];
+    [self addIndicatorLineWithConstraints:[CPTConstraints constraintWithLowerOffset: point.x - self->graphModel.paddingLeft]];
     
     CPTScatterPlot *indicatorPlot = [GraphManager createScatterPlotWithLineWidth:2.0 lineColor:[CPTColor whiteColor] dataSource:self andDelegate:self];
 
@@ -245,7 +245,7 @@
     indicatorPlot.plotSymbol = plotSymbol;
     indicatorPlot.identifier = @"Tracker line";
     
-    [self.graphModel addPlot:indicatorPlot toPlotSpace:self.graphModel.defaultPlotSpace];
+    [self->graphModel addPlot:indicatorPlot toPlotSpace:self->graphModel.defaultPlotSpace];
 
     self->trackerLine = indicatorPlot.identifier;
     self->highlitedPoint = @[x, y];

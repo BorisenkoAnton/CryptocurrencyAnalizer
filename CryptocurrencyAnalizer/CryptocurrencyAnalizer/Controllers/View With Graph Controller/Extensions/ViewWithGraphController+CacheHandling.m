@@ -39,7 +39,7 @@
                     
                     [DBService queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
                         if (success) {
-                            [self.graphModel.plotDots removeAllObjects];
+                            [self->graphModel.plotDots removeAllObjects];
                             
                             while ([result next]) {
                                 DBModel *model = [DBModel new];
@@ -50,7 +50,7 @@
                                 
                                 model.timestamp = timestampInMS;
                                 
-                                [self.graphModel.plotDots addObject:model];
+                                [self->graphModel.plotDots addObject:model];
                             }
                             
                             [self configureAndAddPlot];
@@ -71,18 +71,18 @@
 
 - (void)loadAvailableCoins {
     
-    self.availableCoins = [NSMutableArray<NSString *> new];
-    self.networkService = [NetworkManager shared];
+    self->availableCoins = [NSMutableArray<NSString *> new];
+    self->networkService = [NetworkManager shared];
     
     // Getting list of all available coins, unreasonable to cache it because of the max-age=120
-    [self.networkService getAndParseData:nil withAPILimit:nil completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
+    [self->networkService getAndParseData:nil withAPILimit:nil completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
         for (NSString *coin in coinData) {
-            [self.availableCoins addObject:coin];
+            [self->availableCoins addObject:coin];
         }
         
-        [self.availableCoins sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        [self->availableCoins sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         
-        self.filteredAvailableCoins = [self.availableCoins mutableCopy];
+        self->filteredAvailableCoins = [self->availableCoins mutableCopy];
         
         [self.coinNamePickerView reloadAllComponents];
         [self.coinNamePickerView selectRow:0 inComponent:0 animated:NO];

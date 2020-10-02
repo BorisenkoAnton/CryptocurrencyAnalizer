@@ -38,10 +38,10 @@
 -(void)textFieldValueChanged:(UITextField *)textField {
     
     if((textField.text.length) > 0) {
-        self.filteredAvailableCoins = [self searchInArray:self.availableCoins withKey:@"key value" andCharacters:textField.text];
+        self->filteredAvailableCoins = [self searchInArray:self->availableCoins withKey:@"key value" andCharacters:textField.text];
     }
     else {
-        self.filteredAvailableCoins = [self.availableCoins mutableCopy];
+        self->filteredAvailableCoins = [self->availableCoins mutableCopy];
     }
 
     [self.coinNamePickerView reloadAllComponents];
