@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+// Services
+#import "DBService.h"
+
+// Helpers
+#import "TableColumn.h"
+#import "FixedValues.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 // Data model that stored in DB
@@ -19,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSNumber *price;
 
 - (id)initWithPairName:(NSString *)pairName timeStamp:(NSDate *)timestamp andPrice:(NSNumber *)price;
++ (void)createTablesForModel;
 
 @end
 
