@@ -7,7 +7,10 @@
 //
 
 #import "ViewWithGraphController.h"
-#import "ViewWithGraphController+CacheHandling.h"
+#import "ViewWithGraphController+CPTPlot.h"
+
+// Managers
+#import "CacheManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

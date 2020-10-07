@@ -75,7 +75,7 @@
             break;
     }
     
-    [self getCachedDataIfExists:self->table limit:self->dbLimit maxSeparation:components coinName:coinName completion:^(BOOL success) {
+    [CacheManager getCachedDataIfExists:self->table limit:self->dbLimit maxSeparation:components coinName:coinName completion:^(BOOL success, NSMutableArray<DBModel *> *cachedData) {
         if (!success) {
             [self->networkService getAndParseData:coinName withAPILimit:self->apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
                 [self->graphModel.plotDots removeAllObjects];
@@ -96,6 +96,11 @@
             }];
             
         } else {
+            [self->graphModel.plotDots removeAllObjects];
+            self->graphModel.plotDots = cachedData;
+            
+            [self configureAndAddPlot];
+            
             [self.activityIndicator stopAnimating];
         }
     }];

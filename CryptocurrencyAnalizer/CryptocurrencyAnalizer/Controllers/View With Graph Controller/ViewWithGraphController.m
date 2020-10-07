@@ -12,8 +12,6 @@
 #import "ViewWithGraphController+TextFieldDelegate.h"
 #import "ViewWithGraphController+PickerView.h"
 #import "ViewWithGraphController+CPTPlot.h"
-#import "ViewWithGraphController+CacheHandling.h"
-#import "ViewWithGraphController+TablesCreating.h"
 #import "ViewWithGraphController+SegmentedControl.h"
 
 @implementation ViewWithGraphController
@@ -22,12 +20,11 @@
     
     [super viewDidLoad];
     
+    [DBModel createTablesForModel];
     [self loadAvailableCoins];
     [self configureGraphModel];
     [self configureTextField];
-    [self createTablesInDB];
     [self configureSegmentedControl];
-    
     [self appointPickerViewDelegate:self andDataSource:self];
     
 }

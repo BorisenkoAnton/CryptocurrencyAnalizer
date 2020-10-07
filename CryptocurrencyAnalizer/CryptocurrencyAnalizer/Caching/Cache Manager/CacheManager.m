@@ -81,4 +81,60 @@
     }
 }
 
+
++ (void)getCachedDataIfExists:(NSString *)table limit:(NSString *)limit maxSeparation:(NSDateComponents *)components coinName:(NSString *)coinName completion:(void (^)(BOOL, NSMutableArray<DBModel *> *cachedData))completion {
+    
+    // First, check if cache exists with needed volume of data
+       SQLStatementOptions options;
+       
+       NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
+       
+       options.limit = limit;
+       options.count = YES;
+       options.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
+       
+       [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+           // Then, if data is cached in needed volume, checking it for updating
+           if (success) {
+               [CacheManager checkCacheForNeedToBeUpdating:table forCoin:coinName maxSeparation:components completion:^(BOOL needsToBeUpdated) {
+                   if (needsToBeUpdated) {
+                       completion(NO, nil);
+                   } else {
+                       // If cache have not to be updating, get it from db
+                       SQLStatementOptions newOptions;
+                       NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
+                       
+                       newOptions.limit = limit;
+                       newOptions.count = NO;
+                       newOptions.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
+                       
+                       [DBService queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+                           if (success) {
+                               NSMutableArray *cachedData = [NSMutableArray new];
+                               
+                               while ([result next]) {
+                                   DBModel *model = [DBModel new];
+                                   
+                                   model.price = [NSNumber numberWithDouble:[result doubleForColumn:DB_PRICE_COLUMN]];
+                                   
+                                   NSNumber *timestampInMS = [NSNumber numberWithInteger:[result intForColumn:DB_TIMESTAMP_COLUMN]];
+                                   
+                                   model.timestamp = timestampInMS;
+                                   
+                                   [cachedData addObject:model];
+                               }
+                               
+                               completion(YES, cachedData);
+                           } else {
+                               completion(NO, nil);
+                           }
+                       }];
+                   }
+               }];
+           } else {
+               completion(NO, nil);
+           }
+       }];
+}
+
 @end
