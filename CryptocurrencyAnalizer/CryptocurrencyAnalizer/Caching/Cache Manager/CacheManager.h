@@ -17,6 +17,10 @@
 // Services
 #import "DBService.h"
 
+
+// Models
+#import "DBModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CacheManager : NSObject
@@ -31,6 +35,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)clearCacheInTable:(NSString *)table forCoin:(NSString *)coinName completion:(void (^)(BOOL success))completion;
 
 + (void)cacheArrayOfObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table;
+
++ (void)getCachedDataIfExists:(NSString *)table
+                        limit:(NSString *)limit
+                        maxSeparation:(nonnull NSDateComponents *)components
+                        coinName:(NSString *)coinName
+                        completion:(void (^)(BOOL success, NSMutableArray<DBModel *> *cachedData))completion;
 
 @end
 
