@@ -10,7 +10,7 @@
 
 // Helpers
 #import "RelativeURLs.h"
-#import "FixedValues.h"
+#import "APIFixedValues.h"
 
 // Services
 #import "URLHelper.h"

@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 // Services
-#import "DBService.h"
+#import "DBManager.h"
 
 // Helpers
 #import "TableColumn.h"
-#import "FixedValues.h"
+#import "DBFixedValues.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

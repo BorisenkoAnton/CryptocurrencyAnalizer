@@ -11,18 +11,18 @@
 
 // Helpers
 #import "GraphOptions.h"
-#import "FixedValues.h"
+#import "DBFixedValues.h"
+#import "GraphFixedValues.h"
 
 // Services
 #import "GraphManager.h"
-
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ViewWithGraphController (CPTPlot) <CPTPlotDataSource, CPTPlotDelegate, CPTPlotSpaceDelegate, CPTScatterPlotDelegate,CALayerDelegate> 
 
-- (void)configureGraphModel;
+- (void)configureGraph;
 - (void)configureAndAddPlot;
 
 @end

@@ -8,14 +8,13 @@
 
 #import "CacheManager.h"
 #import "DBModel.h"
-#import "FixedValues.h"
 
 @implementation CacheManager
 
 // Caching objects (like ["BTC/USD", 10898, 1600560000]) to given table
 + (void)cacheObjects:(NSArray<NSObject *> *)objects toTable:(NSString *)table {
     
-    [DBService insert:objects intoTable:table completion:nil];
+    [DBManager insert:objects intoTable:table completion:nil];
 }
 
 // Checking cache for need to be updating with the help of comparison of the current date and the latest date from table
@@ -29,9 +28,9 @@
     options.orderBy = DB_TIMESTAMP_COLUMN;
     options.desc = YES;
     options.limit = @"1";
-    options.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
+    options.whereConditions = [DBManager createWhereConditionsFromDictionary:whereConditions];
     
-    [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+    [DBManager queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
         
         if (success) {
             [result next];
@@ -56,7 +55,7 @@
     
     NSDictionary *whereConditions = @{DB_PAIR_NAME_COLUMN:[NSString stringWithFormat:@"%@/USD", coinName]};
     
-    [DBService deleteFromTable:table whereConditions:[DBService createWhereConditionsFromDictionary:whereConditions] completion:^(BOOL success, NSError * _Nullable error) {
+    [DBManager deleteFromTable:table whereConditions:[DBManager createWhereConditionsFromDictionary:whereConditions] completion:^(BOOL success, NSError * _Nullable error) {
         
         if (success) {
             completion(YES);
@@ -91,9 +90,9 @@
        
        options.limit = limit;
        options.count = YES;
-       options.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
+       options.whereConditions = [DBManager createWhereConditionsFromDictionary:whereConditions];
        
-       [DBService queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+       [DBManager queryOnTable:table sqlStatementOptions:options completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
            // Then, if data is cached in needed volume, checking it for updating
            if (success) {
                [CacheManager checkCacheForNeedToBeUpdating:table forCoin:coinName maxSeparation:components completion:^(BOOL needsToBeUpdated) {
@@ -106,9 +105,9 @@
                        
                        newOptions.limit = limit;
                        newOptions.count = NO;
-                       newOptions.whereConditions = [DBService createWhereConditionsFromDictionary:whereConditions];
+                       newOptions.whereConditions = [DBManager createWhereConditionsFromDictionary:whereConditions];
                        
-                       [DBService queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
+                       [DBManager queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
                            if (success) {
                                NSMutableArray *cachedData = [NSMutableArray new];
                                

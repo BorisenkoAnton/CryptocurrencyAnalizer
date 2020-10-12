@@ -22,7 +22,7 @@
     
     [DBModel createTablesForModel];
     [self loadAvailableCoins];
-    [self configureGraphModel];
+    [self configureGraph];
     [self configureTextField];
     [self configureSegmentedControl];
     [self appointPickerViewDelegate:self andDataSource:self];

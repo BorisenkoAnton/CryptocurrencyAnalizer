@@ -6,9 +6,9 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
-#import "DBService.h"
+#import "DBManager.h"
 
-@implementation DBService
+@implementation DBManager
 
 // To access the database
 static FMDatabase *sharedDatabase;
@@ -51,18 +51,18 @@ static FMDatabaseQueue *sharedQueue;
         ([columns indexOfObjectIdenticalTo:tableColumn] == columns.count - 1) ? [sqlStatement appendString:@");"] : [sqlStatement appendString:@","];
     }
     
-    [DBService update:sqlStatement values:nil completion:completion];
+    [DBManager update:sqlStatement values:nil completion:completion];
 }
 
 // All transactions in FMDB are an UPDATE if they are not a QUERY, this helper method is called by the CREATE, INSERT, and DELETE functions
 + (void)update:(NSString *)sqlStatement values:(NSArray<NSObject *> *)values completion:(Completion)completion {
     
     if (!sharedQueue) {
-        sharedQueue = [DBService sharedQueue];
+        sharedQueue = [DBManager sharedQueue];
     }
     
     if (!sharedDatabase) {
-        sharedDatabase = [DBService sharedDatabase];
+        sharedDatabase = [DBManager sharedDatabase];
     }
     
     @try {
@@ -98,7 +98,7 @@ static FMDatabaseQueue *sharedQueue;
         ([values indexOfObjectIdenticalTo:value] == values.count - 1) ? [sqlStatement appendString:@", ?)"] : [sqlStatement appendString:@", ?"];
     }
     
-    [DBService update:sqlStatement values:values completion:completion];
+    [DBManager update:sqlStatement values:values completion:completion];
 }
 
 // Query the given table based on conditions provided
@@ -179,13 +179,13 @@ static FMDatabaseQueue *sharedQueue;
         ([conditions indexOfObjectIdenticalTo:condition] == conditions.count - 1) ? [sqlStatement appendString:@""] : [sqlStatement appendString:@","];
     }
 
-    [DBService update:sqlStatement values:values completion:completion];
+    [DBManager update:sqlStatement values:values completion:completion];
 }
 
 + (void)dropTable:(NSString *)table completion:(Completion)completion {
     
     NSString *sqlStatement = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", table];
-    [DBService update:sqlStatement values:nil completion:completion];
+    [DBManager update:sqlStatement values:nil completion:completion];
 }
 
 + (NSArray<WhereCondition *> *)createWhereConditionsFromDictionary:(NSDictionary *)conditions {

@@ -26,8 +26,8 @@
     [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
     
     // Removing previous plot on graph
-    for (CPTScatterPlot *plot in self->graphModel.allPlots) {
-        [self->graphModel removePlot:plot];
+    for (CPTScatterPlot *plot in self->graph.allPlots) {
+        [self->graph removePlot:plot];
     }
     
     NSUInteger selectedRow;
@@ -78,10 +78,10 @@
     [CacheManager getCachedDataIfExists:self->table limit:self->dbLimit maxSeparation:components coinName:coinName completion:^(BOOL success, NSMutableArray<DBModel *> *cachedData) {
         if (!success) {
             [self->networkService getAndParseData:coinName withAPILimit:self->apiLimit completion:^(NSMutableArray<DBModel *> * _Nullable coinData) {
-                [self->graphModel.plotDots removeAllObjects];
+                [self->graph.plotDots removeAllObjects];
                 
                 for (DBModel *model in coinData) {
-                   [self->graphModel.plotDots addObject:model];
+                   [self->graph.plotDots addObject:model];
                 }
                 
                 [self configureAndAddPlot];
@@ -96,8 +96,8 @@
             }];
             
         } else {
-            [self->graphModel.plotDots removeAllObjects];
-            self->graphModel.plotDots = cachedData;
+            [self->graph.plotDots removeAllObjects];
+            self->graph.plotDots = cachedData;
             
             [self configureAndAddPlot];
             
