@@ -21,10 +21,10 @@
 		B4515D30251B376A003B46AA /* ViewWithGraphController+PickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4515D2F251B376A003B46AA /* ViewWithGraphController+PickerView.m */; };
 		B4515D34251B48FC003B46AA /* ViewWithGraphController+CPTPlot.m in Sources */ = {isa = PBXBuildFile; fileRef = B4515D33251B48FC003B46AA /* ViewWithGraphController+CPTPlot.m */; };
 		B4515D3D251B5C04003B46AA /* ViewWithGraphController+SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B4515D3C251B5C04003B46AA /* ViewWithGraphController+SegmentedControl.m */; };
-		B48019812518E83800CAC395 /* APIHelper.plist in Resources */ = {isa = PBXBuildFile; fileRef = B48019802518E83800CAC395 /* APIHelper.plist */; };
+		B48019812518E83800CAC395 /* APIConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = B48019802518E83800CAC395 /* APIConfig.plist */; };
 		B48467F1250B9A94009338C5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B48467F0250B9A94009338C5 /* Default-568h@2x.png */; };
 		B48EB02E250A23F300B80EE4 /* GraphManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EB02D250A23F300B80EE4 /* GraphManager.m */; };
-		B4CC6027250F5511007DE213 /* DBService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC6026250F5511007DE213 /* DBService.m */; };
+		B4CC6027250F5511007DE213 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC6026250F5511007DE213 /* DBManager.m */; };
 		B4CC602C250F681D007DE213 /* TableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC602B250F681D007DE213 /* TableColumn.m */; };
 		B4CC6030250F8FA2007DE213 /* WhereCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC602F250F8FA2007DE213 /* WhereCondition.m */; };
 		B4D9025A2510C96F00CD7554 /* CacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D902592510C96F00CD7554 /* CacheManager.m */; };
@@ -37,8 +37,11 @@
 		535C7EA8250EA7EA004274C0 /* ViewWithGraphController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewWithGraphController.m; sourceTree = "<group>"; };
 		535C7EA9250EA7EA004274C0 /* ViewWithGraphController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewWithGraphController.xib; sourceTree = "<group>"; };
 		A74E3DCACE52CCBFB17CCA0C /* Pods_CryptocurrencyAnalizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptocurrencyAnalizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B40548D72534992E0084C1F2 /* DBFixedValues.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBFixedValues.h; sourceTree = "<group>"; };
+		B40548D825349A440084C1F2 /* APIFixedValues.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIFixedValues.h; sourceTree = "<group>"; };
+		B40548D925349B300084C1F2 /* GraphFixedValues.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphFixedValues.h; sourceTree = "<group>"; };
 		B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLStatementOptions.h; sourceTree = "<group>"; };
-		B41AF5B1250A4C3C00E71454 /* GraphModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphModel.h; sourceTree = "<group>"; };
+		B41AF5B1250A4C3C00E71454 /* Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
 		B41AF5B2250A4C3C00E71454 /* GraphModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphModel.m; sourceTree = "<group>"; };
 		B41D1659251A3F6600E82139 /* GraphOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphOptions.h; sourceTree = "<group>"; };
 		B420C09525060BB3008873FF /* CryptocurrencyAnalizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptocurrencyAnalizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,14 +65,13 @@
 		B4515D33251B48FC003B46AA /* ViewWithGraphController+CPTPlot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ViewWithGraphController+CPTPlot.m"; sourceTree = "<group>"; };
 		B4515D3B251B5C04003B46AA /* ViewWithGraphController+SegmentedControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ViewWithGraphController+SegmentedControl.h"; sourceTree = "<group>"; };
 		B4515D3C251B5C04003B46AA /* ViewWithGraphController+SegmentedControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ViewWithGraphController+SegmentedControl.m"; sourceTree = "<group>"; };
-		B480197F2518DBD100CAC395 /* FixedValues.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FixedValues.h; sourceTree = "<group>"; };
-		B48019802518E83800CAC395 /* APIHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIHelper.plist; sourceTree = "<group>"; };
+		B48019802518E83800CAC395 /* APIConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = APIConfig.plist; sourceTree = "<group>"; };
 		B48019822518F1A300CAC395 /* RelativeURLs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelativeURLs.h; sourceTree = "<group>"; };
 		B48467F0250B9A94009338C5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B48EB02D250A23F300B80EE4 /* GraphManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphManager.m; sourceTree = "<group>"; };
 		B48EB02F250A23FF00B80EE4 /* GraphManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphManager.h; sourceTree = "<group>"; };
-		B4CC6025250F5511007DE213 /* DBService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBService.h; sourceTree = "<group>"; };
-		B4CC6026250F5511007DE213 /* DBService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBService.m; sourceTree = "<group>"; };
+		B4CC6025250F5511007DE213 /* DBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		B4CC6026250F5511007DE213 /* DBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
 		B4CC602A250F681D007DE213 /* TableColumn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableColumn.h; sourceTree = "<group>"; };
 		B4CC602B250F681D007DE213 /* TableColumn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableColumn.m; sourceTree = "<group>"; };
 		B4CC602E250F8FA2007DE213 /* WhereCondition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhereCondition.h; sourceTree = "<group>"; };
@@ -144,17 +146,12 @@
 				B4D2056D250613F100372A66 /* Controllers */,
 				B48467EF250B9A3B009338C5 /* Support Files */,
 				B420C0AA25060BB4008873FF /* main.m */,
+				B420C09B25060BB3008873FF /* SceneDelegate.h */,
+				B420C09C25060BB3008873FF /* SceneDelegate.m */,
+				B420C09825060BB3008873FF /* AppDelegate.h */,
+				B420C09925060BB3008873FF /* AppDelegate.m */,
 			);
 			path = CryptocurrencyAnalizer;
-			sourceTree = "<group>";
-		};
-		B424C8E32518FAF00091A808 /* URL Service */ = {
-			isa = PBXGroup;
-			children = (
-				B424C8E42518FB040091A808 /* URLHelper.h */,
-				B424C8E52518FB040091A808 /* URLHelper.m */,
-			);
-			path = "URL Service";
 			sourceTree = "<group>";
 		};
 		B4515D2A251B35E4003B46AA /* Extensions */ = {
@@ -172,23 +169,20 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		B48467ED250B99B0009338C5 /* Graph Model */ = {
+		B48467ED250B99B0009338C5 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
-				B41AF5B1250A4C3C00E71454 /* GraphModel.h */,
+				B41AF5B1250A4C3C00E71454 /* Graph.h */,
 				B41AF5B2250A4C3C00E71454 /* GraphModel.m */,
 			);
-			path = "Graph Model";
+			path = Graph;
 			sourceTree = "<group>";
 		};
 		B48467EF250B9A3B009338C5 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B4E51DBB2526265A0037E748 /* SceneDelegate */,
-				B4E51DBA2526264E0037E748 /* AppDelegate */,
 				B420C0A425060BB4008873FF /* Assets.xcassets */,
 				B420C0A925060BB4008873FF /* Info.plist */,
-				B480197F2518DBD100CAC395 /* FixedValues.h */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -202,31 +196,13 @@
 			path = "Graph Manager";
 			sourceTree = "<group>";
 		};
-		B4CC6024250F54CD007DE213 /* DB Service */ = {
+		B4CC6024250F54CD007DE213 /* DB Manager */ = {
 			isa = PBXGroup;
 			children = (
-				B4CC6025250F5511007DE213 /* DBService.h */,
-				B4CC6026250F5511007DE213 /* DBService.m */,
+				B4CC6025250F5511007DE213 /* DBManager.h */,
+				B4CC6026250F5511007DE213 /* DBManager.m */,
 			);
-			path = "DB Service";
-			sourceTree = "<group>";
-		};
-		B4CC6028250F5742007DE213 /* Table Column */ = {
-			isa = PBXGroup;
-			children = (
-				B4CC602A250F681D007DE213 /* TableColumn.h */,
-				B4CC602B250F681D007DE213 /* TableColumn.m */,
-			);
-			path = "Table Column";
-			sourceTree = "<group>";
-		};
-		B4CC602D250F8F7B007DE213 /* WHERE condition */ = {
-			isa = PBXGroup;
-			children = (
-				B4CC602E250F8FA2007DE213 /* WhereCondition.h */,
-				B4CC602F250F8FA2007DE213 /* WhereCondition.m */,
-			);
-			path = "WHERE condition";
+			path = "DB Manager";
 			sourceTree = "<group>";
 		};
 		B4D2056D250613F100372A66 /* Controllers */ = {
@@ -267,10 +243,13 @@
 		B4E51DB5252624530037E748 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				B424C8E42518FB040091A808 /* URLHelper.h */,
+				B424C8E52518FB040091A808 /* URLHelper.m */,
+				B4EA758F25061E18005234CC /* NetworkManager.h */,
+				B4EA758D25061DF5005234CC /* NetworkManager.m */,
 				B48019822518F1A300CAC395 /* RelativeURLs.h */,
-				B48019802518E83800CAC395 /* APIHelper.plist */,
-				B424C8E32518FAF00091A808 /* URL Service */,
-				B4EA758C25061DC9005234CC /* Network Manager */,
+				B48019802518E83800CAC395 /* APIConfig.plist */,
+				B40548D825349A440084C1F2 /* APIFixedValues.h */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -279,10 +258,13 @@
 			isa = PBXGroup;
 			children = (
 				B4DB90482510B23100060564 /* DB Model */,
-				B4CC6024250F54CD007DE213 /* DB Service */,
-				B4CC6028250F5742007DE213 /* Table Column */,
-				B4CC602D250F8F7B007DE213 /* WHERE condition */,
+				B4CC6024250F54CD007DE213 /* DB Manager */,
+				B4CC602A250F681D007DE213 /* TableColumn.h */,
+				B4CC602B250F681D007DE213 /* TableColumn.m */,
+				B4CC602E250F8FA2007DE213 /* WhereCondition.h */,
+				B4CC602F250F8FA2007DE213 /* WhereCondition.m */,
 				B40BE51E251A1CCE009D1988 /* SQLStatementOptions.h */,
+				B40548D72534992E0084C1F2 /* DBFixedValues.h */,
 			);
 			path = DB;
 			sourceTree = "<group>";
@@ -298,48 +280,14 @@
 		B4E51DB8252625F30037E748 /* Chart */ = {
 			isa = PBXGroup;
 			children = (
-				B48467ED250B99B0009338C5 /* Graph Model */,
+				B48467ED250B99B0009338C5 /* Graph */,
 				B48EB02C250A23DA00B80EE4 /* Graph Manager */,
-				B4E51DB9252626270037E748 /* Options */,
-			);
-			path = Chart;
-			sourceTree = "<group>";
-		};
-		B4E51DB9252626270037E748 /* Options */ = {
-			isa = PBXGroup;
-			children = (
 				B41D1659251A3F6600E82139 /* GraphOptions.h */,
 				B44B21EC251A46240073D497 /* AxisSetOptions.h */,
 				B441DD9825232D90008C22DA /* PlotSpaceAnnotationOptions.h */,
+				B40548D925349B300084C1F2 /* GraphFixedValues.h */,
 			);
-			path = Options;
-			sourceTree = "<group>";
-		};
-		B4E51DBA2526264E0037E748 /* AppDelegate */ = {
-			isa = PBXGroup;
-			children = (
-				B420C09825060BB3008873FF /* AppDelegate.h */,
-				B420C09925060BB3008873FF /* AppDelegate.m */,
-			);
-			path = AppDelegate;
-			sourceTree = "<group>";
-		};
-		B4E51DBB2526265A0037E748 /* SceneDelegate */ = {
-			isa = PBXGroup;
-			children = (
-				B420C09B25060BB3008873FF /* SceneDelegate.h */,
-				B420C09C25060BB3008873FF /* SceneDelegate.m */,
-			);
-			path = SceneDelegate;
-			sourceTree = "<group>";
-		};
-		B4EA758C25061DC9005234CC /* Network Manager */ = {
-			isa = PBXGroup;
-			children = (
-				B4EA758F25061E18005234CC /* NetworkManager.h */,
-				B4EA758D25061DF5005234CC /* NetworkManager.m */,
-			);
-			path = "Network Manager";
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		F154F273DAF4C64421339D8B /* Pods */ = {
@@ -413,7 +361,7 @@
 				B420C0A825060BB4008873FF /* LaunchScreen.storyboard in Resources */,
 				B48467F1250B9A94009338C5 /* Default-568h@2x.png in Resources */,
 				535C7EAB250EA7EA004274C0 /* ViewWithGraphController.xib in Resources */,
-				B48019812518E83800CAC395 /* APIHelper.plist in Resources */,
+				B48019812518E83800CAC395 /* APIConfig.plist in Resources */,
 				B420C0A525060BB4008873FF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,7 +426,7 @@
 				B424C8E62518FB040091A808 /* URLHelper.m in Sources */,
 				B48EB02E250A23F300B80EE4 /* GraphManager.m in Sources */,
 				B4515D3D251B5C04003B46AA /* ViewWithGraphController+SegmentedControl.m in Sources */,
-				B4CC6027250F5511007DE213 /* DBService.m in Sources */,
+				B4CC6027250F5511007DE213 /* DBManager.m in Sources */,
 				B4DB904B2510B24600060564 /* DBModel.m in Sources */,
 				B420C09D25060BB3008873FF /* SceneDelegate.m in Sources */,
 				B4515D2D251B3637003B46AA /* ViewWithGraphController+TextFieldDelegate.m in Sources */,

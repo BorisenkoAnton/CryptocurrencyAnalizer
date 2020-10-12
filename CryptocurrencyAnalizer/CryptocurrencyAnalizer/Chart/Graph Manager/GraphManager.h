@@ -15,7 +15,7 @@
 #import "PlotSpaceAnnotationOptions.h"
 
 // Modules
-#import "GraphModel.h"
+#import "Graph.h"
 
 // Module to manage actions directed to graphs, plots, their options
 @interface GraphManager : NSObject

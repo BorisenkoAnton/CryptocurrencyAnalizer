@@ -12,7 +12,7 @@
 #import "CorePlot-CocoaTouch.h"
 
 // Models
-#import "GraphModel.h"
+#import "Graph.h"
 
 // Services
 #import "NetworkManager.h"
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ViewWithGraphController : UIViewController {
     
-    GraphModel *graphModel;
+    Graph *graph;
     NetworkManager * networkService;
     
     NSMutableArray<NSString *> *availableCoins;           // Full list of available coins

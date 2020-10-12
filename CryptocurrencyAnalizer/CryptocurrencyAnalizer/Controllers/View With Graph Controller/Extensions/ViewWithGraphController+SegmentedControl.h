@@ -12,6 +12,9 @@
 // Managers
 #import "CacheManager.h"
 
+// Helpers
+#import "APIFixedValues.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ViewWithGraphController (SegmentedControl)

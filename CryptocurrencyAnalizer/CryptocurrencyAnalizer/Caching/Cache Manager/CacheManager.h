@@ -15,7 +15,7 @@
 #import "WhereCondition.h"
 
 // Services
-#import "DBService.h"
+#import "DBManager.h"
 
 
 // Models
