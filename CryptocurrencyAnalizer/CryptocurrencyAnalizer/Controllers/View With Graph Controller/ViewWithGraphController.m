@@ -19,9 +19,6 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [self loadAvailableCoins];
-    [self appointPickerViewDelegate:self andDataSource:self];
-    [self configureSegmentedControl];
 }
 
 
@@ -30,6 +27,14 @@
     [DBModel createTablesForModel];
     [self configureGraph];
     [self configureTextField];
+}
+
+
+-(void)viewDidAppear:(BOOL)animated {
+    
+    [self loadAvailableCoins];
+    [self appointPickerViewDelegate:self andDataSource:self];
+    [self configureSegmentedControl];
 }
 
 @end
