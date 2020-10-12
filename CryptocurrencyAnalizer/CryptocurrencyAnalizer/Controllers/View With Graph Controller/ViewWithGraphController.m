@@ -19,14 +19,17 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    [self loadAvailableCoins];
+    [self appointPickerViewDelegate:self andDataSource:self];
+    [self configureSegmentedControl];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
     
     [DBModel createTablesForModel];
-    [self loadAvailableCoins];
     [self configureGraph];
     [self configureTextField];
-    [self configureSegmentedControl];
-    [self appointPickerViewDelegate:self andDataSource:self];
-    
 }
 
 @end
