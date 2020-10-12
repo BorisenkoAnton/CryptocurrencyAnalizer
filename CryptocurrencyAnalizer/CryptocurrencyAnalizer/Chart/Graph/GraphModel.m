@@ -6,9 +6,9 @@
 //  Copyright © 2020 Anton Borisenko. All rights reserved.
 //
 
-#import "GraphModel.h"
+#import "Graph.h"
 
-@implementation GraphModel
+@implementation Graph
 
 - (id)initModelWithOptions:(GraphOptions)options {
     

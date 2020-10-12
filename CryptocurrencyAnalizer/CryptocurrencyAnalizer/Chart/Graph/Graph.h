@@ -22,7 +22,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GraphModel : CPTXYGraph
+@interface Graph : CPTXYGraph
 
 @property NSMutableArray<DBModel *> *plotDots;
 @property NSMutableArray<CPTMutableTextStyle *> *textStyles;

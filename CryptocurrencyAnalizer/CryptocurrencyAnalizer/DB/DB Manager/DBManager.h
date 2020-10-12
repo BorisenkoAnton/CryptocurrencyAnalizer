@@ -21,7 +21,7 @@ typedef void (^ResultCompletion)(BOOL success, FMResultSet *_Nullable result, NS
 NS_ASSUME_NONNULL_BEGIN
 
 // Service to manage work with DB
-@interface DBService : NSObject
+@interface DBManager : NSObject
 
 + (void)createTable:(NSString *)table withColumns:(NSArray<TableColumn *> *) columns completion:(nullable Completion)completion;
 

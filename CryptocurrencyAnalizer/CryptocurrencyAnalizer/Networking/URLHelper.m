@@ -44,7 +44,7 @@
 
 + (NSString *)getBaseURL {
     
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"APIHelper" ofType: @"plist"];
+    NSString *path = [[NSBundle mainBundle] pathForResource: @"APIConfig" ofType: @"plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
     NSString *baseURL = [dict objectForKey: @"Base url"];
     return baseURL;
@@ -52,7 +52,7 @@
 
 + (NSString *)getAPIKey {
     
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"APIHelper" ofType: @"plist"];
+    NSString *path = [[NSBundle mainBundle] pathForResource: @"APIConfig" ofType: @"plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
     NSString *baseURL = [dict objectForKey: @"API key"];
     return baseURL;
