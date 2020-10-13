@@ -24,16 +24,24 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     
+    [super viewWillAppear:animated];
+    
     [DBModel createTablesForModel];
+    
     [self configureGraph];
+    
     [self configureTextField];
 }
 
 
 -(void)viewDidAppear:(BOOL)animated {
     
+    [super viewDidAppear:animated];
+    
     [self loadAvailableCoins];
+    
     [self appointPickerViewDelegate:self andDataSource:self];
+    
     [self configureSegmentedControl];
 }
 
