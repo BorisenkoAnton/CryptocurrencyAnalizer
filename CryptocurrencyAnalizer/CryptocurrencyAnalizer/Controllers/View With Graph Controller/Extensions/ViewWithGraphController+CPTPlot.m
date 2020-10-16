@@ -59,6 +59,11 @@
 
 - (void)configureAndAddPlot{
     
+    if (self->graph.plotDots.count == 0) {
+
+        return;
+    }
+    
     self.graphView.hostedGraph = self->graph;
 
     NSMutableArray *prices = [NSMutableArray new];
@@ -160,7 +165,7 @@
 #pragma mark - CPTPlotDataSource and CPTPlotDelegate
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plotnumberOfRecords {
-    
+
     return self->graph.plotDots.count;
 }
  
