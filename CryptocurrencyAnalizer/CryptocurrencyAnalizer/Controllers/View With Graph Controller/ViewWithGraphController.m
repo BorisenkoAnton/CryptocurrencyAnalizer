@@ -19,14 +19,14 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    [DBModel createTablesForModel];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
-    
-    [DBModel createTablesForModel];
     
     [self configureGraph];
     
