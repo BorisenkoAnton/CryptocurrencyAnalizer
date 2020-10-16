@@ -105,6 +105,7 @@
                        
                        newOptions.limit = limit;
                        newOptions.count = NO;
+                       newOptions.desc = nil;
                        newOptions.whereConditions = [DBManager createWhereConditionsFromDictionary:whereConditions];
                        
                        [DBManager queryOnTable:table sqlStatementOptions:newOptions completion:^(BOOL success, FMResultSet * _Nullable result, NSError * _Nullable error) {
