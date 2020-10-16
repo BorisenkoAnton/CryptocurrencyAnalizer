@@ -46,6 +46,7 @@
     
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithComponentRed:70.0/255.0 green:88.0/255.0 blue:209.0/255.0 alpha:1.0];
+    
     indicatorLine.axisLineStyle = lineStyle;
     indicatorLine.majorTickLineStyle = nil;
     
@@ -53,6 +54,7 @@
     
     CPTXYAxis *xAxis = axisSet.xAxis;
     CPTXYAxis *yAxis = axisSet.yAxis;
+    
     axisSet.axes = @[xAxis, yAxis, indicatorLine];
 }
 
@@ -60,7 +62,10 @@
 - (void)configureAndAddPlot{
     
     if (self->graph.plotDots.count == 0) {
-
+        UIAlertController *alert = [AlertHelper createAlertControllerWithNoActionAndTitle:nil message:@"No data to show." preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
         return;
     }
     
@@ -216,6 +221,7 @@
 
     NSNumber *y = self->graph.plotDots[index].price;
     
+    // Configuring annotation for tracker
     NSDate *dateForAnnotation = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)(self->graph.plotDots[index].timestamp) doubleValue]];
     NSDateFormatter *annotationDateFormatter = [NSDateFormatter new];
     

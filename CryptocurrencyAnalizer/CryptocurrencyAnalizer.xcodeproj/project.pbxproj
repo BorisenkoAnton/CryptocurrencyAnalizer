@@ -24,6 +24,7 @@
 		B48019812518E83800CAC395 /* APIConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = B48019802518E83800CAC395 /* APIConfig.plist */; };
 		B48467F1250B9A94009338C5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B48467F0250B9A94009338C5 /* Default-568h@2x.png */; };
 		B48EB02E250A23F300B80EE4 /* GraphManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EB02D250A23F300B80EE4 /* GraphManager.m */; };
+		B4A7994C25398D9F00ADE481 /* AlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A7994B25398D9F00ADE481 /* AlertHelper.m */; };
 		B4CC6027250F5511007DE213 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC6026250F5511007DE213 /* DBManager.m */; };
 		B4CC602C250F681D007DE213 /* TableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC602B250F681D007DE213 /* TableColumn.m */; };
 		B4CC6030250F8FA2007DE213 /* WhereCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC602F250F8FA2007DE213 /* WhereCondition.m */; };
@@ -70,6 +71,8 @@
 		B48467F0250B9A94009338C5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B48EB02D250A23F300B80EE4 /* GraphManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GraphManager.m; sourceTree = "<group>"; };
 		B48EB02F250A23FF00B80EE4 /* GraphManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphManager.h; sourceTree = "<group>"; };
+		B4A7994A25398D9F00ADE481 /* AlertHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlertHelper.h; sourceTree = "<group>"; };
+		B4A7994B25398D9F00ADE481 /* AlertHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertHelper.m; sourceTree = "<group>"; };
 		B4CC6025250F5511007DE213 /* DBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		B4CC6026250F5511007DE213 /* DBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
 		B4CC602A250F681D007DE213 /* TableColumn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableColumn.h; sourceTree = "<group>"; };
@@ -138,6 +141,7 @@
 		B420C09725060BB3008873FF /* CryptocurrencyAnalizer */ = {
 			isa = PBXGroup;
 			children = (
+				B4A7994925398D7F00ADE481 /* Alert Helper */,
 				B4E51DB8252625F30037E748 /* Chart */,
 				B4E51DB7252625E70037E748 /* Caching */,
 				B4E51DB6252624CB0037E748 /* DB */,
@@ -194,6 +198,15 @@
 				B48EB02D250A23F300B80EE4 /* GraphManager.m */,
 			);
 			path = "Graph Manager";
+			sourceTree = "<group>";
+		};
+		B4A7994925398D7F00ADE481 /* Alert Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B4A7994A25398D9F00ADE481 /* AlertHelper.h */,
+				B4A7994B25398D9F00ADE481 /* AlertHelper.m */,
+			);
+			path = "Alert Helper";
 			sourceTree = "<group>";
 		};
 		B4CC6024250F54CD007DE213 /* DB Manager */ = {
@@ -425,6 +438,7 @@
 				B4CC602C250F681D007DE213 /* TableColumn.m in Sources */,
 				B424C8E62518FB040091A808 /* URLHelper.m in Sources */,
 				B48EB02E250A23F300B80EE4 /* GraphManager.m in Sources */,
+				B4A7994C25398D9F00ADE481 /* AlertHelper.m in Sources */,
 				B4515D3D251B5C04003B46AA /* ViewWithGraphController+SegmentedControl.m in Sources */,
 				B4CC6027250F5511007DE213 /* DBManager.m in Sources */,
 				B4DB904B2510B24600060564 /* DBModel.m in Sources */,
