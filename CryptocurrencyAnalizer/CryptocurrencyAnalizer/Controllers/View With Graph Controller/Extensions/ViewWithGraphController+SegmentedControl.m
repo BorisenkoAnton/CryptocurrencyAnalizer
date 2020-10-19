@@ -40,7 +40,7 @@
     
     selectedRow = [self.coinNamePickerView selectedRowInComponent:0]; // A zero-indexed number identifying the selected row, or -1 if no row is selected
     
-    if (selectedRow == -1) {
+    if ((selectedRow == -1) || (selectedRow >= [self.coinNamePickerView numberOfRowsInComponent:0])) {
         [self.coinNamePickerView selectRow:0 inComponent:0 animated:NO];
         
         selectedRow = [self.coinNamePickerView selectedRowInComponent:0];
