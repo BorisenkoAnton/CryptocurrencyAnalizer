@@ -38,7 +38,9 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     
-    self.coinNameTextField.text = self->filteredAvailableCoins[row];
+    if (row < self->filteredAvailableCoins.count) {
+        self.coinNameTextField.text = self->filteredAvailableCoins[row];
+    }
 }
 
 

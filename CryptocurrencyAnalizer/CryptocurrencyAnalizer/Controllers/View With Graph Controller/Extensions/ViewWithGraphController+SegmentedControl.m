@@ -30,13 +30,15 @@
         [self->graph removePlot:plot];
     }
     
-    NSUInteger selectedRow;
-    
+
     if ([self.coinNamePickerView numberOfRowsInComponent:0] == 0) {
         
         [self.activityIndicator stopAnimating];
+        
         return;
     }
+    
+    NSUInteger selectedRow;
     
     selectedRow = [self.coinNamePickerView selectedRowInComponent:0]; // A zero-indexed number identifying the selected row, or -1 if no row is selected
     
