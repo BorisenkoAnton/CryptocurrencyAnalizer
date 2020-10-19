@@ -32,6 +32,12 @@
     
     NSUInteger selectedRow;
     
+    if ([self.coinNamePickerView numberOfRowsInComponent:0] == 0) {
+        
+        [self.activityIndicator stopAnimating];
+        return;
+    }
+    
     selectedRow = [self.coinNamePickerView selectedRowInComponent:0]; // A zero-indexed number identifying the selected row, or -1 if no row is selected
     
     if (selectedRow == -1) {
